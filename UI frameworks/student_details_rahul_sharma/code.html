@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Student Profile - Rahul Sharma | Outsource Pro</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-primary": "#b4c5ff",
+                        "tertiary": "#943700",
+                        "on-surface-variant": "#434655",
+                        "on-tertiary": "#ffffff",
+                        "surface-variant": "#e1e2ed",
+                        "primary-container": "#2563eb",
+                        "on-secondary-fixed-variant": "#3f465c",
+                        "on-tertiary-container": "#ffede6",
+                        "tertiary-container": "#bc4800",
+                        "secondary-container": "#dae2fd",
+                        "tertiary-fixed-dim": "#ffb596",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-bright": "#faf8ff",
+                        "on-primary-fixed-variant": "#003ea8",
+                        "on-error-container": "#93000a",
+                        "tertiary-fixed": "#ffdbcd",
+                        "secondary-fixed": "#dae2fd",
+                        "on-tertiary-fixed": "#360f00",
+                        "primary-fixed": "#dbe1ff",
+                        "surface-container": "#ededf9",
+                        "outline": "#737686",
+                        "background": "#faf8ff",
+                        "secondary": "#565e74",
+                        "on-background": "#191b23",
+                        "inverse-surface": "#2e3039",
+                        "on-error": "#ffffff",
+                        "on-secondary-container": "#5c647a",
+                        "primary-fixed-dim": "#b4c5ff",
+                        "surface-dim": "#d9d9e5",
+                        "surface-tint": "#0053db",
+                        "primary": "#004ac6",
+                        "surface-container-low": "#f3f3fe",
+                        "surface-container-high": "#e7e7f3",
+                        "secondary-fixed-dim": "#bec6e0",
+                        "on-primary-fixed": "#00174b",
+                        "on-primary": "#ffffff",
+                        "inverse-on-surface": "#f0f0fb",
+                        "on-secondary": "#ffffff",
+                        "surface": "#faf8ff",
+                        "on-surface": "#191b23",
+                        "on-tertiary-fixed-variant": "#7d2d00",
+                        "outline-variant": "#c3c6d7",
+                        "on-primary-container": "#eeefff",
+                        "error": "#ba1a1a",
+                        "surface-container-highest": "#e1e2ed",
+                        "on-secondary-fixed": "#131b2e",
+                        "error-container": "#ffdad6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "md": "16px",
+                        "xs": "4px",
+                        "sm": "8px",
+                        "gutter": "24px",
+                        "base": "4px",
+                        "xl": "32px",
+                        "lg": "24px",
+                        "margin-mobile": "16px",
+                        "container-max": "1440px"
+                    },
+                    "fontFamily": {
+                        "headline-xl": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-xl": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .glass-card { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); border: 1px solid #E2E8F0; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    </style>
+</head>
+<body class="bg-background text-on-background">
+<!-- Fixed Side Navigation -->
+<aside class="fixed inset-y-0 left-0 z-50 flex flex-col bg-inverse-surface dark:bg-inverse-surface h-full w-[260px] border-r border-outline-variant shadow-sm">
+<div class="p-6">
+<h1 class="font-headline-md text-headline-md font-bold text-white">Outsource Pro</h1>
+<p class="text-xs text-outline-variant mt-1">Management Suite</p>
+</div>
+<nav class="flex-1 px-4 space-y-1">
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:text-white hover:bg-surface-variant/10 rounded transition-colors font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>Dashboard
+            </a>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:text-white hover:bg-surface-variant/10 rounded transition-colors font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined" data-icon="book">book</span>Subjects
+            </a>
+<a class="flex items-center gap-3 px-4 py-2 bg-primary-container text-on-primary-container border-l-4 border-primary font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined" data-icon="group" style="font-variation-settings: 'FILL' 1;">group</span>Students
+            </a>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:text-white hover:bg-surface-variant/10 rounded transition-colors font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined" data-icon="handshake">handshake</span>Outsourcing
+            </a>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:text-white hover:bg-surface-variant/10 rounded transition-colors font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>Revenue &amp; Finance
+            </a>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:text-white hover:bg-surface-variant/10 rounded transition-colors font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined" data-icon="event">event</span>Deadlines
+            </a>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:text-white hover:bg-surface-variant/10 rounded transition-colors font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined" data-icon="description">description</span>Documents
+            </a>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:text-white hover:bg-surface-variant/10 rounded transition-colors font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>Reports
+            </a>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:text-white hover:bg-surface-variant/10 rounded transition-colors font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>Settings
+            </a>
+</nav>
+<div class="p-6 border-t border-outline-variant/20 flex items-center gap-3">
+<img alt="Admin" class="w-10 h-10 rounded-full border-2 border-primary" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCWIJQV3h5RsqWSogl59837E_q0QOqLARHWV6RiJnysQizMbZtn0gkYKTXAFYdt6pUKNUjUYBr-7UolKTKfKSRcUI-N0qLtRCBD08b812lT2H8PBlliE8KXmiJSiSGeqamKVoHgs4wgutP55UL_XfqqzItAEHCrrTK9GbBomAnA10jHLlbrHI5rxOp0K5HS65_DWYwMdUULGylnpggURRIkbw5bj_wVdbaaVLGm03YqGaMiB5z2ilD4U0lvFQXf7vrdIWxQ1enWMg"/>
+<div class="overflow-hidden">
+<p class="text-white text-sm font-bold truncate">Executive Profile</p>
+<p class="text-outline-variant text-xs truncate">Manager Access</p>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-[260px] min-h-screen">
+<!-- Top Navigation -->
+<header class="sticky top-0 z-40 flex justify-between items-center px-6 py-3 w-full bg-surface/80 backdrop-blur-md border-b border-outline-variant shadow-sm">
+<div class="flex items-center gap-4 flex-1">
+<div class="relative w-full max-w-md focus-within:ring-2 focus-within:ring-primary/20 rounded-lg">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-lg" data-icon="search">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface-container-low border border-outline-variant rounded-lg text-sm focus:outline-none focus:border-primary" placeholder="Search student or project..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2 text-sm font-label-sm text-label-sm text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="currency_exchange">currency_exchange</span>
+<span>GBP/INR</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant hover:text-primary transition-colors"><span class="material-symbols-outlined" data-icon="notifications">notifications</span></button>
+<button class="text-on-surface-variant hover:text-primary transition-colors"><span class="material-symbols-outlined" data-icon="dark_mode">dark_mode</span></button>
+</div>
+</div>
+</header>
+<!-- Profile Hero Section -->
+<div class="p-gutter max-w-container-max mx-auto">
+<!-- Breadcrumbs -->
+<nav class="flex items-center gap-2 text-xs text-on-surface-variant mb-6 font-label-sm">
+<a class="hover:text-primary" href="#">Dashboard</a>
+<span class="material-symbols-outlined text-[12px]" data-icon="chevron_right">chevron_right</span>
+<a class="hover:text-primary" href="#">Students</a>
+<span class="material-symbols-outlined text-[12px]" data-icon="chevron_right">chevron_right</span>
+<span class="text-on-surface font-bold">Rahul Sharma</span>
+</nav>
+<!-- Student Profile Header -->
+<div class="flex flex-col lg:flex-row gap-8 items-start mb-8">
+<div class="flex items-center gap-6 flex-1">
+<div class="relative group">
+<img alt="Rahul Sharma" class="w-32 h-32 rounded-xl object-cover shadow-lg border-4 border-white" data-alt="A professional studio portrait of a young Indian male student with a confident smile, wearing a semi-formal navy blue blazer over a white shirt. The background is a clean, bright studio setting with soft lighting, reflecting a premium and executive educational atmosphere. High-end photography style with sharp focus on the face and soft bokeh." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCWu_EXs0bbigcPJB3XCi0dEvcfxEKMMPN8WtKz2U-voYTbGlSEhjKOzqVOvx8QobeADzdxXFLBDi-HBGmVZWA7qmTaf7hAfSCLDgOBFaFDO--evAZp4dk8u92cokTrPhhehWQAPFRDoAQx318XAwtyYH4Y8DUMDsERu4LFzbRwdjcdigLlaVwvrwExls46zPxNY8RA0vUjr4FGT1bU1U7-X8UyUM6vF-gQlwlNgY8Q3sShHk54rVa1YhcNzbgNFdr82XdlkfoBgw"/>
+<div class="absolute -bottom-2 -right-2 bg-white p-1 rounded-lg shadow-md border border-outline-variant">
+<img alt="India" class="w-6 h-4 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCqvCzcm5aD9kpE-gOAr9ZLr8wwFeW490t_e0Wojo0eriyOf3jIZxeesjajTxcWY8Uqh2d2TSJdRsgs6zWlyBQiHnFpceZHnEPLVAWqA-jFHYpR3OGR6zOve_t_OQU9s9ICxVhovkqzKplvlBnjQrha_OZ5jMCNM4kDTuULyd27H7TOvY3HRm0OuqHNcvpMaKfvLVFEclSdYx9zznxLSogxWsKqP4M7K7gDRxu98ysu5zXGPCJN1iwX29f6m7jgnWkuHLFyqefrfg"/>
+</div>
+</div>
+<div>
+<div class="flex items-center gap-3 mb-1">
+<h2 class="font-headline-xl text-headline-xl text-on-surface">Rahul Sharma</h2>
+<span class="px-2 py-1 bg-primary-fixed text-on-primary-fixed text-[10px] rounded font-bold uppercase tracking-wider">Premium Plan</span>
+</div>
+<p class="text-body-lg text-on-surface-variant flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-lg" data-icon="school">school</span>
+                            Delhi University • Faculty of Technology
+                        </p>
+<div class="flex flex-wrap gap-4">
+<span class="flex items-center gap-1.5 text-xs text-on-surface-variant font-label-sm">
+<span class="material-symbols-outlined text-base" data-icon="mail">mail</span>
+                                r.sharma.du@outlook.com
+                            </span>
+<span class="flex items-center gap-1.5 text-xs text-on-surface-variant font-label-sm">
+<span class="material-symbols-outlined text-base" data-icon="call">call</span>
+                                +91 98765 43210
+                            </span>
+</div>
+</div>
+</div>
+<div class="flex flex-wrap gap-3">
+<div class="flex items-center p-1 bg-surface-container rounded-lg border border-outline-variant mr-2">
+<button class="px-3 py-1.5 text-xs font-bold bg-white text-primary shadow-sm rounded">INR</button>
+<button class="px-3 py-1.5 text-xs font-bold text-on-surface-variant hover:text-primary">GBP</button>
+</div>
+<button class="px-4 py-2 bg-primary-container text-on-primary-container rounded-lg font-bold text-sm shadow-sm hover:brightness-110 transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-lg" data-icon="add_card">add_card</span>
+                        Add Payment
+                    </button>
+<button class="px-4 py-2 bg-white border border-outline-variant text-on-surface rounded-lg font-bold text-sm shadow-sm hover:bg-surface-container transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-lg" data-icon="upload_file">upload_file</span>
+                        Upload Files
+                    </button>
+<div class="relative group">
+<button class="p-2 bg-white border border-outline-variant text-on-surface rounded-lg hover:bg-surface-container">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Tabs Navigation -->
+<div class="flex gap-8 border-b border-outline-variant mb-8">
+<button class="pb-4 text-sm font-bold text-primary border-b-2 border-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-lg" data-icon="grid_view" style="font-variation-settings: 'FILL' 1;">grid_view</span>
+                    Overview/Assignments
+                </button>
+<button class="pb-4 text-sm font-bold text-on-surface-variant hover:text-primary transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-lg" data-icon="account_balance_wallet">account_balance_wallet</span>
+                    Payments
+                </button>
+<button class="pb-4 text-sm font-bold text-on-surface-variant hover:text-primary transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-lg" data-icon="hourglass_empty">hourglass_empty</span>
+                    Deadlines
+                </button>
+<button class="pb-4 text-sm font-bold text-on-surface-variant hover:text-primary transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-lg" data-icon="folder">folder</span>
+                    Documents
+                </button>
+<button class="pb-4 text-sm font-bold text-on-surface-variant hover:text-primary transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-lg" data-icon="grade">grade</span>
+                    Results
+                </button>
+</div>
+<!-- Dashboard Content: Asymmetric Layout -->
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Left Column: Assignment Cards (8 Columns) -->
+<div class="col-span-12 lg:col-span-8 space-y-gutter">
+<div class="flex items-center justify-between">
+<h3 class="font-headline-md text-headline-md text-on-surface">Active Assignments</h3>
+<div class="flex gap-2">
+<button class="p-1.5 rounded bg-surface-container border border-outline-variant"><span class="material-symbols-outlined text-lg" data-icon="filter_list">filter_list</span></button>
+<button class="p-1.5 rounded bg-surface-container border border-outline-variant"><span class="material-symbols-outlined text-lg" data-icon="sort">sort</span></button>
+</div>
+</div>
+<!-- Bento Grid for Assignments -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<!-- Card 1 -->
+<div class="p-lg rounded-xl glass-card hover:shadow-md transition-shadow group">
+<div class="flex justify-between items-start mb-4">
+<div class="bg-primary/10 p-2 rounded-lg text-primary">
+<span class="material-symbols-outlined" data-icon="psychology">psychology</span>
+</div>
+<span class="px-3 py-1 bg-yellow-100 text-yellow-800 text-[10px] rounded-full font-bold uppercase">In Progress</span>
+</div>
+<h4 class="font-bold text-lg mb-1 group-hover:text-primary transition-colors">Machine Learning &amp; Neural Networks</h4>
+<p class="text-xs text-on-surface-variant mb-6">Coursework Submission • DL-204</p>
+<div class="flex items-center gap-4 mb-6">
+<div class="flex-1">
+<p class="text-[10px] text-on-surface-variant uppercase font-bold mb-1">Deadline</p>
+<p class="text-sm font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-base text-error" data-icon="alarm">alarm</span>
+                                        24 Oct, 2023
+                                    </p>
+</div>
+<div class="h-8 w-px bg-outline-variant"></div>
+<div class="flex-1">
+<p class="text-[10px] text-on-surface-variant uppercase font-bold mb-1">Profitability</p>
+<p class="text-sm font-bold text-green-600">62% Margin</p>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4 p-4 bg-surface-container-low rounded-lg">
+<div>
+<p class="text-[10px] text-on-surface-variant mb-0.5">Revenue</p>
+<p class="font-bold text-primary">₹45,000</p>
+</div>
+<div>
+<p class="text-[10px] text-on-surface-variant mb-0.5">Profit</p>
+<p class="font-bold text-on-surface">₹28,000</p>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="p-lg rounded-xl glass-card hover:shadow-md transition-shadow group">
+<div class="flex justify-between items-start mb-4">
+<div class="bg-tertiary/10 p-2 rounded-lg text-tertiary">
+<span class="material-symbols-outlined" data-icon="balance">balance</span>
+</div>
+<span class="px-3 py-1 bg-green-100 text-green-800 text-[10px] rounded-full font-bold uppercase">Mark Completed</span>
+</div>
+<h4 class="font-bold text-lg mb-1 group-hover:text-primary transition-colors">International Corporate Law</h4>
+<p class="text-xs text-on-surface-variant mb-6">Legal Framework Analysis • LAW-901</p>
+<div class="flex items-center gap-4 mb-6">
+<div class="flex-1">
+<p class="text-[10px] text-on-surface-variant uppercase font-bold mb-1">Deadline</p>
+<p class="text-sm font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-base text-on-surface-variant" data-icon="event_available">event_available</span>
+                                        Completed
+                                    </p>
+</div>
+<div class="h-8 w-px bg-outline-variant"></div>
+<div class="flex-1">
+<p class="text-[10px] text-on-surface-variant uppercase font-bold mb-1">Profitability</p>
+<p class="text-sm font-bold text-green-600">45% Margin</p>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4 p-4 bg-surface-container-low rounded-lg">
+<div>
+<p class="text-[10px] text-on-surface-variant mb-0.5">Revenue</p>
+<p class="font-bold text-primary">₹12,500</p>
+</div>
+<div>
+<p class="text-[10px] text-on-surface-variant mb-0.5">Profit</p>
+<p class="font-bold text-on-surface">₹5,625</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Payment Visual Display -->
+<div class="p-lg rounded-xl glass-card">
+<div class="flex justify-between items-center mb-8">
+<h3 class="font-bold text-lg">Financial Overview</h3>
+<button class="text-xs font-bold text-primary hover:underline">Full Statement</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<div class="col-span-1 space-y-6">
+<div>
+<p class="text-xs text-on-surface-variant font-bold mb-2 uppercase">Total Revenue</p>
+<p class="text-2xl font-bold text-on-surface">₹57,500</p>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-xs font-bold">
+<span class="text-on-surface-variant">Advance Paid</span>
+<span class="text-green-600">₹35,000 (61%)</span>
+</div>
+<div class="w-full h-3 bg-surface-container rounded-full overflow-hidden">
+<div class="bg-primary h-full" style="width: 61%"></div>
+</div>
+<p class="text-[10px] text-on-surface-variant">Remaining Balance: ₹22,500</p>
+</div>
+</div>
+<div class="col-span-1 md:col-span-2">
+<p class="text-xs text-on-surface-variant font-bold mb-4 uppercase">Payment History</p>
+<div class="space-y-4">
+<div class="flex items-center gap-4 p-3 bg-surface-container-low rounded-lg border border-outline-variant/30">
+<div class="bg-green-100 p-2 rounded text-green-600">
+<span class="material-symbols-outlined text-lg" data-icon="check_circle">check_circle</span>
+</div>
+<div class="flex-1">
+<p class="text-sm font-bold">Milestone 1 Payment</p>
+<p class="text-[10px] text-on-surface-variant">HDFC Bank • 12 Oct 2023</p>
+</div>
+<div class="text-right">
+<p class="text-sm font-bold text-on-surface">₹25,000</p>
+<button class="text-[10px] text-primary font-bold hover:underline">Receipt</button>
+</div>
+</div>
+<div class="flex items-center gap-4 p-3 bg-surface-container-low rounded-lg border border-outline-variant/30">
+<div class="bg-green-100 p-2 rounded text-green-600">
+<span class="material-symbols-outlined text-lg" data-icon="check_circle">check_circle</span>
+</div>
+<div class="flex-1">
+<p class="text-sm font-bold">Registration Advance</p>
+<p class="text-[10px] text-on-surface-variant">Razorpay • 01 Oct 2023</p>
+</div>
+<div class="text-right">
+<p class="text-sm font-bold text-on-surface">₹10,000</p>
+<button class="text-[10px] text-primary font-bold hover:underline">Receipt</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Timeline & Documents (4 Columns) -->
+<div class="col-span-12 lg:col-span-4 space-y-gutter">
+<!-- Upcoming Milestones -->
+<div class="p-lg rounded-xl glass-card">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-bold text-lg">Deadlines</h3>
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="calendar_today">calendar_today</span>
+</div>
+<div class="space-y-6 relative before:content-[''] before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-px before:bg-outline-variant">
+<div class="relative pl-8">
+<div class="absolute left-0 top-1.5 w-6 h-6 rounded-full bg-primary flex items-center justify-center border-4 border-white shadow-sm">
+<div class="w-1.5 h-1.5 rounded-full bg-white"></div>
+</div>
+<p class="text-xs font-bold text-on-surface">First Draft Submission</p>
+<p class="text-[10px] text-error font-bold mb-1">In 3 days • 21 Oct</p>
+<p class="text-[10px] text-on-surface-variant line-clamp-1">ML Coursework - Part A</p>
+</div>
+<div class="relative pl-8">
+<div class="absolute left-0 top-1.5 w-6 h-6 rounded-full bg-outline-variant flex items-center justify-center border-4 border-white">
+<div class="w-1.5 h-1.5 rounded-full bg-white"></div>
+</div>
+<p class="text-xs font-bold text-on-surface">Balance Payment Due</p>
+<p class="text-[10px] text-on-surface-variant font-bold mb-1">28 Oct, 2023</p>
+</div>
+<div class="relative pl-8">
+<div class="absolute left-0 top-1.5 w-6 h-6 rounded-full bg-outline-variant flex items-center justify-center border-4 border-white">
+<div class="w-1.5 h-1.5 rounded-full bg-white"></div>
+</div>
+<p class="text-xs font-bold text-on-surface">Final Feedback Cycle</p>
+<p class="text-[10px] text-on-surface-variant font-bold mb-1">05 Nov, 2023</p>
+</div>
+</div>
+</div>
+<!-- Repository / Documents -->
+<div class="p-lg rounded-xl glass-card">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-bold text-lg">Documents</h3>
+<button class="p-1 rounded hover:bg-surface-container"><span class="material-symbols-outlined text-lg" data-icon="add">add</span></button>
+</div>
+<div class="space-y-4">
+<div class="group flex items-center gap-3 p-2 rounded-lg hover:bg-surface-container-low transition-colors cursor-pointer">
+<div class="bg-red-50 text-red-600 p-2 rounded">
+<span class="material-symbols-outlined" data-icon="picture_as_pdf">picture_as_pdf</span>
+</div>
+<div class="flex-1 overflow-hidden">
+<p class="text-xs font-bold truncate">ML_Proposal_Final.pdf</p>
+<p class="text-[10px] text-on-surface-variant">2.4 MB • 12 Oct</p>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity" data-icon="download">download</span>
+</div>
+<div class="group flex items-center gap-3 p-2 rounded-lg hover:bg-surface-container-low transition-colors cursor-pointer">
+<div class="bg-blue-50 text-blue-600 p-2 rounded">
+<span class="material-symbols-outlined" data-icon="folder_zip">folder_zip</span>
+</div>
+<div class="flex-1 overflow-hidden">
+<p class="text-xs font-bold truncate">Training_Dataset_V2.zip</p>
+<p class="text-[10px] text-on-surface-variant">45.8 MB • 15 Oct</p>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity" data-icon="download">download</span>
+</div>
+<div class="group flex items-center gap-3 p-2 rounded-lg hover:bg-surface-container-low transition-colors cursor-pointer">
+<div class="bg-gray-100 text-on-surface p-2 rounded">
+<span class="material-symbols-outlined" data-icon="code">code</span>
+</div>
+<div class="flex-1 overflow-hidden">
+<p class="text-xs font-bold truncate">Main_Model.py</p>
+<p class="text-[10px] text-on-surface-variant">12 KB • Yesterday</p>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity" data-icon="download">download</span>
+</div>
+</div>
+</div>
+<!-- Internal Admin Notes -->
+<div class="p-lg rounded-xl bg-surface-container-high border border-outline-variant">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-lg text-tertiary" data-icon="description">description</span>
+<h3 class="font-bold text-sm text-tertiary uppercase tracking-wider">Administrative Notes</h3>
+</div>
+<div class="bg-white/50 p-4 rounded-lg text-xs leading-relaxed text-on-surface-variant mb-4">
+                            Rahul is a high-priority student. Ensure that the Machine Learning expert assigned has experience with PyTorch specifically. He requested a focus on Neural Network architecture diagrams for the final submission.
+                        </div>
+<button class="w-full py-2 bg-white border border-outline-variant rounded font-bold text-[10px] uppercase hover:bg-surface transition-colors">Edit Notes</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

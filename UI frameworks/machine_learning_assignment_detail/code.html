@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary": "#ffffff",
+                    "on-surface-variant": "#434655",
+                    "surface-variant": "#e1e2ed",
+                    "primary-container": "#2563eb",
+                    "inverse-primary": "#b4c5ff",
+                    "tertiary": "#943700",
+                    "on-primary-fixed-variant": "#003ea8",
+                    "on-error-container": "#93000a",
+                    "on-tertiary-fixed": "#360f00",
+                    "tertiary-fixed": "#ffdbcd",
+                    "secondary-fixed": "#dae2fd",
+                    "on-tertiary-container": "#ffede6",
+                    "on-secondary-fixed-variant": "#3f465c",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-bright": "#faf8ff",
+                    "tertiary-fixed-dim": "#ffb596",
+                    "tertiary-container": "#bc4800",
+                    "secondary-container": "#dae2fd",
+                    "surface-dim": "#d9d9e5",
+                    "surface-container-low": "#f3f3fe",
+                    "surface-container-high": "#e7e7f3",
+                    "secondary-fixed-dim": "#bec6e0",
+                    "on-primary-fixed": "#00174b",
+                    "on-primary": "#ffffff",
+                    "surface-tint": "#0053db",
+                    "primary": "#004ac6",
+                    "background": "#faf8ff",
+                    "surface-container": "#ededf9",
+                    "outline": "#737686",
+                    "primary-fixed": "#dbe1ff",
+                    "primary-fixed-dim": "#b4c5ff",
+                    "on-secondary-container": "#5c647a",
+                    "on-error": "#ffffff",
+                    "secondary": "#565e74",
+                    "on-background": "#191b23",
+                    "inverse-surface": "#2e3039",
+                    "surface-container-highest": "#e1e2ed",
+                    "on-secondary-fixed": "#131b2e",
+                    "error": "#ba1a1a",
+                    "error-container": "#ffdad6",
+                    "on-secondary": "#ffffff",
+                    "inverse-on-surface": "#f0f0fb",
+                    "outline-variant": "#c3c6d7",
+                    "on-primary-container": "#eeefff",
+                    "on-tertiary-fixed-variant": "#7d2d00",
+                    "surface": "#faf8ff",
+                    "on-surface": "#191b23"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-mobile": "16px",
+                    "container-max": "1440px",
+                    "xl": "32px",
+                    "lg": "24px",
+                    "xs": "4px",
+                    "sm": "8px",
+                    "gutter": "24px",
+                    "base": "4px",
+                    "md": "16px"
+            },
+            "fontFamily": {
+                    "body-lg": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "body-md": ["Inter"],
+                    "headline-xl": ["Inter"],
+                    "label-sm": ["Inter"]
+            },
+            "fontSize": {
+                    "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "headline-xl": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            backdrop-filter: blur(12px);
+            background: rgba(255, 255, 255, 0.8);
+        }
+        body {
+            background-color: #faf8ff;
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="flex min-h-screen text-on-surface">
+<!-- Sidebar Navigation Shell -->
+<aside class="fixed inset-y-0 left-0 z-50 flex flex-col bg-inverse-surface dark:bg-inverse-surface border-r border-outline-variant shadow-sm w-[260px]">
+<div class="px-6 py-8">
+<h1 class="font-headline-md text-headline-md font-bold text-white">Outsource Pro</h1>
+<p class="text-on-surface-variant text-xs mt-1 uppercase tracking-wider opacity-60">Management Suite</p>
+</div>
+<nav class="flex-1 flex flex-col gap-1 px-3">
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:text-white hover:bg-surface-variant transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">dashboard</span>
+<span class="font-body-md text-body-md">Dashboard</span>
+</a>
+<!-- Active State: Subjects -->
+<a class="flex items-center gap-3 px-4 py-2 bg-primary-container text-on-primary-container border-l-4 border-primary group" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">book</span>
+<span class="font-body-md text-body-md">Subjects</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:text-white hover:bg-surface-variant transition-colors group" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-body-md text-body-md">Students</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:text-white hover:bg-surface-variant transition-colors group" href="#">
+<span class="material-symbols-outlined">handshake</span>
+<span class="font-body-md text-body-md">Outsourcing</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:text-white hover:bg-surface-variant transition-colors group" href="#">
+<span class="material-symbols-outlined">payments</span>
+<span class="font-body-md text-body-md">Revenue &amp; Finance</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:text-white hover:bg-surface-variant transition-colors group" href="#">
+<span class="material-symbols-outlined">event</span>
+<span class="font-body-md text-body-md">Deadlines</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:text-white hover:bg-surface-variant transition-colors group" href="#">
+<span class="material-symbols-outlined">description</span>
+<span class="font-body-md text-body-md">Documents</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:text-white hover:bg-surface-variant transition-colors group" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-body-md text-body-md">Reports</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:text-white hover:bg-surface-variant transition-colors group" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-md text-body-md">Settings</span>
+</a>
+</nav>
+<div class="p-4 border-t border-outline-variant/20">
+<div class="flex items-center gap-3">
+<img class="w-10 h-10 rounded-full border border-outline-variant" data-alt="A professional headshot of a senior executive male in a modern office setting. He wears a tailored navy blue suit and has a neutral, confident expression. The lighting is soft and cinematic, with a blurred background of a high-end, contemporary workspace using a light mode color palette of whites and soft greys." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB3sI77sP8GQi17qrEQJzH1Vw2QqNTa8GqaZ3VUk_OuaRBtPSsVu88sBV8oNhUGTXIcXxRcvW8RrUli08ar8CIcUMClzSFJYd5VxR9P6pnkVlxTVTpG6xlOnoS2x1qn3wh7_0_qDb5FRcJWmSyIh7Jk2WD-rteNvx-MoSmKiA_fgyM5os95619z9X4OrnnaG3c1ohdTowk0zh_QGaRiPOILIYqI0WsbfKXVcBVG8tv7D8h0dCuGVHL1nv-D4Z7klV8HTJPYGELrNA"/>
+<div>
+<p class="text-white text-sm font-bold">Admin Executive</p>
+<p class="text-on-surface-variant text-xs">Global Ops</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-[260px] flex-1 flex flex-col">
+<!-- Top Navigation Bar -->
+<header class="sticky top-0 z-40 flex justify-between items-center px-6 py-3 w-full bg-surface/80 dark:bg-surface-container/80 backdrop-blur-md shadow-sm">
+<div class="flex items-center gap-4">
+<button class="p-2 hover:bg-surface-container-high rounded-lg transition-colors group">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary">arrow_back</span>
+</button>
+<div class="flex items-center gap-2">
+<span class="text-on-surface-variant font-label-sm text-label-sm uppercase tracking-widest opacity-60">Dashboard</span>
+<span class="material-symbols-outlined text-xs text-outline-variant">chevron_right</span>
+<span class="text-on-surface-variant font-label-sm text-label-sm uppercase tracking-widest opacity-60">Subjects</span>
+<span class="material-symbols-outlined text-xs text-outline-variant">chevron_right</span>
+<span class="text-primary font-bold border-b-2 border-primary font-label-sm text-label-sm uppercase tracking-widest">Machine Learning</span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative focus-within:ring-2 focus-within:ring-primary/20 rounded-lg">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="pl-10 pr-4 py-2 bg-surface-container-low border border-outline-variant rounded-lg font-body-md text-body-md w-64 outline-none focus:border-primary" placeholder="Search tasks, students..." type="text"/>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined p-2 text-on-surface-variant hover:text-primary cursor-pointer transition-colors">notifications</span>
+<span class="material-symbols-outlined p-2 text-on-surface-variant hover:text-primary cursor-pointer transition-colors">currency_exchange</span>
+<span class="material-symbols-outlined p-2 text-on-surface-variant hover:text-primary cursor-pointer transition-colors">dark_mode</span>
+</div>
+<div class="h-6 w-px bg-outline-variant mx-2"></div>
+<div class="flex items-center gap-2 bg-surface-container-high px-3 py-1.5 rounded-full">
+<span class="font-label-sm text-label-sm text-on-surface font-bold">GBP/INR</span>
+<span class="text-xs text-success text-green-600 font-bold">106.42</span>
+</div>
+</div>
+</header>
+<!-- Subject Header Section -->
+<section class="px-8 py-10 bg-white border-b border-outline-variant">
+<div class="max-w-[1440px] mx-auto">
+<div class="flex justify-between items-start mb-8">
+<div>
+<div class="flex items-center gap-3 mb-2">
+<span class="bg-primary/10 text-primary px-3 py-1 rounded text-xs font-bold uppercase tracking-widest">Advanced Curriculum</span>
+<span class="flex items-center gap-1 text-on-surface-variant text-xs"><span class="material-symbols-outlined text-sm">schedule</span> Last updated 2h ago</span>
+</div>
+<h2 class="font-display-lg text-display-lg text-on-surface mb-2 tracking-tighter">Machine Learning Engineering</h2>
+<p class="text-on-surface-variant font-body-lg text-body-lg max-w-2xl">Foundational principles, deep neural networks, and scalable production deployment strategies for global enterprise solutions.</p>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center gap-2 px-5 py-2.5 bg-white border border-outline-variant rounded-lg font-label-sm text-label-sm hover:bg-surface-container-low transition-all shadow-sm">
+<span class="material-symbols-outlined text-xl">group_add</span>
+                            Manage Students
+                        </button>
+<button class="flex items-center gap-2 px-5 py-2.5 bg-primary text-white rounded-lg font-label-sm text-label-sm hover:bg-primary-container transition-all shadow-md transform hover:-translate-y-0.5">
+<span class="material-symbols-outlined text-xl">upload_file</span>
+                            Upload Files
+                        </button>
+<button class="p-2.5 border border-outline-variant rounded-lg hover:bg-surface-container-low">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+</div>
+<!-- KPI Quick Stats Grid -->
+<div class="grid grid-cols-4 gap-6">
+<div class="bg-white p-6 rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-shadow">
+<div class="flex justify-between items-center mb-4">
+<span class="text-on-surface-variant font-label-sm text-label-sm uppercase">Total Budget</span>
+<span class="material-symbols-outlined text-primary bg-primary/10 p-2 rounded-lg">account_balance_wallet</span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="font-headline-xl text-headline-xl text-on-surface">£42,850</span>
+<span class="text-green-600 text-xs font-bold">+12% vs last month</span>
+</div>
+</div>
+<div class="bg-white p-6 rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-shadow">
+<div class="flex justify-between items-center mb-4">
+<span class="text-on-surface-variant font-label-sm text-label-sm uppercase">Active Students</span>
+<span class="material-symbols-outlined text-primary bg-primary/10 p-2 rounded-lg">groups</span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="font-headline-xl text-headline-xl text-on-surface">18</span>
+<span class="text-on-surface-variant text-xs font-bold">/ 25 Capacity</span>
+</div>
+</div>
+<div class="bg-white p-6 rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-shadow">
+<div class="flex justify-between items-center mb-4">
+<span class="text-on-surface-variant font-label-sm text-label-sm uppercase">Completion rate</span>
+<span class="material-symbols-outlined text-primary bg-primary/10 p-2 rounded-lg">speed</span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="font-headline-xl text-headline-xl text-on-surface">74%</span>
+<div class="w-20 h-2 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="w-3/4 h-full bg-primary"></div>
+</div>
+</div>
+</div>
+<div class="bg-white p-6 rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-shadow">
+<div class="flex justify-between items-center mb-4">
+<span class="text-on-surface-variant font-label-sm text-label-sm uppercase">Next Deadline</span>
+<span class="material-symbols-outlined text-error bg-error/10 p-2 rounded-lg">event</span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="font-headline-xl text-headline-xl text-on-surface">4 Days</span>
+<span class="text-on-surface-variant text-xs font-bold">Neural Net Project</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Bento Grid Layout for Detail View -->
+<section class="flex-1 p-8 overflow-y-auto">
+<div class="max-w-[1440px] mx-auto grid grid-cols-12 gap-8">
+<!-- Project Timeline (Bento Column 1-8) -->
+<div class="col-span-8 bg-white rounded-xl border border-outline-variant overflow-hidden shadow-sm">
+<div class="flex justify-between items-center px-6 py-4 border-b border-outline-variant">
+<h3 class="font-headline-md text-headline-md text-on-surface">Project Timeline</h3>
+<div class="flex gap-2">
+<button class="px-3 py-1 text-xs font-bold bg-surface-container-high rounded text-on-surface">Weekly</button>
+<button class="px-3 py-1 text-xs font-bold hover:bg-surface-container-high rounded text-on-surface-variant transition-colors">Monthly</button>
+</div>
+</div>
+<div class="p-6">
+<div class="relative space-y-8 before:absolute before:left-3 before:top-2 before:bottom-2 before:w-0.5 before:bg-surface-container-highest">
+<!-- Milestone 1 -->
+<div class="relative pl-10">
+<div class="absolute left-0 top-1 w-6 h-6 bg-primary rounded-full border-4 border-white shadow-sm"></div>
+<div class="flex justify-between items-start">
+<div>
+<h4 class="font-bold text-on-surface">Data Preprocessing &amp; Analysis Module</h4>
+<p class="text-on-surface-variant font-body-md text-body-md mb-2">Completion of exploratory data analysis pipelines and feature engineering scripts.</p>
+<div class="flex items-center gap-4">
+<span class="bg-green-100 text-green-700 px-2 py-0.5 rounded text-[10px] font-bold uppercase">Completed</span>
+<span class="text-xs text-outline flex items-center gap-1"><span class="material-symbols-outlined text-sm">calendar_today</span> Oct 12, 2023</span>
+</div>
+</div>
+<div class="flex -space-x-2">
+<img class="w-8 h-8 rounded-full border-2 border-white" data-alt="A close-up studio portrait of a young professional male software developer with glasses, smiling warmly against a soft blue studio background. The lighting is crisp and modern, reflecting a bright, light-mode tech environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAlgU6yru4D09jRLW8XpS-15A4eAGyiqwMXqyJGCbTbIty_LuI5rRKMtUDh8i1LgfVcLTNIhMORz6Y6E0uHt8yKCkR0yBuxqLWhzeyXM3st3B_jgERfLHDBMcLHTWOdoc3J3mH-tJ5xpQmnr23o21d6VVrH9XkHMPMOmSP4tpcOPoFbDlMHNlUb2BvkrIlogylsz9ntMv1QoDbDoMwAPEhx57HymE6-_6nooVdcYi-tTo9cAyAOp-m3RODBljvA9UiyyrXqq9tUCQ"/>
+<img class="w-8 h-8 rounded-full border-2 border-white" data-alt="A vibrant professional headshot of a young woman with a creative expression, styled in a clean modern office with natural light. The aesthetic is bright and airy, with a soft blur on the technological elements in the background, matching a premium enterprise UI." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQGsiXqLwRs85BXYOXHNj2yWKXA4f7hcA560rLpoOJykMK33rsmJatLO1YBpXDyJ3KWKGQfSXEXNNs7CpOL3aCgi5w9gygLm_mAbeXsFAzOsewyFrajs2CHlJYZmTqp5LMWqGZaAuJvXZ2uiWKH6mBp3AkPXuxivtid1SLnm2D9tTV7gqXPs__tEXNK2zksx9UJmuqCDzEdXRjDYheSAu4XZE38Ts7iyjH-1DZJ1V24m2xPtYK9oOKplEer4rNpsFETeTe4Rg9Gg"/>
+</div>
+</div>
+</div>
+<!-- Milestone 2 -->
+<div class="relative pl-10">
+<div class="absolute left-0 top-1 w-6 h-6 bg-primary rounded-full border-4 border-white shadow-sm ring-4 ring-primary/10"></div>
+<div class="flex justify-between items-start">
+<div>
+<h4 class="font-bold text-on-surface">Neural Architecture Search (NAS) Phase</h4>
+<p class="text-on-surface-variant font-body-md text-body-md mb-2">Automated selection of deep learning models and hyperparameter optimization.</p>
+<div class="flex items-center gap-4">
+<span class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded text-[10px] font-bold uppercase">In Progress</span>
+<span class="text-xs text-outline flex items-center gap-1"><span class="material-symbols-outlined text-sm">calendar_today</span> Nov 15, 2023</span>
+</div>
+</div>
+<div class="flex -space-x-2">
+<img class="w-8 h-8 rounded-full border-2 border-white" data-alt="A portrait of a male data scientist focusing intently on a task, with soft glowing monitors reflecting on his face. The background is a clean, minimalist laboratory with bright, cool lighting. The style is professional and precise, following a high-end enterprise aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDd74wJzx_hhezoB2yZB0MgHBvYwcOdpiuhhcjDzf6YemDMdEEU5YNmf-KXjQRVh91hKme3BBN7ZRWPypg4mXlwksCS2RT5yNfH9I5zNvTwIVKR94YK1af2hS1bmfwdHEtR94Gwt5Vige-fkNZSBF1LmP8d7Pi6sB0c1h0-jjorYzrqyOPBKQyidB7I2JPxZEG3bM-R0dovHSRc6-5AXeK9UyNuT4awD11f6qkFgIc5BHYYQmrV1unCm9JY6dVbbZ-x_uRrrl7pgQ"/>
+</div>
+</div>
+</div>
+<!-- Milestone 3 -->
+<div class="relative pl-10 opacity-60">
+<div class="absolute left-0 top-1 w-6 h-6 bg-outline-variant rounded-full border-4 border-white shadow-sm"></div>
+<div class="flex justify-between items-start">
+<div>
+<h4 class="font-bold text-on-surface">Deployment &amp; CI/CD Pipeline</h4>
+<p class="text-on-surface-variant font-body-md text-body-md mb-2">Final integration with production servers and real-time inference monitoring.</p>
+<div class="flex items-center gap-4">
+<span class="bg-surface-container-highest text-on-surface-variant px-2 py-0.5 rounded text-[10px] font-bold uppercase">Upcoming</span>
+<span class="text-xs text-outline flex items-center gap-1"><span class="material-symbols-outlined text-sm">calendar_today</span> Dec 22, 2023</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Assigned Students & Notifications (Bento Column 9-12) -->
+<div class="col-span-4 space-y-8">
+<!-- Notifications Card -->
+<div class="bg-surface-container-low rounded-xl border border-outline-variant p-6 shadow-sm">
+<div class="flex justify-between items-center mb-4">
+<h3 class="font-bold text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">notifications_active</span>
+                                Activity Log
+                            </h3>
+<span class="text-xs font-bold text-primary cursor-pointer hover:underline">Clear all</span>
+</div>
+<div class="space-y-4">
+<div class="flex gap-3 text-sm">
+<div class="w-8 h-8 rounded bg-primary/10 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary text-lg">description</span>
+</div>
+<p class="text-on-surface-variant leading-tight">
+<span class="font-bold text-on-surface">James Wilson</span> uploaded a new dataset <span class="text-primary underline">raw_sensor_data.csv</span>
+<br/><span class="text-[10px] opacity-60 uppercase font-bold">14 minutes ago</span>
+</p>
+</div>
+<div class="flex gap-3 text-sm">
+<div class="w-8 h-8 rounded bg-error/10 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-error text-lg">priority_high</span>
+</div>
+<p class="text-on-surface-variant leading-tight">
+<span class="font-bold text-on-surface">Critical Alert:</span> API rate limit exceeded on Inference Node 04.
+                                    <br/><span class="text-[10px] opacity-60 uppercase font-bold">2 hours ago</span>
+</p>
+</div>
+<div class="flex gap-3 text-sm">
+<div class="w-8 h-8 rounded bg-primary/10 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary text-lg">comment</span>
+</div>
+<p class="text-on-surface-variant leading-tight">
+<span class="font-bold text-on-surface">Sarah Chen</span> replied to your comment on "Neural Architecture".
+                                    <br/><span class="text-[10px] opacity-60 uppercase font-bold">Yesterday</span>
+</p>
+</div>
+</div>
+</div>
+<!-- Assigned Students List -->
+<div class="bg-white rounded-xl border border-outline-variant overflow-hidden shadow-sm">
+<div class="px-6 py-4 border-b border-outline-variant bg-surface-container-low">
+<h3 class="font-bold text-on-surface">Assigned Team</h3>
+</div>
+<div class="divide-y divide-outline-variant/10">
+<div class="px-6 py-4 flex items-center justify-between hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-3">
+<img class="w-10 h-10 rounded-full object-cover border border-outline-variant" data-alt="Close up professional portrait of a software engineer male, high-key lighting, bright tech background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBCQOt8gGhabvfV3Gf2ZCirFoelDIAx5aO4YsVyFF4MmJ4rPReQrpfHyuth1VDgTTYNlq4zmPM3WdtJ3C5xfo7lAdpOGPld8DiK4n9Wj7RmUaWJm3GNxqSpdr600IKuPQZ6lshu8UiLzwCeDdwmFCbYDzyaR0u7aj_hGYh-zRE524LzUk6U7twb4hVJRiPeLjmzdM6Xo_vIGQnBpSOMCdmzcOvWS1p4_9BQnfKr1__oucagSG3VIHKSuqjuMn3ZsiqnXERrapz1Zg"/>
+<div>
+<p class="text-sm font-bold text-on-surface">James Wilson</p>
+<p class="text-xs text-on-surface-variant">Lead Researcher</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline-variant hover:text-primary cursor-pointer">chat</span>
+</div>
+<div class="px-6 py-4 flex items-center justify-between hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-3">
+<img class="w-10 h-10 rounded-full object-cover border border-outline-variant" data-alt="Portrait of a female AI analyst, bright modern office background, soft studio lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDzRzA4MVZ8xwB9F6c3M_4WIDB86_9FvS6gqDz85_O7C_2X9lvkm_fZGnYAWmBEBqLnpv0m8U-DvXX1FP22YB3m_27oLy19Pa431cGp4S4DVAWQvZRFqes-FObdJANjpLpqxYcy_jf23aeDmgkN_wVUykfiROmddP18svp8RMyYieNxEXGcEPYF0p2fXh1u0cHEOo3IEJPq_VNuMDVjRnEFL0kncJQxxnOns8oJFNPmMttuGXtTaEicVLt023I6y_LfwElXrgzgGA"/>
+<div>
+<p class="text-sm font-bold text-on-surface">Sarah Chen</p>
+<p class="text-xs text-on-surface-variant">Model Optimization</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline-variant hover:text-primary cursor-pointer">chat</span>
+</div>
+<div class="px-6 py-4 flex items-center justify-between hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-3">
+<img class="w-10 h-10 rounded-full object-cover border border-outline-variant" data-alt="Close up of a technical data scientist male, focusing intently, minimalist lab setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC3oNLreacfU9tE-aUr_0Y7w8QRxHQZfhfjeL-s4LzzqHCESldVaePYiz9u4FutCj1tgHGcXz2kWKXFsd7YYSf8IwtUuq2P12k2lADBjAb3HHeSSdubDWbfXGQqhpSkHsP2dOiVrINIopCjD2PcEtp1jnRMBpysIS2iVcximgesJ_EXmZrMFBhO3r8unr4PcIxiWZgPFvKvV_02as7SnPCrvtHyAk0LViuAtSMXLqrDUp0Mb2XLKq3iobTkME0zVAuMoiP9zD8RxQ"/>
+<div>
+<p class="text-sm font-bold text-on-surface">Arjun Mehta</p>
+<p class="text-xs text-on-surface-variant">DevOps Engineer</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline-variant hover:text-primary cursor-pointer">chat</span>
+</div>
+</div>
+<button class="w-full py-3 text-xs font-bold text-primary hover:bg-primary/5 transition-colors border-t border-outline-variant/10 uppercase tracking-widest">
+                            View All 18 Students
+                        </button>
+</div>
+</div>
+</div>
+</section>
+</main>
+</body></html>

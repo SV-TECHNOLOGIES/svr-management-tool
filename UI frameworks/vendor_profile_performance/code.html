@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vendor Details - TechNode Labs</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "error-container": "#ffdad6",
+                        "surface-container-highest": "#e1e2ed",
+                        "on-secondary-fixed": "#131b2e",
+                        "error": "#ba1a1a",
+                        "outline-variant": "#c3c6d7",
+                        "on-primary-container": "#eeefff",
+                        "surface": "#faf8ff",
+                        "on-surface": "#191b23",
+                        "on-tertiary-fixed-variant": "#7d2d00",
+                        "inverse-on-surface": "#f0f0fb",
+                        "on-secondary": "#ffffff",
+                        "surface-container-low": "#f3f3fe",
+                        "surface-container-high": "#e7e7f3",
+                        "secondary-fixed-dim": "#bec6e0",
+                        "on-primary-fixed": "#00174b",
+                        "on-primary": "#ffffff",
+                        "surface-tint": "#0053db",
+                        "primary": "#004ac6",
+                        "surface-dim": "#d9d9e5",
+                        "on-secondary-container": "#5c647a",
+                        "primary-fixed-dim": "#b4c5ff",
+                        "secondary": "#565e74",
+                        "on-background": "#191b23",
+                        "inverse-surface": "#2e3039",
+                        "on-error": "#ffffff",
+                        "background": "#faf8ff",
+                        "primary-fixed": "#dbe1ff",
+                        "surface-container": "#ededf9",
+                        "outline": "#737686",
+                        "tertiary-fixed": "#ffdbcd",
+                        "secondary-fixed": "#dae2fd",
+                        "on-tertiary-fixed": "#360f00",
+                        "on-primary-fixed-variant": "#003ea8",
+                        "on-error-container": "#93000a",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-bright": "#faf8ff",
+                        "tertiary-container": "#bc4800",
+                        "secondary-container": "#dae2fd",
+                        "tertiary-fixed-dim": "#ffb596",
+                        "on-tertiary-container": "#ffede6",
+                        "on-secondary-fixed-variant": "#3f465c",
+                        "surface-variant": "#e1e2ed",
+                        "primary-container": "#2563eb",
+                        "on-surface-variant": "#434655",
+                        "on-tertiary": "#ffffff",
+                        "tertiary": "#943700",
+                        "inverse-primary": "#b4c5ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "lg": "24px",
+                        "margin-mobile": "16px",
+                        "container-max": "1440px",
+                        "md": "16px",
+                        "xs": "4px",
+                        "gutter": "24px",
+                        "base": "4px",
+                        "sm": "8px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-xl": ["Inter"],
+                        "label-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "headline-xl": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid #E2E8F0;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .sidebar-active {
+            border-left-width: 4px;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md text-body-md overflow-x-hidden">
+<!-- Side Navigation Shell -->
+<aside class="fixed inset-y-0 left-0 z-50 flex flex-col bg-inverse-surface dark:bg-inverse-surface border-r border-outline-variant shadow-sm w-[260px]">
+<div class="p-6">
+<h1 class="font-headline-md text-headline-md font-bold text-white tracking-tight">Outsource Pro</h1>
+<p class="text-on-surface-variant text-xs opacity-70">Management Suite</p>
+</div>
+<nav class="flex-1 px-2 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-white transition-colors hover:bg-surface-variant group" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 bg-primary-container text-on-primary-container border-l-4 border-primary group" href="#">
+<span class="material-symbols-outlined">handshake</span>
+<span>Outsourcing</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-white transition-colors hover:bg-surface-variant group" href="#">
+<span class="material-symbols-outlined">book</span>
+<span>Subjects</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-white transition-colors hover:bg-surface-variant group" href="#">
+<span class="material-symbols-outlined">group</span>
+<span>Students</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-white transition-colors hover:bg-surface-variant group" href="#">
+<span class="material-symbols-outlined">payments</span>
+<span>Revenue &amp; Finance</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-white transition-colors hover:bg-surface-variant group" href="#">
+<span class="material-symbols-outlined">event</span>
+<span>Deadlines</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-white transition-colors hover:bg-surface-variant group" href="#">
+<span class="material-symbols-outlined">description</span>
+<span>Documents</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-white transition-colors hover:bg-surface-variant group" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span>Reports</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-white transition-colors hover:bg-surface-variant group" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span>Settings</span>
+</a>
+</nav>
+<div class="p-4 border-t border-outline-variant/20">
+<div class="flex items-center gap-3 px-4">
+<div class="w-8 h-8 rounded-full bg-primary-fixed text-on-primary-fixed flex items-center justify-center font-bold">JD</div>
+<div>
+<p class="text-white text-xs font-bold">John Doe</p>
+<p class="text-on-surface-variant text-[10px]">Administrator</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-[260px] min-h-screen">
+<!-- Top Navigation -->
+<header class="sticky top-0 z-40 flex justify-between items-center px-6 py-3 w-full bg-surface/80 backdrop-blur-md border-b border-outline-variant shadow-sm">
+<div class="flex items-center flex-1">
+<div class="relative w-full max-w-md focus-within:ring-2 focus-within:ring-primary/20 rounded-lg">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full bg-surface-container-low border-none rounded-lg pl-10 py-2 font-label-sm text-label-sm focus:ring-0" placeholder="Search partners or projects..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2 text-primary font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-sm">currency_exchange</span>
+<span>GBP/INR</span>
+</div>
+<div class="flex items-center gap-4 text-on-surface-variant">
+<button class="hover:text-primary transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="hover:text-primary transition-colors">
+<span class="material-symbols-outlined">dark_mode</span>
+</button>
+</div>
+<img alt="Executive Profile" class="w-8 h-8 rounded-full border border-outline-variant" data-alt="A professional portrait of a senior executive in a minimalist corporate environment. The lighting is soft and natural, emphasizing a high-end light mode aesthetic with cool blue and white tones. The executive is wearing a sharp, modern charcoal suit, looking confident and approachable. The background is a blurred high-tech office with clean glass partitions." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDm1tWcf2H6S_uS2wk4Uuq1NCzCmlW-12KiFO_aOkuB5DPqde8N2QXXgYy8fA4e0vTtosz6xeQHU0nhLGDfL2XCCp3da99JO2R4eG8zrO0Mk1mQKOOJCtDUtoK0LNlMmUIg06LpLL09LAHnFUfEBJTWyrWIskW8O2AJpb4pTtlbCTQ2EGtkyDtjsrff4byE0SE5UQNC_lb4APlEP_mW1BIQcAjH3BctKGQHdFTXHvpEzezwm6QBdYnaeAM42SracSMLb_fQ_9fYRw"/>
+</div>
+</header>
+<!-- Page Content -->
+<div class="p-lg max-w-[1440px] mx-auto space-y-lg">
+<!-- Vendor Header Section -->
+<section class="glass-card rounded-xl p-lg flex flex-col md:flex-row justify-between items-start md:items-center gap-md">
+<div class="flex items-center gap-lg">
+<div class="w-16 h-16 bg-primary rounded-xl flex items-center justify-center text-white shadow-lg">
+<span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">terminal</span>
+</div>
+<div>
+<h2 class="font-headline-xl text-headline-xl text-on-surface">TechNode Labs</h2>
+<div class="flex items-center gap-md mt-xs">
+<span class="flex items-center gap-1 bg-tertiary-fixed text-on-tertiary-fixed px-2 py-1 rounded text-label-sm font-label-sm">
+<span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">star</span> 4.9
+                            </span>
+<span class="text-on-surface-variant font-body-md text-body-md">•</span>
+<span class="text-on-surface-variant font-body-md text-body-md">Cloud Infrastructure &amp; Data Engineering</span>
+</div>
+</div>
+</div>
+<div class="flex gap-md">
+<button class="flex items-center gap-2 px-lg py-2 rounded-lg border border-outline-variant text-on-surface hover:bg-surface-variant transition-colors font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-sm">mail</span> Message Partner
+                    </button>
+<button class="flex items-center gap-2 px-lg py-2 rounded-lg bg-primary-container text-on-primary-container shadow-sm hover:translate-y-[-1px] transition-transform font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-sm">add_task</span> New Project
+                    </button>
+</div>
+</section>
+<!-- Bento Grid Content -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-lg">
+<!-- Performance Analytics (Asymmetric High-end Card) -->
+<section class="lg:col-span-8 space-y-lg">
+<div class="glass-card rounded-xl p-lg h-full">
+<div class="flex justify-between items-center mb-lg">
+<h3 class="font-headline-md text-headline-md text-on-surface">Performance Analytics</h3>
+<select class="bg-transparent border-none text-label-sm font-label-sm text-primary focus:ring-0">
+<option>Last 6 Months</option>
+<option>Last Year</option>
+</select>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-lg">
+<!-- Visual Chart Mock: Delivery Speed -->
+<div class="space-y-md">
+<div class="flex justify-between text-label-sm font-label-sm text-on-surface-variant">
+<span>DELIVERY SPEED</span>
+<span class="text-primary">+12% vs Target</span>
+</div>
+<div class="h-40 w-full bg-surface-container-low rounded-lg relative overflow-hidden flex items-end p-2 gap-1">
+<!-- Simple Bar Mock -->
+<div class="w-full bg-primary/20 h-[40%] rounded-sm"></div>
+<div class="w-full bg-primary/40 h-[60%] rounded-sm"></div>
+<div class="w-full bg-primary/60 h-[55%] rounded-sm"></div>
+<div class="w-full bg-primary/80 h-[80%] rounded-sm"></div>
+<div class="w-full bg-primary h-[95%] rounded-sm"></div>
+<div class="w-full bg-primary h-[85%] rounded-sm"></div>
+</div>
+<p class="text-xs text-on-surface-variant italic">Average lead time: 4.2 days per sprint</p>
+</div>
+<!-- Visual Chart Mock: Quality Score -->
+<div class="space-y-md">
+<div class="flex justify-between text-label-sm font-label-sm text-on-surface-variant">
+<span>QUALITY SCORE</span>
+<span class="text-primary">98.4% Accuracy</span>
+</div>
+<div class="h-40 w-full flex items-center justify-center">
+<div class="relative w-32 h-32">
+<!-- Donut Mock -->
+<svg class="w-32 h-32 transform -rotate-90" viewbox="0 0 36 36">
+<path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#E2E8F0" stroke-width="3"></path>
+<path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#004ac6" stroke-dasharray="98, 100" stroke-width="3"></path>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="font-headline-md text-headline-md text-primary">98%</span>
+<span class="text-[10px] text-on-surface-variant">Uptime</span>
+</div>
+</div>
+</div>
+<p class="text-xs text-on-surface-variant italic">Bugs identified per 1k LOC: 0.2</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Delivery Timeline (Vertical Feed) -->
+<section class="lg:col-span-4 glass-card rounded-xl p-lg">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-lg">Delivery Timeline</h3>
+<div class="space-y-lg relative before:content-[''] before:absolute before:left-2 before:top-2 before:bottom-2 before:w-[2px] before:bg-outline-variant">
+<!-- Upcoming -->
+<div class="relative pl-8">
+<div class="absolute left-[3px] top-1 w-2.5 h-2.5 rounded-full bg-primary ring-4 ring-primary/20"></div>
+<span class="text-[10px] font-bold text-primary tracking-widest uppercase">Upcoming - Oct 24</span>
+<h4 class="font-bold text-sm mt-1">AWS Migration Beta</h4>
+<p class="text-xs text-on-surface-variant">Phase 2: Database replication &amp; testing</p>
+</div>
+<!-- Completed -->
+<div class="relative pl-8">
+<div class="absolute left-[3px] top-1 w-2.5 h-2.5 rounded-full bg-outline"></div>
+<span class="text-[10px] font-bold text-on-surface-variant tracking-widest uppercase">Completed - Oct 12</span>
+<h4 class="font-bold text-sm mt-1 text-on-surface-variant">Security Audit v1.2</h4>
+<p class="text-xs text-on-surface-variant line-through">Vulnerability assessment documentation</p>
+</div>
+<!-- Completed -->
+<div class="relative pl-8">
+<div class="absolute left-[3px] top-1 w-2.5 h-2.5 rounded-full bg-outline"></div>
+<span class="text-[10px] font-bold text-on-surface-variant tracking-widest uppercase">Completed - Sep 28</span>
+<h4 class="font-bold text-sm mt-1 text-on-surface-variant">Infrastructure Setup</h4>
+<p class="text-xs text-on-surface-variant">Initial cluster configuration</p>
+</div>
+</div>
+<button class="w-full mt-lg py-2 border border-outline-variant rounded-lg text-xs font-label-sm text-on-surface hover:bg-surface-variant">View Full Roadmap</button>
+</section>
+<!-- Assigned Projects Table -->
+<section class="lg:col-span-12 glass-card rounded-xl overflow-hidden">
+<div class="p-lg border-b border-outline-variant flex justify-between items-center">
+<h3 class="font-headline-md text-headline-md text-on-surface">Assigned Projects</h3>
+<div class="flex gap-2">
+<span class="bg-surface-container-high px-3 py-1 rounded-full text-xs font-bold text-on-surface">3 Active</span>
+<span class="bg-surface-container px-3 py-1 rounded-full text-xs text-on-surface-variant">12 Total</span>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead class="bg-surface-container-low text-on-surface-variant font-label-sm text-label-sm border-b border-outline-variant">
+<tr>
+<th class="px-lg py-4 font-semibold">Project Name</th>
+<th class="px-lg py-4 font-semibold">Stakeholder</th>
+<th class="px-lg py-4 font-semibold">Timeline</th>
+<th class="px-lg py-4 font-semibold">Progress</th>
+<th class="px-lg py-4 font-semibold">Status</th>
+<th class="px-lg py-4 text-right">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="px-lg py-4">
+<p class="font-bold text-on-surface">Cloud Scale Infrastructure</p>
+<p class="text-xs text-on-surface-variant">ID: PROJ-9921</p>
+</td>
+<td class="px-lg py-4">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-secondary-fixed text-[10px] flex items-center justify-center">AS</div>
+<span class="text-xs">Alex Smith</span>
+</div>
+</td>
+<td class="px-lg py-4 text-xs">Aug - Dec 2024</td>
+<td class="px-lg py-4">
+<div class="w-32 h-1.5 bg-outline-variant rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[65%]"></div>
+</div>
+<span class="text-[10px] text-on-surface-variant">65% Completed</span>
+</td>
+<td class="px-lg py-4">
+<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-primary-fixed text-on-primary-fixed uppercase tracking-wider">In Progress</span>
+</td>
+<td class="px-lg py-4 text-right">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary">more_vert</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="px-lg py-4">
+<p class="font-bold text-on-surface">API Security Gateway</p>
+<p class="text-xs text-on-surface-variant">ID: PROJ-8721</p>
+</td>
+<td class="px-lg py-4">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-tertiary-fixed text-[10px] flex items-center justify-center">MK</div>
+<span class="text-xs">Maria Khan</span>
+</div>
+</td>
+<td class="px-lg py-4 text-xs">Oct - Jan 2025</td>
+<td class="px-lg py-4">
+<div class="w-32 h-1.5 bg-outline-variant rounded-full overflow-hidden">
+<div class="bg-secondary h-full w-[15%]"></div>
+</div>
+<span class="text-[10px] text-on-surface-variant">15% Completed</span>
+</td>
+<td class="px-lg py-4">
+<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-secondary-container text-on-secondary-container uppercase tracking-wider">Planning</span>
+</td>
+<td class="px-lg py-4 text-right">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary">more_vert</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- Payment History -->
+<section class="lg:col-span-12 glass-card rounded-xl p-lg">
+<div class="flex justify-between items-center mb-lg">
+<h3 class="font-headline-md text-headline-md text-on-surface">Payment History</h3>
+<button class="text-primary font-label-sm text-label-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">download</span> Export Ledger
+                        </button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-4 gap-md mb-lg">
+<div class="p-md rounded-lg bg-surface-container-low border border-outline-variant/30">
+<p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Total Paid</p>
+<p class="text-headline-md font-headline-md text-on-surface">£248,500</p>
+</div>
+<div class="p-md rounded-lg bg-surface-container-low border border-outline-variant/30">
+<p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Pending</p>
+<p class="text-headline-md font-headline-md text-primary">£42,000</p>
+</div>
+<div class="p-md rounded-lg bg-surface-container-low border border-outline-variant/30">
+<p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Late Payments</p>
+<p class="text-headline-md font-headline-md text-error">0</p>
+</div>
+<div class="p-md rounded-lg bg-surface-container-low border border-outline-variant/30">
+<p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Next Invoice</p>
+<p class="text-headline-md font-headline-md text-on-surface">Nov 01</p>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex items-center justify-between p-4 rounded-lg bg-surface hover:shadow-sm border border-transparent hover:border-outline-variant transition-all">
+<div class="flex items-center gap-lg">
+<div class="p-2 bg-on-primary-fixed rounded-lg text-primary-fixed">
+<span class="material-symbols-outlined">receipt_long</span>
+</div>
+<div>
+<p class="font-bold text-sm">Invoice #INV-2024-088</p>
+<p class="text-xs text-on-surface-variant">Infrastructure Milestone 4 - Q3 Release</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-bold text-sm">£14,500.00</p>
+<span class="text-[10px] font-bold text-primary bg-primary/10 px-2 py-0.5 rounded">PAID</span>
+</div>
+</div>
+<div class="flex items-center justify-between p-4 rounded-lg bg-surface hover:shadow-sm border border-transparent hover:border-outline-variant transition-all">
+<div class="flex items-center gap-lg">
+<div class="p-2 bg-on-secondary-fixed rounded-lg text-secondary-fixed">
+<span class="material-symbols-outlined">pending_actions</span>
+</div>
+<div>
+<p class="font-bold text-sm">Invoice #INV-2024-092</p>
+<p class="text-xs text-on-surface-variant">Data Pipeline Optimization - Monthly Retainer</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-bold text-sm">£8,200.00</p>
+<span class="text-[10px] font-bold text-on-surface-variant bg-surface-container px-2 py-0.5 rounded">PENDING</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Contextual CTA Area -->
+<section class="grid grid-cols-1 md:grid-cols-2 gap-lg mt-xl">
+<div class="glass-card rounded-xl p-lg relative overflow-hidden group hover:shadow-md transition-shadow">
+<div class="relative z-10">
+<h4 class="font-bold text-lg mb-2">Vendor Contract Review</h4>
+<p class="text-sm text-on-surface-variant mb-lg max-w-xs">Renewals are due in 45 days. Review performance metrics against SLA before proceeding.</p>
+<button class="px-6 py-2 bg-inverse-surface text-white rounded-lg font-label-sm text-label-sm">Review SLA</button>
+</div>
+<span class="material-symbols-outlined absolute -right-4 -bottom-4 text-8xl opacity-5 group-hover:rotate-12 transition-transform">verified_user</span>
+</div>
+<div class="glass-card rounded-xl p-lg relative overflow-hidden group hover:shadow-md transition-shadow">
+<div class="relative z-10">
+<h4 class="font-bold text-lg mb-2">Quality Audit Required</h4>
+<p class="text-sm text-on-surface-variant mb-lg max-w-xs">Last external audit was 6 months ago. Schedule a new technical review session.</p>
+<button class="px-6 py-2 bg-tertiary text-white rounded-lg font-label-sm text-label-sm">Schedule Audit</button>
+</div>
+<span class="material-symbols-outlined absolute -right-4 -bottom-4 text-8xl opacity-5 group-hover:rotate-12 transition-transform">gavel</span>
+</div>
+</section>
+</div>
+<!-- Footer -->
+<footer class="p-lg text-center border-t border-outline-variant mt-xl">
+<p class="text-xs text-on-surface-variant">© 2024 Outsource Pro Management Suite. Confidential Vendor Data. Data Residency: EU-West-1.</p>
+</footer>
+</main>
+<!-- FAB Suppression: On Detail screens, we suppress primary FAB to avoid clutter -->
+</body></html>

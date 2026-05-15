@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Outsource Pro - Machine Learning Assignment</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary": "#ffffff",
+                    "inverse-surface": "#2e3039",
+                    "surface-container-highest": "#e1e2ed",
+                    "on-primary-container": "#eeefff",
+                    "error-container": "#ffdad6",
+                    "surface-variant": "#e1e2ed",
+                    "on-surface": "#191b23",
+                    "on-error-container": "#93000a",
+                    "on-tertiary-fixed-variant": "#7d2d00",
+                    "surface-container-low": "#f3f3fe",
+                    "surface": "#faf8ff",
+                    "primary-fixed-dim": "#b4c5ff",
+                    "secondary-container": "#dae2fd",
+                    "error": "#ba1a1a",
+                    "surface-container-high": "#e7e7f3",
+                    "surface-bright": "#faf8ff",
+                    "background": "#faf8ff",
+                    "inverse-on-surface": "#f0f0fb",
+                    "on-secondary-fixed": "#131b2e",
+                    "on-primary-fixed-variant": "#003ea8",
+                    "tertiary": "#943700",
+                    "secondary": "#565e74",
+                    "secondary-fixed-dim": "#bec6e0",
+                    "primary-fixed": "#dbe1ff",
+                    "on-surface-variant": "#434655",
+                    "secondary-fixed": "#dae2fd",
+                    "on-error": "#ffffff",
+                    "tertiary-container": "#bc4800",
+                    "on-tertiary-fixed": "#360f00",
+                    "on-primary": "#ffffff",
+                    "on-background": "#191b23",
+                    "outline-variant": "#c3c6d7",
+                    "on-tertiary-container": "#ffede6",
+                    "primary-container": "#2563eb",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary-container": "#5c647a",
+                    "tertiary-fixed-dim": "#ffb596",
+                    "on-secondary-fixed-variant": "#3f465c",
+                    "outline": "#737686",
+                    "surface-tint": "#0053db",
+                    "primary": "#004ac6",
+                    "surface-dim": "#d9d9e5",
+                    "surface-container-lowest": "#ffffff",
+                    "inverse-primary": "#b4c5ff",
+                    "tertiary-fixed": "#ffdbcd",
+                    "surface-container": "#ededf9",
+                    "on-primary-fixed": "#00174b"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "xs": "4px",
+                    "container-max": "1440px",
+                    "margin-mobile": "16px",
+                    "base": "4px",
+                    "sm": "8px",
+                    "md": "16px",
+                    "lg": "24px",
+                    "gutter": "24px",
+                    "xl": "32px"
+            },
+            "fontFamily": {
+                    "label-sm": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "body-md": ["Inter"],
+                    "headline-xl": ["Inter"],
+                    "headline-md": ["Inter"]
+            },
+            "fontSize": {
+                    "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "headline-xl": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid #E2E8F0;
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-background font-body-md text-on-background min-h-screen">
+<!-- SIDEBAR -->
+<aside class="fixed inset-y-0 left-0 z-50 flex flex-col bg-inverse-surface dark:bg-inverse-surface border-r border-outline-variant shadow-sm w-[260px]">
+<div class="px-6 py-8">
+<h1 class="font-headline-md text-headline-md font-bold text-white tracking-tight">Outsource Pro</h1>
+<p class="text-on-primary-fixed-variant text-xs mt-1 opacity-70">Management Suite</p>
+</div>
+<nav class="flex-1 px-4 space-y-1">
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:text-white hover:bg-surface-variant transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-body-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 bg-primary-container text-on-primary-container border-l-4 border-primary rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="book" style="font-variation-settings: 'FILL' 1;">book</span>
+<span class="font-body-md">Subjects</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:text-white hover:bg-surface-variant transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="font-body-md">Students</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:text-white hover:bg-surface-variant transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="handshake">handshake</span>
+<span class="font-body-md">Outsourcing</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:text-white hover:bg-surface-variant transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+<span class="font-body-md">Revenue &amp; Finance</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:text-white hover:bg-surface-variant transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="event">event</span>
+<span class="font-body-md">Deadlines</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:text-white hover:bg-surface-variant transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="description">description</span>
+<span class="font-body-md">Documents</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:text-white hover:bg-surface-variant transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-body-md">Reports</span>
+</a>
+</nav>
+<div class="p-4 border-t border-outline-variant mt-auto">
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:text-white hover:bg-surface-variant transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-body-md">Settings</span>
+</a>
+</div>
+</aside>
+<!-- MAIN CONTENT WRAPPER -->
+<main class="ml-[260px] flex flex-col min-h-screen">
+<!-- TOP NAVBAR -->
+<header class="sticky top-0 z-40 flex justify-between items-center px-8 py-3 w-full bg-surface/80 dark:bg-surface-container/80 backdrop-blur-md border-b border-outline-variant shadow-sm">
+<div class="flex items-center gap-4 flex-1">
+<div class="relative w-full max-w-md focus-within:ring-2 focus-within:ring-primary/20 rounded-lg bg-surface-container-low border border-outline-variant">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant" data-icon="search">search</span>
+<input class="w-full bg-transparent border-none pl-10 pr-4 py-2 text-body-md focus:ring-0" placeholder="Search anything..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2 px-3 py-1 bg-surface-container rounded-full text-label-sm font-label-sm text-primary">
+<span class="material-symbols-outlined text-[18px]" data-icon="currency_exchange">currency_exchange</span>
+<span>GBP/INR</span>
+</div>
+<div class="flex items-center gap-4 text-on-surface-variant">
+<button class="hover:text-primary transition-colors"><span class="material-symbols-outlined" data-icon="notifications">notifications</span></button>
+<button class="hover:text-primary transition-colors"><span class="material-symbols-outlined" data-icon="dark_mode">dark_mode</span></button>
+<div class="h-8 w-8 rounded-full overflow-hidden border border-outline-variant">
+<img alt="Executive Profile" data-alt="A professional headshot of a corporate executive in a crisp navy blue suit, set against a clean, modern architectural background with soft natural morning light. The lighting is bright and optimistic, fitting a premium business software aesthetic with clear skin textures and professional grooming." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAeaFSRXbhhaF5gkVrbT3zvdg6HlWCkJ85rjDG33L2N__PVGDZQk-VRo9omx2jQBjQJRcbN7F5AV3fpcMFRLoFvBXqV_Df6PhbnG41ao_EjFmKZrFx3LDtIJ4ikkUwte87WGnaegVHT-qwb4YGpmRjUO5ZclT0sckIDTHRzA2z9KSobcWSdKxlXec06zWA3a_i0GVVHLQ3LPw0Z18rjiL6wx5LnpSR5kKwnpbvmqJnoZU65Ph8uqwpx03IyI1xftqhzYlHBtEEwQA"/>
+</div>
+</div>
+</div>
+</header>
+<!-- CANVAS -->
+<div class="p-8 pb-32">
+<!-- BREADCRUMB -->
+<nav class="flex text-label-sm font-label-sm text-on-surface-variant mb-6 uppercase tracking-widest">
+<a class="hover:text-primary" href="#">Dashboard</a>
+<span class="mx-2">/</span>
+<a class="hover:text-primary" href="#">Subjects</a>
+<span class="mx-2">/</span>
+<span class="text-primary font-bold">Machine Learning Assignment</span>
+</nav>
+<!-- SUBJECT HEADER -->
+<div class="flex justify-between items-start mb-8">
+<div class="flex flex-col gap-3">
+<div class="flex items-center gap-4">
+<h2 class="font-headline-xl text-headline-xl text-on-surface tracking-tight">Machine Learning Assignment</h2>
+<span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-label-sm font-bold border border-primary/20">In Progress</span>
+</div>
+<div class="flex items-center gap-2 text-tertiary font-medium">
+<span class="material-symbols-outlined" data-icon="schedule">schedule</span>
+<span class="text-body-lg">Due in 4 days, 6 hours</span>
+</div>
+</div>
+<div class="flex gap-3">
+<button class="px-5 py-2.5 rounded-lg border border-outline-variant bg-white text-on-surface font-semibold hover:bg-surface-container transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px]" data-icon="edit">edit</span>
+                        Edit Subject
+                    </button>
+<button class="px-5 py-2.5 rounded-lg bg-primary text-white font-semibold shadow-sm hover:brightness-110 active:scale-95 transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px]" data-icon="upload">upload</span>
+                        Upload Files
+                    </button>
+</div>
+</div>
+<!-- TABS -->
+<div class="flex gap-8 border-b border-outline-variant mb-8 overflow-x-auto">
+<button class="pb-3 border-b-2 border-primary text-primary font-bold transition-all">Overview</button>
+<button class="pb-3 border-b-2 border-transparent text-on-surface-variant hover:text-primary font-medium transition-all">Students</button>
+<button class="pb-3 border-b-2 border-transparent text-on-surface-variant hover:text-primary font-medium transition-all">Payments</button>
+<button class="pb-3 border-b-2 border-transparent text-on-surface-variant hover:text-primary font-medium transition-all">Outsourcing</button>
+<button class="pb-3 border-b-2 border-transparent text-on-surface-variant hover:text-primary font-medium transition-all">Documents</button>
+<button class="pb-3 border-b-2 border-transparent text-on-surface-variant hover:text-primary font-medium transition-all">Analytics</button>
+</div>
+<!-- CONTENT GRID -->
+<div class="grid grid-cols-12 gap-gutter">
+<!-- KPI CARDS -->
+<div class="col-span-12 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4">
+<div class="bg-white p-5 rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-shadow">
+<p class="text-on-surface-variant text-label-sm font-label-sm uppercase mb-2">Total Students</p>
+<h3 class="text-headline-md font-bold text-on-surface">12</h3>
+</div>
+<div class="bg-white p-5 rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-shadow">
+<p class="text-on-surface-variant text-label-sm font-label-sm uppercase mb-2">Total Revenue</p>
+<h3 class="text-headline-md font-bold text-on-surface">£1,200</h3>
+</div>
+<div class="bg-white p-5 rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-shadow">
+<p class="text-on-surface-variant text-label-sm font-label-sm uppercase mb-2">Outsourcing Cost</p>
+<h3 class="text-headline-md font-bold text-tertiary">£450</h3>
+</div>
+<div class="bg-primary p-5 rounded-xl border border-primary/20 shadow-sm hover:shadow-md transition-shadow text-white bg-gradient-to-br from-primary to-blue-700">
+<p class="text-primary-fixed text-label-sm font-label-sm uppercase mb-2">Est. Profit</p>
+<h3 class="text-headline-md font-bold">£750</h3>
+</div>
+<div class="bg-white p-5 rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-shadow">
+<p class="text-on-surface-variant text-label-sm font-label-sm uppercase mb-2">Completion</p>
+<div class="flex items-center gap-3">
+<h3 class="text-headline-md font-bold text-on-surface">75%</h3>
+<div class="flex-1 h-2 bg-surface-container rounded-full overflow-hidden">
+<div class="bg-primary h-full w-3/4"></div>
+</div>
+</div>
+</div>
+<div class="bg-white p-5 rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-shadow">
+<p class="text-on-surface-variant text-label-sm font-label-sm uppercase mb-2">Avg. Result</p>
+<h3 class="text-headline-md font-bold text-on-surface">92%</h3>
+</div>
+</div>
+<!-- MAIN AREA (LEFT) -->
+<div class="col-span-12 lg:col-span-8 space-y-gutter">
+<!-- STUDENTS TABLE -->
+<div class="bg-white rounded-xl border border-outline-variant shadow-sm overflow-hidden">
+<div class="px-6 py-4 border-b border-outline-variant flex justify-between items-center">
+<h4 class="font-headline-md text-headline-md text-on-surface">Enrolled Students</h4>
+<button class="text-primary font-semibold text-body-md hover:underline">View All</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead class="bg-surface-container-low text-on-surface-variant text-label-sm uppercase">
+<tr>
+<th class="px-6 py-4">Student Name</th>
+<th class="px-6 py-4">University</th>
+<th class="px-6 py-4">Payment</th>
+<th class="px-6 py-4">Deadline</th>
+<th class="px-6 py-4">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="px-6 py-4 font-semibold">James Harrison</td>
+<td class="px-6 py-4 text-on-surface-variant">Oxford</td>
+<td class="px-6 py-4"><span class="px-2 py-0.5 bg-green-100 text-green-700 rounded text-xs font-bold">Paid</span></td>
+<td class="px-6 py-4 text-on-surface-variant">12 Oct</td>
+<td class="px-6 py-4"><span class="flex items-center gap-1.5"><span class="h-2 w-2 rounded-full bg-primary"></span>In Review</span></td>
+</tr>
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="px-6 py-4 font-semibold">Sophia Chen</td>
+<td class="px-6 py-4 text-on-surface-variant">LSE</td>
+<td class="px-6 py-4"><span class="px-2 py-0.5 bg-yellow-100 text-yellow-700 rounded text-xs font-bold">Partial</span></td>
+<td class="px-6 py-4 text-on-surface-variant">14 Oct</td>
+<td class="px-6 py-4"><span class="flex items-center gap-1.5"><span class="h-2 w-2 rounded-full bg-secondary"></span>Pending</span></td>
+</tr>
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="px-6 py-4 font-semibold">Marcus Miller</td>
+<td class="px-6 py-4 text-on-surface-variant">Oxford</td>
+<td class="px-6 py-4"><span class="px-2 py-0.5 bg-green-100 text-green-700 rounded text-xs font-bold">Paid</span></td>
+<td class="px-6 py-4 text-on-surface-variant">12 Oct</td>
+<td class="px-6 py-4"><span class="flex items-center gap-1.5"><span class="h-2 w-2 rounded-full bg-green-500"></span>Completed</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- ANALYTICS PREVIEW -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<div class="bg-white p-6 rounded-xl border border-outline-variant shadow-sm">
+<h4 class="font-headline-md text-headline-md text-on-surface mb-4">Revenue Distribution</h4>
+<div class="h-32 flex items-end gap-2">
+<div class="w-full bg-primary-container h-1/2 rounded-t"></div>
+<div class="w-full bg-primary-container h-2/3 rounded-t"></div>
+<div class="w-full bg-primary h-5/6 rounded-t"></div>
+<div class="w-full bg-primary-container h-full rounded-t"></div>
+<div class="w-full bg-primary-container h-3/4 rounded-t"></div>
+<div class="w-full bg-primary-container h-1/2 rounded-t"></div>
+</div>
+</div>
+<div class="bg-white p-6 rounded-xl border border-outline-variant shadow-sm">
+<h4 class="font-headline-md text-headline-md text-on-surface mb-4">Profit Trend</h4>
+<div class="h-32 flex items-center justify-center border-b-2 border-primary/20 relative">
+<svg class="absolute inset-0 w-full h-full" preserveaspectratio="none" viewbox="0 0 100 100">
+<path d="M0,80 L20,60 L40,70 L60,30 L80,40 L100,10" fill="none" stroke="#004ac6" stroke-width="3"></path>
+</svg>
+</div>
+</div>
+</div>
+</div>
+<!-- SIDEBAR AREA (RIGHT) -->
+<div class="col-span-12 lg:col-span-4 space-y-gutter">
+<!-- OUTSOURCING CARD -->
+<div class="bg-white p-6 rounded-xl border border-outline-variant shadow-sm">
+<div class="flex items-center justify-between mb-6">
+<h4 class="font-headline-md text-headline-md text-on-surface">Outsourcing</h4>
+<span class="text-tertiary font-bold">£450.00</span>
+</div>
+<div class="flex items-center gap-4 mb-6 p-4 bg-surface-container-low rounded-lg border border-outline-variant">
+<div class="h-12 w-12 bg-white rounded-lg flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-primary" data-icon="bolt">bolt</span>
+</div>
+<div>
+<p class="font-bold text-on-surface">TechNode Labs</p>
+<p class="text-label-sm text-on-surface-variant">Global Delivery Tier 1</p>
+</div>
+</div>
+<div class="space-y-4">
+<div class="flex gap-4">
+<div class="flex flex-col items-center">
+<div class="h-4 w-4 rounded-full bg-primary ring-4 ring-primary/20"></div>
+<div class="w-0.5 h-10 bg-outline-variant"></div>
+</div>
+<div>
+<p class="font-semibold text-sm">Assigned</p>
+<p class="text-xs text-on-surface-variant">Oct 1, 2023</p>
+</div>
+</div>
+<div class="flex gap-4">
+<div class="flex flex-col items-center">
+<div class="h-4 w-4 rounded-full bg-primary ring-4 ring-primary/20"></div>
+<div class="w-0.5 h-10 bg-outline-variant"></div>
+</div>
+<div>
+<p class="font-semibold text-sm">Drafting</p>
+<p class="text-xs text-on-surface-variant">Oct 4, 2023</p>
+</div>
+</div>
+<div class="flex gap-4">
+<div class="flex flex-col items-center">
+<div class="h-4 w-4 rounded-full border-2 border-outline-variant bg-white"></div>
+</div>
+<div>
+<p class="font-semibold text-sm text-on-surface-variant">Final Delivery</p>
+<p class="text-xs text-on-surface-variant">Expected Oct 10, 2023</p>
+</div>
+</div>
+</div>
+</div>
+<!-- DOCUMENTS SECTION -->
+<div class="bg-white p-6 rounded-xl border border-outline-variant shadow-sm">
+<div class="flex items-center justify-between mb-4">
+<h4 class="font-headline-md text-headline-md text-on-surface">Documents</h4>
+<button class="text-primary"><span class="material-symbols-outlined" data-icon="add_circle">add_circle</span></button>
+</div>
+<div class="grid grid-cols-1 gap-3">
+<div class="flex items-center gap-3 p-3 border border-outline-variant rounded-lg hover:bg-surface-container-low transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-error" data-icon="picture_as_pdf" style="font-variation-settings: 'FILL' 1;">picture_as_pdf</span>
+<div class="flex-1 overflow-hidden">
+<p class="text-sm font-semibold truncate">Assignment_Brief.pdf</p>
+<p class="text-xs text-on-surface-variant">2.4 MB • Oct 1</p>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors" data-icon="download">download</span>
+</div>
+<div class="flex items-center gap-3 p-3 border border-outline-variant rounded-lg hover:bg-surface-container-low transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-primary" data-icon="folder_zip" style="font-variation-settings: 'FILL' 1;">folder_zip</span>
+<div class="flex-1 overflow-hidden">
+<p class="text-sm font-semibold truncate">Training_Data.zip</p>
+<p class="text-xs text-on-surface-variant">145 MB • Oct 2</p>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors" data-icon="download">download</span>
+</div>
+<div class="flex items-center gap-3 p-3 border border-outline-variant rounded-lg hover:bg-surface-container-low transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="description" style="font-variation-settings: 'FILL' 1;">description</span>
+<div class="flex-1 overflow-hidden">
+<p class="text-sm font-semibold truncate">Vendor_Quote.docx</p>
+<p class="text-xs text-on-surface-variant">18 KB • Sep 29</p>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors" data-icon="download">download</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- BOTTOM STICKY BAR -->
+<footer class="fixed bottom-0 right-0 left-[260px] bg-white border-t border-outline-variant px-8 py-4 shadow-[0_-4px_12px_rgba(0,0,0,0.05)] z-40 flex justify-between items-center">
+<div class="flex gap-4">
+<button class="px-4 py-2 border border-outline-variant rounded-lg hover:bg-surface-container transition-colors flex items-center gap-2 font-semibold">
+<span class="material-symbols-outlined text-[20px]" data-icon="person_add">person_add</span>
+                    Add Student
+                </button>
+<button class="px-4 py-2 border border-outline-variant rounded-lg hover:bg-surface-container transition-colors flex items-center gap-2 font-semibold">
+<span class="material-symbols-outlined text-[20px]" data-icon="add_card">add_card</span>
+                    Add Payment
+                </button>
+<button class="px-4 py-2 border border-outline-variant rounded-lg hover:bg-surface-container transition-colors flex items-center gap-2 font-semibold">
+<span class="material-symbols-outlined text-[20px]" data-icon="handshake">handshake</span>
+                    Assign Vendor
+                </button>
+</div>
+<button class="px-8 py-2 bg-primary text-white rounded-lg font-bold shadow-lg hover:brightness-110 active:scale-95 transition-all">
+                Mark Complete
+            </button>
+</footer>
+</main>
+</body></html>

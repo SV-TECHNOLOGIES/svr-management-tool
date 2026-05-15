@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Outsource Pro | Vendor Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(250, 248, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid #E2E8F0;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-tertiary": "#ffffff",
+                      "on-surface-variant": "#434655",
+                      "surface-variant": "#e1e2ed",
+                      "primary-container": "#2563eb",
+                      "inverse-primary": "#b4c5ff",
+                      "tertiary": "#943700",
+                      "on-primary-fixed-variant": "#003ea8",
+                      "on-error-container": "#93000a",
+                      "on-tertiary-fixed": "#360f00",
+                      "tertiary-fixed": "#ffdbcd",
+                      "secondary-fixed": "#dae2fd",
+                      "on-tertiary-container": "#ffede6",
+                      "on-secondary-fixed-variant": "#3f465c",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-bright": "#faf8ff",
+                      "tertiary-fixed-dim": "#ffb596",
+                      "tertiary-container": "#bc4800",
+                      "secondary-container": "#dae2fd",
+                      "surface-dim": "#d9d9e5",
+                      "surface-container-low": "#f3f3fe",
+                      "surface-container-high": "#e7e7f3",
+                      "secondary-fixed-dim": "#bec6e0",
+                      "on-primary-fixed": "#00174b",
+                      "on-primary": "#ffffff",
+                      "surface-tint": "#0053db",
+                      "primary": "#004ac6",
+                      "background": "#faf8ff",
+                      "surface-container": "#ededf9",
+                      "outline": "#737686",
+                      "primary-fixed": "#dbe1ff",
+                      "primary-fixed-dim": "#b4c5ff",
+                      "on-secondary-container": "#5c647a",
+                      "on-error": "#ffffff",
+                      "secondary": "#565e74",
+                      "on-background": "#191b23",
+                      "inverse-surface": "#2e3039",
+                      "surface-container-highest": "#e1e2ed",
+                      "on-secondary-fixed": "#131b2e",
+                      "error": "#ba1a1a",
+                      "error-container": "#ffdad6",
+                      "on-secondary": "#ffffff",
+                      "inverse-on-surface": "#f0f0fb",
+                      "outline-variant": "#c3c6d7",
+                      "on-primary-container": "#eeefff",
+                      "on-tertiary-fixed-variant": "#7d2d00",
+                      "surface": "#faf8ff",
+                      "on-surface": "#191b23"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin-mobile": "16px",
+                      "container-max": "1440px",
+                      "xl": "32px",
+                      "lg": "24px",
+                      "xs": "4px",
+                      "sm": "8px",
+                      "gutter": "24px",
+                      "base": "4px",
+                      "md": "16px"
+              },
+              "fontFamily": {
+                      "body-lg": ["Inter"],
+                      "headline-md": ["Inter"],
+                      "display-lg": ["Inter"],
+                      "body-md": ["Inter"],
+                      "headline-xl": ["Inter"],
+                      "label-sm": ["Inter"]
+              },
+              "fontSize": {
+                      "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "headline-md": ["24px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "headline-xl": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}]
+              }
+            },
+          },
+        }
+      </script>
+</head>
+<body class="bg-background font-body-md text-on-background overflow-x-hidden">
+<!-- Sidebar Navigation -->
+<aside class="fixed inset-y-0 left-0 z-50 flex flex-col bg-inverse-surface dark:bg-inverse-surface h-full w-[260px] border-r border-outline-variant shadow-sm transition-transform md:translate-x-0 -translate-x-full" id="sidebar">
+<div class="px-6 py-8">
+<h1 class="font-headline-md text-headline-md font-bold text-white mb-1">Outsource Pro</h1>
+<p class="font-label-sm text-label-sm text-surface-variant opacity-70">Management Suite</p>
+</div>
+<nav class="flex-1 px-4 space-y-1">
+<!-- Dashboard Tab -->
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:text-white hover:bg-surface-variant/10 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-body-md text-body-md">Dashboard</span>
+</a>
+<!-- Subjects Tab -->
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:text-white hover:bg-surface-variant/10 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="book">book</span>
+<span class="font-body-md text-body-md">Subjects</span>
+</a>
+<!-- Students Tab -->
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:text-white hover:bg-surface-variant/10 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="font-body-md text-body-md">Students</span>
+</a>
+<!-- Outsourcing Tab (ACTIVE) -->
+<a class="flex items-center gap-3 px-4 py-2 bg-primary-container text-on-primary-container border-l-4 border-primary rounded-r-lg transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="handshake" style="font-variation-settings: 'FILL' 1;">handshake</span>
+<span class="font-body-md text-body-md font-semibold">Outsourcing</span>
+</a>
+<!-- Revenue & Finance Tab -->
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:text-white hover:bg-surface-variant/10 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+<span class="font-body-md text-body-md">Revenue &amp; Finance</span>
+</a>
+<!-- Deadlines Tab -->
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:text-white hover:bg-surface-variant/10 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="event">event</span>
+<span class="font-body-md text-body-md">Deadlines</span>
+</a>
+<!-- Documents Tab -->
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:text-white hover:bg-surface-variant/10 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="description">description</span>
+<span class="font-body-md text-body-md">Documents</span>
+</a>
+<!-- Reports Tab -->
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:text-white hover:bg-surface-variant/10 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-body-md text-body-md">Reports</span>
+</a>
+<!-- Settings Tab -->
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:text-white hover:bg-surface-variant/10 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-body-md text-body-md">Settings</span>
+</a>
+</nav>
+<div class="p-6 border-t border-outline-variant/20">
+<div class="flex items-center gap-3">
+<img alt="Executive Profile" class="w-10 h-10 rounded-full border border-outline-variant" data-alt="Professional portrait of a male executive in a sharp navy suit, looking confident in a high-rise office setting with soft sunlight. The background is a blurred cityscape of London. The overall aesthetic is executive, modern, and high-end with a professional light-mode color palette." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAQ5rMEsUp5anQxoEG4wV2UIzbn_FSNMS3ndBNu1m8TZxQ-gSm_EjOTdXmDmGOteiJJsw9ogF37uBR0zaQxKV4-szeiR9NwPZbSOhEpK4ZP-_KG6qS0yx9xfsNMXQnsVpRqGosJ_uMCgqco0oZ1bcN_4_qTzgn0dsF2MlLgTlYJUceJmgMjETOUsmiNxVBcjwNf749wAFJlwF2QWGUY6fjJO7KIDD2bQqQstRNLbfflPvIVt6JxbQv4vtwPX0N3IcYmYrfz-j8Xxg"/>
+<div class="flex flex-col">
+<span class="text-white font-semibold text-sm">Adrian Sterling</span>
+<span class="text-surface-variant text-xs opacity-60">Ops Director</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="md:ml-[260px] min-h-screen flex flex-col">
+<!-- Top Navigation Bar -->
+<header class="sticky top-0 z-40 flex justify-between items-center px-6 py-3 w-full bg-surface/80 dark:bg-surface-container/80 backdrop-blur-md border-b border-outline-variant shadow-sm">
+<div class="flex items-center gap-4 flex-1">
+<div class="relative w-full max-w-md group">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface-container-low border-none rounded-full font-label-sm text-label-sm focus:ring-2 focus:ring-primary/20 transition-all" placeholder="Search vendors or projects..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2 px-3 py-1 bg-surface-container-high rounded-full border border-outline-variant">
+<span class="material-symbols-outlined text-[18px] text-primary" data-icon="currency_exchange">currency_exchange</span>
+<span class="font-label-sm text-label-sm font-bold text-on-surface-variant">GBP/INR</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant hover:text-primary transition-colors focus:ring-2 focus:ring-primary/20 rounded-full p-1">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors focus:ring-2 focus:ring-primary/20 rounded-full p-1">
+<span class="material-symbols-outlined" data-icon="dark_mode">dark_mode</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Dashboard Body -->
+<section class="p-6 md:p-8 max-w-container-max mx-auto w-full">
+<!-- Page Header Actions -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+<div>
+<h2 class="font-headline-xl text-headline-xl text-on-surface tracking-tight">Vendor Management</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Real-time oversight of global outsourcing partners and performance.</p>
+</div>
+<div class="flex items-center gap-3">
+<button class="flex items-center gap-2 px-4 py-2.5 bg-white border border-outline-variant text-on-surface-variant font-semibold rounded-lg hover:bg-surface-container-low transition-all active:scale-95">
+<span class="material-symbols-outlined text-[20px]" data-icon="add_task">add_task</span>
+                        Assign Project
+                    </button>
+<button class="flex items-center gap-2 px-6 py-2.5 bg-primary text-on-primary font-semibold rounded-lg shadow-lg shadow-primary/20 hover:bg-primary-container transition-all active:scale-95">
+<span class="material-symbols-outlined text-[20px]" data-icon="person_add">person_add</span>
+                        Add Vendor
+                    </button>
+</div>
+</div>
+<!-- Bento Statistics Grid -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+<div class="glass-card p-6 rounded-xl flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<div class="p-2 bg-primary/10 rounded-lg text-primary">
+<span class="material-symbols-outlined" data-icon="partner_exchange">partner_exchange</span>
+</div>
+<span class="text-xs font-bold text-primary bg-primary/10 px-2 py-1 rounded-full">+12%</span>
+</div>
+<div class="mt-4">
+<p class="text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider">Active Vendors</p>
+<p class="text-3xl font-bold text-on-surface mt-1">24</p>
+</div>
+</div>
+<div class="glass-card p-6 rounded-xl flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<div class="p-2 bg-tertiary/10 rounded-lg text-tertiary">
+<span class="material-symbols-outlined" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<span class="text-xs font-bold text-tertiary px-2 py-1">Top Rated</span>
+</div>
+<div class="mt-4">
+<p class="text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider">Avg. Rating</p>
+<p class="text-3xl font-bold text-on-surface mt-1">4.82</p>
+</div>
+</div>
+<div class="glass-card p-6 rounded-xl flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<div class="p-2 bg-secondary/10 rounded-lg text-secondary">
+<span class="material-symbols-outlined" data-icon="work">work</span>
+</div>
+<span class="text-xs font-bold text-on-secondary-fixed-variant bg-secondary-fixed px-2 py-1 rounded-full">Busy</span>
+</div>
+<div class="mt-4">
+<p class="text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider">Total Projects</p>
+<p class="text-3xl font-bold text-on-surface mt-1">158</p>
+</div>
+</div>
+<div class="glass-card p-6 rounded-xl flex flex-col justify-between border-primary/20 bg-primary/5">
+<div class="flex justify-between items-start">
+<div class="p-2 bg-primary text-white rounded-lg">
+<span class="material-symbols-outlined" data-icon="pending_actions">pending_actions</span>
+</div>
+</div>
+<div class="mt-4">
+<p class="text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider">New Requests</p>
+<p class="text-3xl font-bold text-primary mt-1">7</p>
+</div>
+</div>
+</div>
+<!-- Main CRM Table / List -->
+<div class="bg-white rounded-xl shadow-sm border border-outline-variant overflow-hidden">
+<div class="px-6 py-4 border-b border-outline-variant flex justify-between items-center bg-surface-container-low/50">
+<h3 class="font-headline-md text-body-lg font-bold text-on-surface">Active Partnership Portfolio</h3>
+<div class="flex items-center gap-2">
+<button class="p-2 hover:bg-surface-variant rounded-md transition-colors"><span class="material-symbols-outlined text-on-surface-variant" data-icon="filter_list">filter_list</span></button>
+<button class="p-2 hover:bg-surface-variant rounded-md transition-colors"><span class="material-symbols-outlined text-on-surface-variant" data-icon="download">download</span></button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low font-label-sm text-label-sm text-on-surface-variant border-b border-outline-variant">
+<th class="px-6 py-4 font-semibold uppercase tracking-wider">Vendor Partner</th>
+<th class="px-6 py-4 font-semibold uppercase tracking-wider">Status</th>
+<th class="px-6 py-4 font-semibold uppercase tracking-wider">Performance</th>
+<th class="px-6 py-4 font-semibold uppercase tracking-wider">Active Projects</th>
+<th class="px-6 py-4 font-semibold uppercase tracking-wider">Contract Value</th>
+<th class="px-6 py-4 text-right"></th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<!-- Vendor Row 1 -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center font-bold text-primary">SL</div>
+<div>
+<p class="font-bold text-on-surface">Starlight Global Solutions</p>
+<p class="text-xs text-on-surface-variant">Bangalore, India</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-green-100 text-green-800">
+<span class="w-1.5 h-1.5 rounded-full bg-green-500 mr-1.5"></span>
+                                        On-Track
+                                    </span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-1 text-tertiary">
+<span class="material-symbols-outlined text-[18px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" data-icon="star_half">star_half</span>
+<span class="text-xs font-bold ml-1 text-on-surface">4.5</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<p class="font-bold text-on-surface">12 <span class="text-xs font-normal text-on-surface-variant">/ 15 cap</span></p>
+<div class="w-24 h-1.5 bg-surface-container-high rounded-full mt-1.5 overflow-hidden">
+<div class="bg-primary h-full w-[80%] rounded-full"></div>
+</div>
+</td>
+<td class="px-6 py-4">
+<p class="font-semibold text-on-surface">£42,500 <span class="text-xs font-normal text-on-surface-variant">/ mo</span></p>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-on-surface-variant hover:text-primary transition-colors opacity-0 group-hover:opacity-100">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Vendor Row 2 -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center font-bold text-secondary">NP</div>
+<div>
+<p class="font-bold text-on-surface">NovaPulse Outsourcing</p>
+<p class="text-xs text-on-surface-variant">Pune, India</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-800">
+<span class="w-1.5 h-1.5 rounded-full bg-amber-500 mr-1.5"></span>
+                                        Pending Review
+                                    </span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-1 text-tertiary">
+<span class="material-symbols-outlined text-[18px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" data-icon="star">star</span>
+<span class="text-xs font-bold ml-1 text-on-surface">4.0</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<p class="font-bold text-on-surface">8 <span class="text-xs font-normal text-on-surface-variant">/ 20 cap</span></p>
+<div class="w-24 h-1.5 bg-surface-container-high rounded-full mt-1.5 overflow-hidden">
+<div class="bg-primary h-full w-[40%] rounded-full"></div>
+</div>
+</td>
+<td class="px-6 py-4">
+<p class="font-semibold text-on-surface">£18,200 <span class="text-xs font-normal text-on-surface-variant">/ mo</span></p>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-on-surface-variant hover:text-primary transition-colors opacity-0 group-hover:opacity-100">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Vendor Row 3 -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center font-bold text-tertiary">AQ</div>
+<div>
+<p class="font-bold text-on-surface">Apex Quality Hub</p>
+<p class="text-xs text-on-surface-variant">Chennai, India</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-green-100 text-green-800">
+<span class="w-1.5 h-1.5 rounded-full bg-green-500 mr-1.5"></span>
+                                        On-Track
+                                    </span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-1 text-tertiary">
+<span class="material-symbols-outlined text-[18px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-xs font-bold ml-1 text-on-surface">5.0</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<p class="font-bold text-on-surface">24 <span class="text-xs font-normal text-on-surface-variant">/ 25 cap</span></p>
+<div class="w-24 h-1.5 bg-surface-container-high rounded-full mt-1.5 overflow-hidden">
+<div class="bg-error h-full w-[96%] rounded-full"></div>
+</div>
+</td>
+<td class="px-6 py-4">
+<p class="font-semibold text-on-surface">£89,000 <span class="text-xs font-normal text-on-surface-variant">/ mo</span></p>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-on-surface-variant hover:text-primary transition-colors opacity-0 group-hover:opacity-100">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="px-6 py-4 border-t border-outline-variant bg-surface-container-low/30 flex justify-between items-center font-label-sm text-label-sm text-on-surface-variant">
+<span>Showing 3 of 24 vendors</span>
+<div class="flex gap-2">
+<button class="px-3 py-1 border border-outline-variant rounded hover:bg-white transition-colors disabled:opacity-50" disabled="">Previous</button>
+<button class="px-3 py-1 border border-outline-variant rounded hover:bg-white transition-colors">Next</button>
+</div>
+</div>
+</div>
+<!-- Performance Insights & Regional Distribution -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">
+<!-- Regional Map Card -->
+<div class="lg:col-span-2 glass-card p-6 rounded-xl relative min-h-[300px] flex flex-col">
+<h3 class="font-headline-md text-body-lg font-bold text-on-surface mb-4">Regional Distribution</h3>
+<div class="flex-1 rounded-lg overflow-hidden relative grayscale opacity-70">
+<img alt="World Map Distribution" class="w-full h-full object-cover" data-alt="A clean, minimalist world map rendered in muted grey and blue tones, highlighted with glowing blue hotspots indicating global outsourcing hubs. The background is a crisp, modern light-mode office aesthetic with subtle depth and executive clarity. High-key lighting emphasizes technical precision and global reach." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDHQxq3afOHGllqqN9fITPMV3JQ9oU8I8LxcmkoRnvkhxHsagS0zPLW1XbbNOu9CmQ_TEYLNM78HVM8D-TLjr6VBWBgcEDd5b5aCrs6zcJtLlnlU5STIyS7a-dht3VeHL62nbewdPZ3rjymyULBS4CmgAR7bFCVhCxslfBITLETF_i3L5d5KfOSK1YEbEEEGjDaJD3HeVanuyDHwrDLcZOXbBDoYBJBjqqx35e0yFpc-76teEL4T1tcuTjxLXtu24Kgf1tYMaEyKA"/>
+<div class="absolute top-1/4 left-1/3 w-3 h-3 bg-primary rounded-full animate-pulse shadow-[0_0_10px_rgba(37,99,235,0.8)]"></div>
+<div class="absolute bottom-1/3 left-2/3 w-3 h-3 bg-primary rounded-full animate-pulse shadow-[0_0_10px_rgba(37,99,235,0.8)]"></div>
+</div>
+<div class="grid grid-cols-3 gap-4 mt-6">
+<div>
+<p class="text-xs font-bold text-on-surface-variant uppercase">India Hubs</p>
+<p class="text-lg font-bold">18 Partners</p>
+</div>
+<div>
+<p class="text-xs font-bold text-on-surface-variant uppercase">SE Asia Hubs</p>
+<p class="text-lg font-bold">4 Partners</p>
+</div>
+<div>
+<p class="text-xs font-bold text-on-surface-variant uppercase">Eastern Europe</p>
+<p class="text-lg font-bold">2 Partners</p>
+</div>
+</div>
+</div>
+<!-- Top Performers Widget -->
+<div class="glass-card p-6 rounded-xl">
+<h3 class="font-headline-md text-body-lg font-bold text-on-surface mb-6">Partner Excellence</h3>
+<div class="space-y-6">
+<div class="flex items-center gap-4">
+<div class="flex-shrink-0 w-12 h-12 rounded-full overflow-hidden border-2 border-primary/20">
+<img alt="Top Vendor" data-alt="A high-end architectural shot of a modern glass office skyscraper reflecting a clear blue sky. The lighting is crisp and professional, symbolizing stability and corporate excellence. The aesthetic is clean, corporate, and high-quality light-mode photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDdsN7tsx-VSIudCtwgDdghqRpSiZi2drF_vtSJgfwNaHhBE4AxdpcN1N0yUjMGumhXJ6TGUaYFnZsM7wYpKBFBznsDGnK1iZEKzO7Y-EEhOjPyHxbo_aha6gvg6yi92MiQK7-0ItSzJagPxfbXrmQLKSS39-YQcYGU3W1fy25kdRmW2P1Y0Qmpy3k7WN5VFO11OInOmlYxP5Mhyc7XWIUuvPtc4YYnuwjKnMFwXZBOMjKp9JA6TyvEy3rKU3JYZ3xJMK2ufN4Ucw"/>
+</div>
+<div class="flex-1">
+<p class="font-bold text-sm">Apex Quality Hub</p>
+<p class="text-xs text-on-surface-variant">SLA Compliance: 100%</p>
+<div class="w-full h-1 bg-surface-container-high rounded-full mt-2">
+<div class="h-full bg-green-500 w-[100%] rounded-full"></div>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex-shrink-0 w-12 h-12 rounded-full overflow-hidden border-2 border-primary/20">
+<img alt="Top Vendor" data-alt="A bright and airy corporate interior showing a modern coworking space with glass partitions and high ceilings. Soft daylight floods the scene, creating a productive and transparent atmosphere. Professional light-mode aesthetic with neutral colors." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDmDq_dWQ4CbfD5pNIhvYYCymWO4nQVsEF5EWdHaLEZrvO_7bWxsknFxa2POdtw1cb2cqDqqlfQKRfb2eJ7GDJMXKP6GSEjbTXB6CArzX_pO3RswiJ7wJ8Ofsufr9kTot1YvxdT2jrhPbnbH1vrCAV8Rej-3W3MYdQb6UO5ytVE7hR7VC93iCEbJHzlMi8uGLab8LpvDltnno6-qph2XHlH_czX4l9RBA02OiKLA7xh3HLAcmpbOYgRBodoBWiolyr5bHWof5G1-w"/>
+</div>
+<div class="flex-1">
+<p class="font-bold text-sm">Starlight Global</p>
+<p class="text-xs text-on-surface-variant">SLA Compliance: 98.4%</p>
+<div class="w-full h-1 bg-surface-container-high rounded-full mt-2">
+<div class="h-full bg-primary w-[98%] rounded-full"></div>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex-shrink-0 w-12 h-12 rounded-full overflow-hidden border-2 border-primary/20">
+<img alt="Top Vendor" data-alt="An interior shot of a minimalist, luxury conference room with a polished wood table and ergonomic chairs. Floor-to-ceiling windows show a blurred cityscape. The mood is sophisticated and executive, with a light-mode color palette." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDL61_zYrZ15Af7TIAWFaq1rJA44VGZnyvjE_XSSSgFnTOfxB7NmuUk13pEAYdjF-grQxGKeqYjaSQzWAImkx3wIXrf3DAou9xFZNwSG9_TrcX4HHZEWIAfyPGI15KTVDCAEAuwPOdmS0YJ2el1rvQrxNPC4ZjHEHkbB1kqrTYVEi3fgxe7NkUkHQtqWxC7mRliSTwbh8vArqwIRavHWLnY85ABQnWBj9oXsnpRk2e1mYkOGMPOQsORiv89q2ENgjKpvNPkm31OWw"/>
+</div>
+<div class="flex-1">
+<p class="font-bold text-sm">Horizon BPO</p>
+<p class="text-xs text-on-surface-variant">SLA Compliance: 94.2%</p>
+<div class="w-full h-1 bg-surface-container-high rounded-full mt-2">
+<div class="h-full bg-amber-400 w-[94%] rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+<button class="w-full mt-8 py-2 text-primary font-semibold text-sm hover:underline flex items-center justify-center gap-2">
+                        View Full Rankings
+                        <span class="material-symbols-outlined text-[16px]" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+</section>
+</main>
+<!-- Floating Action Button -->
+<button class="fixed bottom-8 right-8 z-50 flex items-center gap-3 px-6 py-4 bg-primary text-on-primary rounded-full shadow-2xl shadow-primary/40 hover:bg-primary-container transition-all hover:scale-105 active:scale-95 group">
+<span class="material-symbols-outlined text-[24px]" data-icon="chat">chat</span>
+<span class="font-bold">New Partner Request</span>
+<div class="absolute -top-1 -right-1 w-4 h-4 bg-error text-[10px] flex items-center justify-center rounded-full border-2 border-white font-bold group-hover:scale-110 transition-transform">3</div>
+</button>
+</body></html>

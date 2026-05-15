@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Revenue &amp; Finance | Outsource Pro</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed": "#360f00",
+                        "tertiary-container": "#bc4800",
+                        "outline-variant": "#c3c6d7",
+                        "on-background": "#191b23",
+                        "on-primary": "#ffffff",
+                        "outline": "#737686",
+                        "tertiary-fixed-dim": "#ffb596",
+                        "on-secondary-fixed-variant": "#3f465c",
+                        "on-secondary-container": "#5c647a",
+                        "on-tertiary": "#ffffff",
+                        "primary-container": "#2563eb",
+                        "on-tertiary-container": "#ffede6",
+                        "tertiary-fixed": "#ffdbcd",
+                        "on-primary-fixed": "#00174b",
+                        "surface-container": "#ededf9",
+                        "inverse-primary": "#b4c5ff",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-dim": "#d9d9e5",
+                        "surface-tint": "#0053db",
+                        "primary": "#004ac6",
+                        "surface-variant": "#e1e2ed",
+                        "on-error-container": "#93000a",
+                        "on-surface": "#191b23",
+                        "error-container": "#ffdad6",
+                        "on-primary-container": "#eeefff",
+                        "surface-container-highest": "#e1e2ed",
+                        "on-secondary": "#ffffff",
+                        "inverse-surface": "#2e3039",
+                        "surface-container-high": "#e7e7f3",
+                        "error": "#ba1a1a",
+                        "secondary-container": "#dae2fd",
+                        "surface": "#faf8ff",
+                        "primary-fixed-dim": "#b4c5ff",
+                        "surface-container-low": "#f3f3fe",
+                        "on-tertiary-fixed-variant": "#7d2d00",
+                        "tertiary": "#943700",
+                        "on-primary-fixed-variant": "#003ea8",
+                        "on-secondary-fixed": "#131b2e",
+                        "inverse-on-surface": "#f0f0fb",
+                        "surface-bright": "#faf8ff",
+                        "background": "#faf8ff",
+                        "on-error": "#ffffff",
+                        "secondary-fixed": "#dae2fd",
+                        "on-surface-variant": "#434655",
+                        "primary-fixed": "#dbe1ff",
+                        "secondary-fixed-dim": "#bec6e0",
+                        "secondary": "#565e74"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-max": "1440px",
+                        "xs": "4px",
+                        "sm": "8px",
+                        "md": "16px",
+                        "base": "4px",
+                        "xl": "32px",
+                        "lg": "24px",
+                        "gutter": "24px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "headline-xl": ["Inter"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "headline-xl": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen">
+<!-- SideNavBar -->
+<aside class="fixed inset-y-0 left-0 z-50 flex flex-col bg-inverse-surface dark:bg-inverse-surface border-r border-outline-variant shadow-sm h-full w-[260px]">
+<div class="p-6">
+<h1 class="font-headline-md text-headline-md font-bold text-white mb-1">Outsource Pro</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Management Suite</p>
+</div>
+<nav class="flex-1 px-4 py-4 space-y-1">
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:text-white hover:bg-surface-variant transition-colors scale-95 duration-150 transition-transform font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:text-white hover:bg-surface-variant transition-colors scale-95 duration-150 transition-transform font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined">book</span>
+<span>Subjects</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:text-white hover:bg-surface-variant transition-colors scale-95 duration-150 transition-transform font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined">group</span>
+<span>Students</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:text-white hover:bg-surface-variant transition-colors scale-95 duration-150 transition-transform font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined">handshake</span>
+<span>Outsourcing</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 bg-primary-container text-on-primary-container border-l-4 border-primary scale-95 duration-150 transition-transform font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined">payments</span>
+<span>Revenue &amp; Finance</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:text-white hover:bg-surface-variant transition-colors scale-95 duration-150 transition-transform font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined">event</span>
+<span>Deadlines</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:text-white hover:bg-surface-variant transition-colors scale-95 duration-150 transition-transform font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined">description</span>
+<span>Documents</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:text-white hover:bg-surface-variant transition-colors scale-95 duration-150 transition-transform font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span>Reports</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:text-white hover:bg-surface-variant transition-colors scale-95 duration-150 transition-transform font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span>Settings</span>
+</a>
+</nav>
+<div class="p-6 border-t border-outline-variant flex items-center gap-3">
+<img alt="User Avatar" class="w-10 h-10 rounded-full" data-alt="A professional headshot of a senior financial executive in a sharp navy suit, looking confident and composed. The background is a blurred high-end office with soft architectural lighting that complements the light-mode UI aesthetic. The overall mood is authoritative, precise, and executive-level." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5pYz9U6u723ajqgGYxcn4PylNiIe5vAWPh460MIaFTGFeVpHD4bhH0MNn5CvnhLaupuu7GmnKA7aYKYtdgjfzGjo0P34KupDkHVjwXw21IASEIMEPIAtVB9-ry0PwEKfVEPBV0GjuXObE3loUxRHGdBYxIKZ5OmjfpR_zLg1DA4hvRrRUqBfXAMSJ7t9RZp4eduMVoc2RpJSgfwG2usjf7O6BI_Vb-TuHxSoMH1l1GVZZuJEiogIJpBJ_7q0jj6B0FwiYACP3UA"/>
+<div>
+<p class="text-white font-body-md">Executive User</p>
+<p class="text-on-surface-variant font-label-sm">Finance Lead</p>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-[260px] min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<header class="sticky top-0 z-40 flex justify-between items-center px-6 py-3 w-full bg-surface/80 dark:bg-surface-container/80 backdrop-blur-md border-b border-outline-variant shadow-sm">
+<div class="flex items-center gap-8 flex-1">
+<div class="relative w-full max-w-md focus-within:ring-2 focus-within:ring-primary/20 rounded-lg">
+<span class="absolute inset-y-0 left-0 pl-3 flex items-center text-on-surface-variant">
+<span class="material-symbols-outlined">search</span>
+</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface-container border-none rounded-lg focus:ring-0 font-body-md text-body-md" placeholder="Search transactions, reports..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 px-3 py-1 bg-secondary-container text-on-secondary-container rounded-full font-label-sm">
+<span class="material-symbols-outlined text-[18px]">currency_exchange</span>
+<span>GBP/INR</span>
+</div>
+<div class="flex items-center gap-4 text-on-surface-variant">
+<button class="hover:text-primary transition-colors"><span class="material-symbols-outlined">notifications</span></button>
+<button class="hover:text-primary transition-colors"><span class="material-symbols-outlined">dark_mode</span></button>
+</div>
+</div>
+</header>
+<!-- Canvas -->
+<div class="p-lg max-w-container-max mx-auto w-full">
+<!-- Page Header -->
+<div class="flex justify-between items-end mb-xl">
+<div>
+<nav class="flex items-center gap-2 text-on-surface-variant font-label-sm mb-2">
+<span>Dashboard</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-primary font-bold">Revenue</span>
+</nav>
+<h2 class="font-headline-xl text-headline-xl text-on-background">Revenue &amp; Finance</h2>
+</div>
+<div class="flex gap-md">
+<button class="flex items-center gap-2 px-lg py-sm bg-white border border-outline-variant rounded-lg text-on-surface font-label-sm hover:bg-surface-container-low transition-colors shadow-sm">
+<span class="material-symbols-outlined">calendar_today</span>
+                        Filter Dates
+                    </button>
+<button class="flex items-center gap-2 px-lg py-sm bg-primary text-on-primary rounded-lg font-label-sm hover:brightness-110 transition-all shadow-sm">
+<span class="material-symbols-outlined">download</span>
+                        Export PDF
+                    </button>
+</div>
+</div>
+<!-- Summary Widgets (Bento Style) -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter mb-xl">
+<div class="bg-primary-container p-lg rounded-xl shadow-sm text-on-primary-container relative overflow-hidden group">
+<div class="relative z-10">
+<p class="font-label-sm opacity-80 uppercase tracking-wider mb-2">Total Earnings</p>
+<h3 class="font-headline-xl text-headline-xl mb-4">£142,500.00</h3>
+<div class="flex items-center gap-1 text-green-300 font-label-sm">
+<span class="material-symbols-outlined text-[16px]">trending_up</span>
+<span>12.5% vs last month</span>
+</div>
+</div>
+<div class="absolute -right-4 -bottom-4 opacity-10 transform group-hover:scale-110 transition-transform duration-500">
+<span class="material-symbols-outlined text-[120px]">payments</span>
+</div>
+</div>
+<div class="bg-white p-lg rounded-xl shadow-sm border border-outline-variant">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-error-container text-on-error-container rounded-lg">
+<span class="material-symbols-outlined">outbound</span>
+</div>
+<span class="text-error font-label-sm">-4.2%</span>
+</div>
+<p class="font-label-sm text-on-surface-variant uppercase tracking-wider mb-2">Outsourcing Cost</p>
+<h3 class="font-headline-md text-headline-md text-on-surface">£84,200.00</h3>
+</div>
+<div class="bg-white p-lg rounded-xl shadow-sm border border-outline-variant">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-secondary-container text-on-secondary-container rounded-lg">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+</div>
+<span class="text-primary font-label-sm">+8.1%</span>
+</div>
+<p class="font-label-sm text-on-surface-variant uppercase tracking-wider mb-2">Net Profit</p>
+<h3 class="font-headline-md text-headline-md text-on-surface">£58,300.00</h3>
+</div>
+<div class="bg-white p-lg rounded-xl shadow-sm border border-outline-variant">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-surface-container text-on-surface-variant rounded-lg">
+<span class="material-symbols-outlined">percent</span>
+</div>
+<span class="text-on-surface-variant font-label-sm">Stable</span>
+</div>
+<p class="font-label-sm text-on-surface-variant uppercase tracking-wider mb-2">Average Margin</p>
+<h3 class="font-headline-md text-headline-md text-on-surface">41.2%</h3>
+</div>
+</div>
+<!-- Charts & Table Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
+<!-- Revenue vs Expenses Chart -->
+<div class="lg:col-span-2 bg-white rounded-xl shadow-sm border border-outline-variant p-lg flex flex-col h-[400px]">
+<div class="flex justify-between items-center mb-lg">
+<div>
+<h4 class="font-headline-md text-headline-md text-on-surface">Revenue vs Expenses</h4>
+<p class="font-body-md text-on-surface-variant">Comparative financial trajectory for Q3 2023</p>
+</div>
+<div class="flex gap-md">
+<div class="flex items-center gap-2 font-label-sm">
+<span class="w-3 h-3 rounded-full bg-primary"></span>
+<span>Revenue</span>
+</div>
+<div class="flex items-center gap-2 font-label-sm">
+<span class="w-3 h-3 rounded-full bg-error"></span>
+<span>Expenses</span>
+</div>
+</div>
+</div>
+<div class="flex-1 w-full relative">
+<!-- Simulated Area Chart using SVG for precision -->
+<svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 100 40">
+<defs>
+<lineargradient id="gradPrimary" x1="0%" x2="0%" y1="0%" y2="100%">
+<stop offset="0%" style="stop-color: #004ac6; stop-opacity: 0.2"></stop>
+<stop offset="100%" style="stop-color: #004ac6; stop-opacity: 0"></stop>
+</lineargradient>
+</defs>
+<!-- Revenue Path -->
+<path d="M0,40 L0,30 L10,25 L20,28 L30,15 L40,20 L50,10 L60,18 L70,12 L80,5 L90,8 L100,2 L100,40 Z" fill="url(#gradPrimary)"></path>
+<path d="M0,30 L10,25 L20,28 L30,15 L40,20 L50,10 L60,18 L70,12 L80,5 L90,8 L100,2" fill="none" stroke="#004ac6" stroke-width="0.5"></path>
+<!-- Expense Path -->
+<path d="M0,35 L10,32 L20,34 L30,28 L40,30 L50,25 L60,28 L70,22 L80,25 L90,20 L100,22" fill="none" stroke="#ba1a1a" stroke-dasharray="1 1" stroke-width="0.5"></path>
+</svg>
+<div class="absolute bottom-0 w-full flex justify-between px-2 font-label-sm text-on-surface-variant">
+<span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span>
+</div>
+</div>
+</div>
+<!-- Financial Health Widget -->
+<div class="bg-inverse-surface text-white rounded-xl shadow-sm p-lg flex flex-col justify-between">
+<div>
+<h4 class="font-headline-md text-headline-md mb-2">Portfolio Overview</h4>
+<p class="font-body-md opacity-70 mb-6">Distribution of funds across active outsourcing streams.</p>
+<div class="space-y-6">
+<div>
+<div class="flex justify-between mb-2">
+<span class="font-label-sm">Academic Projects</span>
+<span class="font-label-sm">54%</span>
+</div>
+<div class="h-2 w-full bg-white/10 rounded-full overflow-hidden">
+<div class="h-full bg-primary-fixed w-[54%]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between mb-2">
+<span class="font-label-sm">Corporate Contracts</span>
+<span class="font-label-sm">32%</span>
+</div>
+<div class="h-2 w-full bg-white/10 rounded-full overflow-hidden">
+<div class="h-full bg-secondary-fixed w-[32%]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between mb-2">
+<span class="font-label-sm">Consulting Services</span>
+<span class="font-label-sm">14%</span>
+</div>
+<div class="h-2 w-full bg-white/10 rounded-full overflow-hidden">
+<div class="h-full bg-tertiary-fixed-dim w-[14%]"></div>
+</div>
+</div>
+</div>
+</div>
+<button class="w-full mt-8 py-3 bg-white/10 hover:bg-white/20 transition-colors rounded-lg font-label-sm border border-white/20">
+                        View Detailed Audit
+                    </button>
+</div>
+<!-- Transaction Table -->
+<div class="lg:col-span-3 bg-white rounded-xl shadow-sm border border-outline-variant overflow-hidden">
+<div class="px-lg py-md border-b border-outline-variant flex justify-between items-center">
+<h4 class="font-headline-md text-headline-md text-on-surface">Recent Transactions</h4>
+<button class="text-primary font-label-sm hover:underline">View All</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead class="bg-surface-container-low font-label-sm text-on-surface-variant">
+<tr>
+<th class="px-lg py-md">Date</th>
+<th class="px-lg py-md">Description</th>
+<th class="px-lg py-md">Category</th>
+<th class="px-lg py-md">Amount</th>
+<th class="px-lg py-md">Status</th>
+<th class="px-lg py-md">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant font-body-md">
+<tr class="hover:bg-surface-container transition-colors">
+<td class="px-lg py-md">Oct 24, 2023</td>
+<td class="px-lg py-md font-bold">Client Payment: Global Tech Solutions</td>
+<td class="px-lg py-md">
+<span class="px-2 py-1 bg-primary-fixed/20 text-primary-fixed-dim rounded font-label-sm">Inbound Revenue</span>
+</td>
+<td class="px-lg py-md text-green-600 font-bold">+ £12,400.00</td>
+<td class="px-lg py-md">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-green-500"></span>
+<span class="font-label-sm">Cleared</span>
+</div>
+</td>
+<td class="px-lg py-md"><span class="material-symbols-outlined text-on-surface-variant cursor-pointer">more_horiz</span></td>
+</tr>
+<tr class="hover:bg-surface-container transition-colors">
+<td class="px-lg py-md">Oct 22, 2023</td>
+<td class="px-lg py-md font-bold">Outsourcing Payout: DevStream Partners</td>
+<td class="px-lg py-md">
+<span class="px-2 py-1 bg-error-container/20 text-error rounded font-label-sm">Project Expense</span>
+</td>
+<td class="px-lg py-md text-error font-bold">- £4,550.00</td>
+<td class="px-lg py-md">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<span class="font-label-sm">Processing</span>
+</div>
+</td>
+<td class="px-lg py-md"><span class="material-symbols-outlined text-on-surface-variant cursor-pointer">more_horiz</span></td>
+</tr>
+<tr class="hover:bg-surface-container transition-colors">
+<td class="px-lg py-md">Oct 21, 2023</td>
+<td class="px-lg py-md font-bold">Subscription: Management Tools Suite</td>
+<td class="px-lg py-md">
+<span class="px-2 py-1 bg-surface-variant text-on-surface-variant rounded font-label-sm">Operations</span>
+</td>
+<td class="px-lg py-md text-error font-bold">- £299.00</td>
+<td class="px-lg py-md">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-green-500"></span>
+<span class="font-label-sm">Cleared</span>
+</div>
+</td>
+<td class="px-lg py-md"><span class="material-symbols-outlined text-on-surface-variant cursor-pointer">more_horiz</span></td>
+</tr>
+<tr class="hover:bg-surface-container transition-colors">
+<td class="px-lg py-md">Oct 20, 2023</td>
+<td class="px-lg py-md font-bold">Client Retainer: EduCorp Asia</td>
+<td class="px-lg py-md">
+<span class="px-2 py-1 bg-primary-fixed/20 text-primary-fixed-dim rounded font-label-sm">Inbound Revenue</span>
+</td>
+<td class="px-lg py-md text-green-600 font-bold">+ £8,000.00</td>
+<td class="px-lg py-md">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-green-500"></span>
+<span class="font-label-sm">Cleared</span>
+</div>
+</td>
+<td class="px-lg py-md"><span class="material-symbols-outlined text-on-surface-variant cursor-pointer">more_horiz</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Glass Effect -->
+<footer class="mt-auto p-lg border-t border-outline-variant bg-surface-container-low/50 backdrop-blur-sm">
+<div class="max-w-container-max mx-auto flex justify-between items-center text-on-surface-variant font-label-sm">
+<p>© 2023 Outsource Pro. All financial data is encrypted and secure.</p>
+<div class="flex gap-lg">
+<a class="hover:text-primary" href="#">Support</a>
+<a class="hover:text-primary" href="#">API Documentation</a>
+<a class="hover:text-primary" href="#">System Status</a>
+</div>
+</div>
+</footer>
+</main>
+</body></html>

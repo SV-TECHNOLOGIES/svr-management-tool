@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Students Management - Outsource Pro</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-tertiary-fixed": "#360f00",
+                      "tertiary-container": "#bc4800",
+                      "outline-variant": "#c3c6d7",
+                      "on-background": "#191b23",
+                      "on-primary": "#ffffff",
+                      "outline": "#737686",
+                      "tertiary-fixed-dim": "#ffb596",
+                      "on-secondary-fixed-variant": "#3f465c",
+                      "on-secondary-container": "#5c647a",
+                      "on-tertiary": "#ffffff",
+                      "primary-container": "#2563eb",
+                      "on-tertiary-container": "#ffede6",
+                      "tertiary-fixed": "#ffdbcd",
+                      "on-primary-fixed": "#00174b",
+                      "surface-container": "#ededf9",
+                      "inverse-primary": "#b4c5ff",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-dim": "#d9d9e5",
+                      "surface-tint": "#0053db",
+                      "primary": "#004ac6",
+                      "surface-variant": "#e1e2ed",
+                      "on-error-container": "#93000a",
+                      "on-surface": "#191b23",
+                      "error-container": "#ffdad6",
+                      "on-primary-container": "#eeefff",
+                      "surface-container-highest": "#e1e2ed",
+                      "on-secondary": "#ffffff",
+                      "inverse-surface": "#2e3039",
+                      "surface-container-high": "#e7e7f3",
+                      "error": "#ba1a1a",
+                      "secondary-container": "#dae2fd",
+                      "surface": "#faf8ff",
+                      "primary-fixed-dim": "#b4c5ff",
+                      "surface-container-low": "#f3f3fe",
+                      "on-tertiary-fixed-variant": "#7d2d00",
+                      "tertiary": "#943700",
+                      "on-primary-fixed-variant": "#003ea8",
+                      "on-secondary-fixed": "#131b2e",
+                      "inverse-on-surface": "#f0f0fb",
+                      "surface-bright": "#faf8ff",
+                      "background": "#faf8ff",
+                      "on-error": "#ffffff",
+                      "secondary-fixed": "#dae2fd",
+                      "on-surface-variant": "#434655",
+                      "primary-fixed": "#dbe1ff",
+                      "secondary-fixed-dim": "#bec6e0",
+                      "secondary": "#565e74"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "container-max": "1440px",
+                      "xs": "4px",
+                      "sm": "8px",
+                      "md": "16px",
+                      "base": "4px",
+                      "xl": "32px",
+                      "lg": "24px",
+                      "gutter": "24px",
+                      "margin-mobile": "16px"
+              },
+              "fontFamily": {
+                      "display-lg": ["Inter"],
+                      "label-sm": ["Inter"],
+                      "body-lg": ["Inter"],
+                      "body-md": ["Inter"],
+                      "headline-md": ["Inter"],
+                      "headline-xl": ["Inter"]
+              },
+              "fontSize": {
+                      "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "headline-md": ["24px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "headline-xl": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-background text-on-surface">
+<!-- SideNavBar Shell -->
+<aside class="fixed inset-y-0 left-0 z-50 flex flex-col bg-inverse-surface dark:bg-inverse-surface h-full w-[260px] border-r border-outline-variant shadow-sm">
+<div class="p-6">
+<h1 class="font-headline-md text-headline-md font-bold text-white">Outsource Pro</h1>
+<p class="text-on-primary-fixed-variant font-label-sm text-label-sm opacity-70">Management Suite</p>
+</div>
+<nav class="flex-1 px-3 space-y-1">
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:text-white hover:bg-surface-variant dark:hover:bg-on-secondary-fixed-variant transition-colors group" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-body-md text-body-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:text-white hover:bg-surface-variant dark:hover:bg-on-secondary-fixed-variant transition-colors group" href="#">
+<span class="material-symbols-outlined" data-icon="book">book</span>
+<span class="font-body-md text-body-md">Subjects</span>
+</a>
+<!-- Active State: Students -->
+<a class="flex items-center gap-3 px-4 py-2 bg-primary-container text-on-primary-container border-l-4 border-primary group" href="#">
+<span class="material-symbols-outlined" data-icon="group" style="font-variation-settings: 'FILL' 1;">group</span>
+<span class="font-body-md text-body-md">Students</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:text-white hover:bg-surface-variant dark:hover:bg-on-secondary-fixed-variant transition-colors group" href="#">
+<span class="material-symbols-outlined" data-icon="handshake">handshake</span>
+<span class="font-body-md text-body-md">Outsourcing</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:text-white hover:bg-surface-variant dark:hover:bg-on-secondary-fixed-variant transition-colors group" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+<span class="font-body-md text-body-md">Revenue &amp; Finance</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:text-white hover:bg-surface-variant dark:hover:bg-on-secondary-fixed-variant transition-colors group" href="#">
+<span class="material-symbols-outlined" data-icon="event">event</span>
+<span class="font-body-md text-body-md">Deadlines</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:text-white hover:bg-surface-variant dark:hover:bg-on-secondary-fixed-variant transition-colors group" href="#">
+<span class="material-symbols-outlined" data-icon="description">description</span>
+<span class="font-body-md text-body-md">Documents</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:text-white hover:bg-surface-variant dark:hover:bg-on-secondary-fixed-variant transition-colors group" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-body-md text-body-md">Reports</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:text-white hover:bg-surface-variant dark:hover:bg-on-secondary-fixed-variant transition-colors group" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-body-md text-body-md">Settings</span>
+</a>
+</nav>
+<div class="p-6 border-t border-outline-variant/20">
+<div class="flex items-center gap-3">
+<img alt="User Avatar" class="w-10 h-10 rounded-full" data-alt="A professional headshot of a senior executive in a dark navy tailored suit, set against a blurred modern office background with soft bokeh. The lighting is crisp and cinematic, emphasizing authority and professional warmth. The overall aesthetic is clean, high-end, and perfectly aligned with a corporate management suite." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCbvVYL_Q_8ZoMFThiURRJq4_gPpB_l202sVWA3ipymVMALSUDj8G5_4SjmJfRn1S-Lthjylbe93D2tyQ2S-cPqp1-oZ1uqayrX03-iu2--5x5x_WOUWEHlKMpDH3-Cnh9JJ6zcLOJ1uwBQOjF-dBkiqp-g2HKftUQn284rUQ8GzLYLvQscfFPhspQ2NbB4wlhuhM2BJw9Q8pEYeHfuhOY-_M7oW_3uroDrp8haY2WTtvs2Z6fTcW4unX0GNggMEnrxIBzEmuQkpg"/>
+<div>
+<p class="text-white font-label-sm text-label-sm">Alex Thompson</p>
+<p class="text-on-surface-variant text-[10px]">Operations Director</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-[260px] min-h-screen">
+<!-- TopNavBar -->
+<header class="sticky top-0 z-40 flex justify-between items-center px-6 py-3 w-full bg-surface/80 dark:bg-surface-container/80 backdrop-blur-md border-b border-outline-variant shadow-sm">
+<div class="flex items-center gap-6">
+<div class="relative group">
+<span class="absolute inset-y-0 left-0 pl-3 flex items-center text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]" data-icon="search">search</span>
+</span>
+<input class="bg-surface-container-low border-none rounded-lg pl-10 pr-4 py-1.5 text-body-md w-64 focus:ring-2 focus:ring-primary/20 transition-all" placeholder="Search students..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 px-3 py-1 bg-surface-container-high rounded-full">
+<span class="material-symbols-outlined text-primary text-[18px]" data-icon="currency_exchange">currency_exchange</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">GBP/INR</span>
+</div>
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="dark_mode">dark_mode</span>
+</button>
+<div class="h-6 w-[1px] bg-outline-variant mx-2"></div>
+<img alt="Executive Profile" class="w-8 h-8 rounded-full border border-outline-variant" data-alt="Close-up portrait of a professional woman in business attire with a warm, confident expression. The background is a brightly lit, high-end corporate environment with glass walls and minimalist decor. High-key lighting creates a sophisticated and airy feel, matching the professional executive persona." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBb3RPwyksqUG_TPsN8Hpj1Nu2Mi-8SaUbr1q5mZU9ywEY5YfsiPwSQRC8sQS7CnTZdxgHfDHMbZDIKOl_j7tjWS2b8cvsYj7G2W1Y3kPdABYaltzpP1ihqYs32do9oOMgyMuh9JROy827hN3gjtYM16Y2jtZQH2EWOSDH6-P_3lOkU7_l9SiU4La4eoPONrgi9NGcKzB34Vdq5tKGXcCKjkhT0Lsq78jeIz0teHlJnlkS8seD7FjZMTCf7FocZnbfzlK_EFiNCIQ"/>
+</div>
+</header>
+<!-- Page Content -->
+<div class="p-lg max-w-container-max mx-auto">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row md:items-end justify-between mb-xl gap-lg">
+<div>
+<nav aria-label="Breadcrumb" class="flex text-on-surface-variant text-label-sm font-label-sm mb-xs">
+<ol class="flex items-center space-x-2">
+<li><a class="hover:text-primary transition-colors" href="#">Dashboard</a></li>
+<li><span class="material-symbols-outlined text-[14px]" data-icon="chevron_right">chevron_right</span></li>
+<li class="text-on-surface">Students</li>
+</ol>
+</nav>
+<h2 class="font-headline-xl text-headline-xl text-on-surface">Students</h2>
+</div>
+<div class="flex items-center gap-md">
+<button class="flex items-center gap-2 px-4 py-2 border border-outline-variant bg-surface rounded-lg font-body-md text-on-surface hover:bg-surface-variant transition-all hover:-translate-y-[1px]">
+<span class="material-symbols-outlined text-[20px]" data-icon="upload_file">upload_file</span>
+                        Import CSV
+                    </button>
+<button class="flex items-center gap-2 px-4 py-2 bg-primary text-on-primary rounded-lg font-body-md shadow-sm border border-primary/20 hover:bg-primary-container transition-all hover:-translate-y-[1px]">
+<span class="material-symbols-outlined text-[20px]" data-icon="person_add">person_add</span>
+                        New Student
+                    </button>
+</div>
+</div>
+<!-- Metrics Bento Row -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-lg mb-xl">
+<div class="glass-card p-lg rounded-xl border border-outline-variant shadow-sm relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform duration-500">
+<span class="material-symbols-outlined text-[64px]" data-icon="groups">groups</span>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-xs">Total Enrolled</p>
+<div class="flex items-end gap-sm">
+<h3 class="font-headline-xl text-headline-xl text-on-surface leading-none">1,284</h3>
+<span class="text-primary font-bold text-label-sm flex items-center mb-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="trending_up">trending_up</span>
+                            12%
+                        </span>
+</div>
+<div class="mt-md w-full bg-surface-container-high h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[75%] rounded-full"></div>
+</div>
+</div>
+<div class="glass-card p-lg rounded-xl border border-outline-variant shadow-sm relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform duration-500">
+<span class="material-symbols-outlined text-[64px]" data-icon="workspace_premium">workspace_premium</span>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-xs">Top Performers</p>
+<div class="flex items-end gap-sm">
+<h3 class="font-headline-xl text-headline-xl text-on-surface leading-none">342</h3>
+<span class="text-tertiary-container font-bold text-label-sm flex items-center mb-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="star">star</span>
+                            Top 25%
+                        </span>
+</div>
+<div class="mt-md flex -space-x-2">
+<img alt="Avatar" class="inline-block h-6 w-6 rounded-full ring-2 ring-white" data-alt="Modern professional portrait of a male student with a bright, focused look. Warm natural light, shallow depth of field, high-quality digital photography style with soft highlights." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_TKXHpIfoqbvLAFa2EqUo6QN4e08zrkBEy3wQp7MiQ_h3eZirvTREhVr-yD5LO_j7G-j4oCVRFVu9SFOI7UrSSmdXxIaT5Z9HIM2vW2rswxdjFXmP2XcEdPVP9pL-xL2c84MEGP4DwVdlTI_Jr-gWJtRhQhxwlnZZJC6Vhm2v-bUwknfDmuWpIKZ9C2coIaKzfLpTFRJj4DhV3WPzGY9Cxc1EFCX1nfpdZIbmdOtr2Y_5EKnhyjtbtLMGJA8_DssKBoN-O9kSbg"/>
+<img alt="Avatar" class="inline-block h-6 w-6 rounded-full ring-2 ring-white" data-alt="Confident female student in a casual academic setting. Bright lighting, vibrant but professional colors, clean aesthetic focusing on youth and ambition in an educational context." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB04pm87y3U_RYtHfAZ3HEA1MVn4NDRtQfWECgkjLSLW7pxpClKlmbb8mesowQeXa4b9N6AGM7LW30qmD3I7Duuty2CLqIxcg83mY1nHmDgRzWmVmgbspwQA6KhfVub8ji8QAEC9va7tUAOQqTBd2yyNo3zq28GIWM9o-vUOkCro8lLncRp_i1OBDtVepOMTOKmpJyAxR8OgrcYbqeectXo3IY26D2-FHXrNYg4caIQI9X582znUBtS34DJQQmFFOBH1GulVCYvpw"/>
+<img alt="Avatar" class="inline-block h-6 w-6 rounded-full ring-2 ring-white" data-alt="Portrait of a young diverse student smiling warmly. Soft professional lighting, clean white background, high resolution, illustrating excellence and academic success." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtjfiLRHQKjalYlO2Y8DYycRwxk0yGwCuw-k2iZmqn3706UjOE87gpnkKwCYY5NOwKH71dD99sPwJRi_EX_NMw0nlWkPyoLv3Pg4poalAfQ60_v2ttha1ho7QmvXYdSfivL3dcCD_UckPLd1ScLcBIyOYkJHdJ_MtWlmuo0bGnCHUDZkZdeudBCF6Q-CjqD2sd-wdo0GfB1DaTicw-e1RO5OPpB5yRxUG95zCVM2RHXk1TQJb0Cqct0wvU9HhckFj-XnlGW9RQxQ"/>
+<div class="h-6 w-6 rounded-full ring-2 ring-white bg-primary-fixed-dim flex items-center justify-center text-[8px] font-bold">+12</div>
+</div>
+</div>
+<div class="glass-card p-lg rounded-xl border border-outline-variant shadow-sm relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform duration-500">
+<span class="material-symbols-outlined text-[64px]" data-icon="school">school</span>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-xs">Graduating Soon</p>
+<div class="flex items-end gap-sm">
+<h3 class="font-headline-xl text-headline-xl text-on-surface leading-none">89</h3>
+<span class="text-on-surface-variant font-medium text-label-sm mb-1">Students / Class of 24</span>
+</div>
+<div class="mt-md flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px] text-tertiary" data-icon="schedule">schedule</span>
+<span class="text-label-sm font-label-sm text-tertiary">Final Assessment phase</span>
+</div>
+</div>
+</div>
+<!-- Table Container -->
+<div class="bg-surface rounded-xl border border-outline-variant shadow-sm overflow-hidden">
+<!-- Filters Row -->
+<div class="px-lg py-md border-b border-outline-variant flex flex-col md:flex-row justify-between items-center gap-md">
+<div class="flex items-center gap-md w-full md:w-auto">
+<div class="relative w-full md:w-80 group">
+<span class="absolute inset-y-0 left-0 pl-3 flex items-center text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]" data-icon="filter_alt">filter_alt</span>
+</span>
+<select class="bg-surface-container-low border border-outline-variant rounded-lg pl-10 pr-8 py-2 text-body-md w-full appearance-none focus:ring-2 focus:ring-primary/20 transition-all">
+<option>All Students</option>
+<option>Active Only</option>
+<option>Alumni</option>
+<option>On Probation</option>
+</select>
+<span class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]" data-icon="keyboard_arrow_down">keyboard_arrow_down</span>
+</span>
+</div>
+<div class="flex items-center gap-sm">
+<span class="text-body-md text-on-surface-variant">Payment Status:</span>
+<div class="flex bg-surface-container-high p-1 rounded-lg">
+<button class="px-3 py-1 text-label-sm font-label-sm bg-surface rounded shadow-sm text-primary">All</button>
+<button class="px-3 py-1 text-label-sm font-label-sm text-on-surface-variant hover:text-on-surface">Paid</button>
+<button class="px-3 py-1 text-label-sm font-label-sm text-on-surface-variant hover:text-on-surface">Pending</button>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-sm">
+<button class="p-2 text-on-surface-variant hover:bg-surface-variant rounded-lg transition-colors">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</div>
+</div>
+<!-- Modern Table -->
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low/50">
+<th class="px-lg py-4 font-label-sm text-label-sm text-on-surface-variant border-b border-outline-variant">STUDENT NAME</th>
+<th class="px-lg py-4 font-label-sm text-label-sm text-on-surface-variant border-b border-outline-variant">ENROLLMENT ID</th>
+<th class="px-lg py-4 font-label-sm text-label-sm text-on-surface-variant border-b border-outline-variant">ENROLLED SUBJECTS</th>
+<th class="px-lg py-4 font-label-sm text-label-sm text-on-surface-variant border-b border-outline-variant">OUTSTANDING</th>
+<th class="px-lg py-4 font-label-sm text-label-sm text-on-surface-variant border-b border-outline-variant">PERFORMANCE</th>
+<th class="px-lg py-4 font-label-sm text-label-sm text-on-surface-variant border-b border-outline-variant">ACTIONS</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-lg py-4">
+<div class="flex items-center gap-md">
+<img alt="Sarah Miller" class="w-10 h-10 rounded-full border border-outline-variant" data-alt="High-quality professional portrait of a female student with a bright and intelligent expression. Shot in a minimalist photography studio with soft, diffused lighting and a high-key aesthetic. The mood is aspirational and clean." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCaeAWTdUThs-PpmpzP3mjBKxeqKYvV2lRQJYYKdPEqFrCQJNUtGmNSA4Ze1uIyFoH3_VZbwNrdsVoloE1apstayLRAuykXM-h3Er06-rV_HOlLDm3EMU-YEtEGT3aIi3lC6DQxd4n6d13AYqdX0qx4xky6VzP1-t34kOR8qJb7QiNvuK7o1lErqer0BSnocmrrY6x-DmfC9tfsP_j1Ds3bnG8AILtknvRH5HQQtTrimtK0sxmpqsnR17S0wHTfahwdT1biQrLs-Q"/>
+<div>
+<p class="font-body-md text-body-md font-bold text-on-surface">Sarah Miller</p>
+<p class="text-[12px] text-on-surface-variant">s.miller@outsourcepro.com</p>
+</div>
+</div>
+</td>
+<td class="px-lg py-4 font-body-md text-body-md text-on-surface-variant">#STU-88219</td>
+<td class="px-lg py-4">
+<div class="flex flex-wrap gap-1">
+<span class="px-2 py-0.5 bg-secondary-container text-on-secondary-container text-[11px] font-bold rounded-full">Mathematics</span>
+<span class="px-2 py-0.5 bg-secondary-container text-on-secondary-container text-[11px] font-bold rounded-full">Economics</span>
+</div>
+</td>
+<td class="px-lg py-4">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700">
+<span class="w-1.5 h-1.5 rounded-full bg-green-700"></span>
+                                        Paid
+                                    </span>
+</td>
+<td class="px-lg py-4">
+<div class="flex items-center gap-md">
+<div class="w-24 h-8 flex items-end gap-[2px]">
+<div class="bg-primary/20 h-2/5 w-2 rounded-t-sm"></div>
+<div class="bg-primary/20 h-3/5 w-2 rounded-t-sm"></div>
+<div class="bg-primary/40 h-2/5 w-2 rounded-t-sm"></div>
+<div class="bg-primary/60 h-4/5 w-2 rounded-t-sm"></div>
+<div class="bg-primary h-full w-2 rounded-t-sm"></div>
+<div class="bg-primary/80 h-3/5 w-2 rounded-t-sm"></div>
+</div>
+<span class="text-label-sm font-label-sm text-on-surface">94%</span>
+</div>
+</td>
+<td class="px-lg py-4">
+<div class="flex items-center gap-sm opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors"><span class="material-symbols-outlined" data-icon="edit">edit</span></button>
+<button class="p-2 text-on-surface-variant hover:text-error transition-colors"><span class="material-symbols-outlined" data-icon="delete">delete</span></button>
+</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-lg py-4">
+<div class="flex items-center gap-md">
+<img alt="James Wilson" class="w-10 h-10 rounded-full border border-outline-variant" data-alt="A portrait of a male university student with a confident smile, wearing a modern polo shirt. The background is a clean, bright architectural space with natural morning light. The photography style is crisp, professional, and sophisticated." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBCtrlNlbpgakswGzTtSVSp96Kiem-aXXFTZ2WqXIkrj-B4Ks2p5cvfnTPUv2PbTjDgDMJ7dXOf4dQtr-1KIyJ0zBwwEjlJB0WFcmUgzgUPjHQ23VyfI7kqFfkZngA05cWYAV_l3orSWvUDGbUQm0V_NjT9WyxXGIMKbHNR00pFinw3m9aLU4ftZtF25HL9NQSGO-1fteJaerZeGw1MRJgEYL09vH7SBHXWwvChgZZkxgNjcZQaO0vwDLG06LdjkBiQqvQXIBSx5Q"/>
+<div>
+<p class="font-body-md text-body-md font-bold text-on-surface">James Wilson</p>
+<p class="text-[12px] text-on-surface-variant">j.wilson@outsourcepro.com</p>
+</div>
+</div>
+</td>
+<td class="px-lg py-4 font-body-md text-body-md text-on-surface-variant">#STU-88220</td>
+<td class="px-lg py-4">
+<div class="flex flex-wrap gap-1">
+<span class="px-2 py-0.5 bg-secondary-container text-on-secondary-container text-[11px] font-bold rounded-full">Business Strategy</span>
+</div>
+</td>
+<td class="px-lg py-4">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-700">
+<span class="w-1.5 h-1.5 rounded-full bg-amber-700"></span>
+                                        Pending
+                                    </span>
+</td>
+<td class="px-lg py-4">
+<div class="flex items-center gap-md">
+<div class="w-24 h-8 flex items-end gap-[2px]">
+<div class="bg-primary/80 h-full w-2 rounded-t-sm"></div>
+<div class="bg-primary/60 h-4/5 w-2 rounded-t-sm"></div>
+<div class="bg-primary/40 h-3/5 w-2 rounded-t-sm"></div>
+<div class="bg-primary/20 h-2/5 w-2 rounded-t-sm"></div>
+<div class="bg-primary/30 h-3/5 w-2 rounded-t-sm"></div>
+<div class="bg-primary/50 h-4/5 w-2 rounded-t-sm"></div>
+</div>
+<span class="text-label-sm font-label-sm text-on-surface">78%</span>
+</div>
+</td>
+<td class="px-lg py-4">
+<div class="flex items-center gap-sm opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors"><span class="material-symbols-outlined" data-icon="edit">edit</span></button>
+<button class="p-2 text-on-surface-variant hover:text-error transition-colors"><span class="material-symbols-outlined" data-icon="delete">delete</span></button>
+</div>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-lg py-4">
+<div class="flex items-center gap-md">
+<img alt="Elena Rodriguez" class="w-10 h-10 rounded-full border border-outline-variant" data-alt="Portrait of a young female academic professional with a serene and determined gaze. Set in a contemporary university library with warm wooden textures and soft lighting. The visual style is premium, cinematic, and emphasizes intelligence and professional dedication." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBRFWA3MhoH8Z515pTSIeeAVy_FAw32WNBfqlhfFlYQwy3HBfTY0hBaxnHvrHUCUuGmgmNR-yROs9ZEkCEry0H-efG5eALuJf4cT2XWWPuPw7q5NCMKlc7Dj3ZjkOb2X1fzfvnAv06_OzzGmQU7vGL31154VqTKFtdLoW7AwmDAMUogpoPEuzPo9uPJOAjN-a1YYQSwcbn8tAGQBhcWY_zwzUkJ1rPX4x4bfr7oSGRkMqxFuA36dtrNdrJKJ4BBVgACH59eiHVrlg"/>
+<div>
+<p class="font-body-md text-body-md font-bold text-on-surface">Elena Rodriguez</p>
+<p class="text-[12px] text-on-surface-variant">e.rodriguez@outsourcepro.com</p>
+</div>
+</div>
+</td>
+<td class="px-lg py-4 font-body-md text-body-md text-on-surface-variant">#STU-88221</td>
+<td class="px-lg py-4">
+<div class="flex flex-wrap gap-1">
+<span class="px-2 py-0.5 bg-secondary-container text-on-secondary-container text-[11px] font-bold rounded-full">Psychology</span>
+<span class="px-2 py-0.5 bg-secondary-container text-on-secondary-container text-[11px] font-bold rounded-full">Stats</span>
+</div>
+</td>
+<td class="px-lg py-4">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-red-100 text-red-700">
+<span class="w-1.5 h-1.5 rounded-full bg-red-700"></span>
+                                        Overdue
+                                    </span>
+</td>
+<td class="px-lg py-4">
+<div class="flex items-center gap-md">
+<div class="w-24 h-8 flex items-end gap-[2px]">
+<div class="bg-primary/10 h-1/5 w-2 rounded-t-sm"></div>
+<div class="bg-primary/20 h-2/5 w-2 rounded-t-sm"></div>
+<div class="bg-primary/40 h-3/5 w-2 rounded-t-sm"></div>
+<div class="bg-primary/60 h-4/5 w-2 rounded-t-sm"></div>
+<div class="bg-primary h-full w-2 rounded-t-sm"></div>
+<div class="bg-primary/90 h-full w-2 rounded-t-sm"></div>
+</div>
+<span class="text-label-sm font-label-sm text-on-surface">91%</span>
+</div>
+</td>
+<td class="px-lg py-4">
+<div class="flex items-center gap-sm opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors"><span class="material-symbols-outlined" data-icon="edit">edit</span></button>
+<button class="p-2 text-on-surface-variant hover:text-error transition-colors"><span class="material-symbols-outlined" data-icon="delete">delete</span></button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination Footer -->
+<div class="px-lg py-md border-t border-outline-variant flex justify-between items-center bg-surface-container-low/30">
+<p class="text-body-md text-on-surface-variant">Showing 1 to 10 of 1,284 students</p>
+<div class="flex items-center gap-1">
+<button class="p-2 hover:bg-surface-variant rounded-lg transition-colors disabled:opacity-30" disabled="">
+<span class="material-symbols-outlined" data-icon="chevron_left">chevron_left</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center bg-primary text-on-primary rounded-lg font-label-sm">1</button>
+<button class="w-8 h-8 flex items-center justify-center hover:bg-surface-variant rounded-lg font-label-sm text-on-surface">2</button>
+<button class="w-8 h-8 flex items-center justify-center hover:bg-surface-variant rounded-lg font-label-sm text-on-surface">3</button>
+<span class="px-2 text-on-surface-variant">...</span>
+<button class="w-8 h-8 flex items-center justify-center hover:bg-surface-variant rounded-lg font-label-sm text-on-surface">128</button>
+<button class="p-2 hover:bg-surface-variant rounded-lg transition-colors">
+<span class="material-symbols-outlined" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>
