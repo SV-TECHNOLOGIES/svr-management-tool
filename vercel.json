@@ -1,9 +1,13 @@
 {
   "version": 2,
+  "buildCommand": "cd backend && npx prisma generate && npx prisma migrate deploy && cd .. && cd frontend && npm run build",
   "builds": [
     {
       "src": "backend/src/index.ts",
-      "use": "@vercel/node"
+      "use": "@vercel/node",
+      "config": {
+        "includeFiles": ["backend/prisma/**"]
+      }
     },
     {
       "src": "frontend/package.json",
