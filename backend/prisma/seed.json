@@ -1,0 +1,170 @@
+{
+  "admins": [
+    {
+      "name": "Sachin",
+      "email": "sachinpalthya45@gmail.com",
+      "role": "ADMIN"
+    },
+    {
+      "name": "Venkey",
+      "email": "lingampally.venkey@gmail.com",
+      "role": "ADMIN"
+    },
+    {
+      "name": "SVR Super Admin",
+      "email": "svrtechgroups@gmail.com",
+      "role": "ADMIN"
+    }
+  ],
+  "mscProjects": [
+    {
+      "name": "2026-reh-msc-project",
+      "description": "2026 REH MSc Computer Science & AI Projects",
+      "amountRangeLow": 200,
+      "amountRangeHigh": 300,
+      "currency": "GBP",
+      "adminSplits": [
+        { "adminEmail": "sachinpalthya45@gmail.com", "percentage": 50 },
+        { "adminEmail": "lingampally.venkey@gmail.com", "percentage": 50 }
+      ],
+      "submissionTemplates": [
+        {
+          "name": "Proposal & Literature Review",
+          "order": 1,
+          "isFinal": false,
+          "deadlineOffsetDays": 14,
+          "paymentPercentage": 20,
+          "templateFileUrl": "https://drive.google.com/proposal-template"
+        },
+        {
+          "name": "Midpoint Review & Presentation",
+          "order": 2,
+          "isFinal": false,
+          "deadlineOffsetDays": 35,
+          "paymentPercentage": 20,
+          "templateFileUrl": "https://drive.google.com/midpoint-template"
+        },
+        {
+          "name": "Final Thesis & Code Repository",
+          "order": 3,
+          "isFinal": false,
+          "deadlineOffsetDays": 60,
+          "paymentPercentage": 20,
+          "templateFileUrl": "https://drive.google.com/final-thesis-template"
+        },
+        {
+          "name": "Week 1 Priority Deliverable",
+          "order": 4,
+          "isFinal": false,
+          "deadlineOffsetDays": 70,
+          "paymentPercentage": 20
+        },
+        {
+          "name": "Viva Preparation & Final Defense",
+          "order": 5,
+          "isFinal": true,
+          "deadlineOffsetDays": 80,
+          "paymentPercentage": 20
+        }
+      ],
+      "students": [
+        {
+          "name": "SRUTHI BHAVYA MARRI",
+          "rollNo": "2026-REH-001",
+          "mobileNo": "+44 7911 123456",
+          "projectTitle": "Smart Waste Classification and Recycling Monitoring System",
+          "agreedAmount": 300,
+          "advancePaid": 90,
+          "submissions": [
+            {
+              "stageOrder": 1,
+              "deadline": "2026-05-27",
+              "fileLink": "Sruthi_Smart_Waste_Classification_MSc_Report.docx",
+              "status": "SUBMITTED",
+              "submittedByAdminEmail": "sachinpalthya45@gmail.com",
+              "submittedAt": "2026-05-25",
+              "studentFeedback": "Todo: need to change objectives, just keep 1,2,3,7 objectives only work on them , research questions: remove 2nd and 4th research questions.",
+              "sharedWithStudent": true
+            },
+            {
+              "stageOrder": 2,
+              "deadline": "2026-06-22",
+              "fileLink": "SRUTHI ppt",
+              "status": "PENDING"
+            },
+            {
+              "stageOrder": 3,
+              "deadline": "2026-08-01",
+              "fileLink": "SRUTHI.ipynb",
+              "status": "PENDING"
+            },
+            {
+              "stageOrder": 4,
+              "deadline": "2026-08-07",
+              "status": "COMPLETED",
+              "submittedByAdminEmail": "lingampally.venkey@gmail.com",
+              "reviewedByAdminEmail": "sachinpalthya45@gmail.com",
+              "submittedAt": "2026-08-07",
+              "reviewedAt": "2026-08-07",
+              "sharedWithStudent": true
+            },
+            {
+              "stageOrder": 5,
+              "deadline": "2026-08-15",
+              "status": "PENDING"
+            }
+          ]
+        },
+        {
+          "name": "ANIRUDH SIDDA KESAVU",
+          "rollNo": "2026-REH-002",
+          "mobileNo": "+44 7911 654321",
+          "projectTitle": "Smart Traffic Violation Detection system using computer vision and real time analytics",
+          "agreedAmount": 200,
+          "advancePaid": 150,
+          "submissions": [
+            {
+              "stageOrder": 1,
+              "deadline": "2026-05-27",
+              "fileLink": "Smart_Traffic_Violation_Detection_MSc_Report.docx",
+              "status": "CHANGES_REQUESTED",
+              "submittedByAdminEmail": "lingampally.venkey@gmail.com",
+              "reviewedByAdminEmail": "sachinpalthya45@gmail.com",
+              "submittedAt": "2026-05-25",
+              "reviewedAt": "2026-05-26",
+              "studentFeedback": "done with code, keep focusing on the main problem statements.",
+              "sharedWithStudent": true
+            },
+            {
+              "stageOrder": 2,
+              "deadline": "2026-06-22",
+              "fileLink": "Anirudh presentation",
+              "status": "PENDING"
+            },
+            {
+              "stageOrder": 3,
+              "deadline": "2026-08-01",
+              "fileLink": "anirudh.ipynb",
+              "status": "PENDING"
+            },
+            {
+              "stageOrder": 4,
+              "deadline": "2026-08-07",
+              "status": "COMPLETED",
+              "submittedByAdminEmail": "sachinpalthya45@gmail.com",
+              "reviewedByAdminEmail": "lingampally.venkey@gmail.com",
+              "submittedAt": "2026-08-07",
+              "reviewedAt": "2026-08-07",
+              "sharedWithStudent": true
+            },
+            {
+              "stageOrder": 5,
+              "deadline": "2026-08-15",
+              "status": "PENDING"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

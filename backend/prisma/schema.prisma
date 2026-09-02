@@ -13,166 +13,213 @@ enum Role {
   STAFF
 }
 
-enum Status {
-  PENDING
+enum StudentStatus {
   ACTIVE
+  ON_HOLD
   COMPLETED
-  CANCELLED
+  DROPPED
 }
 
-enum Currency {
-  INR
-  GBP
-}
-
-model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
-  name      String
-  password  String
-  role      Role     @default(STAFF)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Subject {
-  id          String   @id @default(uuid())
-  name        String
-  description String?
-  code        String   @unique
-  status      Status   @default(ACTIVE)
-  revenueINR  Float    @default(0)
-  revenueGBP  Float    @default(0)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  students    Student[]
-  projects    Project[]
-  documents   Document[]
-  deadlines   Deadline[]
-}
-
-model Student {
-  id        String   @id @default(uuid())
-  name      String
-  email     String   @unique
-  phone     String?
-  status    Status   @default(ACTIVE)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  subjects  Subject[]
-  projects  Project[]
-  payments  Payment[]
-  documents Document[]
-}
-
-model Vendor {
-  id        String   @id @default(uuid())
-  name      String
-  email     String   @unique
-  phone     String?
-  rating    Float    @default(0)
-  status    Status   @default(ACTIVE)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  projects  Project[]
-  payments  Payment[]
-}
-
-model Project {
-  id              String   @id @default(uuid())
-  title           String
-  description     String?
-  status          Status   @default(PENDING)
-  deadline        DateTime
-  costINR         Float    @default(0)
-  costGBP         Float    @default(0)
-  revenueINR      Float    @default(0)
-  revenueGBP      Float    @default(0)
-  
-  subjectId       String
-  subject         Subject  @relation(fields: [subjectId], references: [id])
-  
-  studentId       String?
-  student         Student? @relation(fields: [studentId], references: [id])
-  
-  vendorId        String?
-  vendor          Vendor?  @relation(fields: [vendorId], references: [id])
-
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-}
-
-model Payment {
-  id          String   @id @default(uuid())
-  amount      Float
-  currency    Currency @default(INR)
-  type        PaymentType
-  status      PaymentStatus @default(PENDING)
-  date        DateTime @default(now())
-  
-  studentId   String?
-  student     Student? @relation(fields: [studentId], references: [id])
-  
-  vendorId    String?
-  vendor      Vendor?  @relation(fields: [vendorId], references: [id])
-
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-}
-
-enum PaymentType {
-  INCOMING
-  OUTGOING
+enum SubmissionStatus {
+  PENDING              // not started
+  SUBMITTED            // student/admin uploaded link, awaiting review
+  IN_REVIEW            // second admin reviewing
+  CHANGES_REQUESTED    // review sent it back
+  APPROVED             // review passed
+  SHARED_WITH_STUDENT  // file/feedback shared out
+  FEEDBACK_RECEIVED    // student responded
+  COMPLETED            // stage fully closed
 }
 
 enum PaymentStatus {
   PENDING
-  COMPLETED
-  FAILED
+  RECEIVED
+  PARTIAL
 }
 
-model Deadline {
-  id        String   @id @default(uuid())
-  title     String
-  date      DateTime
-  priority  Priority @default(MEDIUM)
-  
-  subjectId String
-  subject   Subject  @relation(fields: [subjectId], references: [id])
+// ---------------------------------------------------------------------------
+// ADMIN & USERS
+// ---------------------------------------------------------------------------
 
-  createdAt DateTime @default(now())
-}
-
-enum Priority {
-  LOW
-  MEDIUM
-  HIGH
-  CRITICAL
-}
-
-model Document {
-  id        String   @id @default(uuid())
+model Admin {
+  id        String   @id @default(cuid())
   name      String
-  url       String
-  size      Int
-  type      String
-  
-  subjectId String?
-  subject   Subject? @relation(fields: [subjectId], references: [id])
-  
-  studentId String?
-  student   Student? @relation(fields: [studentId], references: [id])
-
+  email     String   @unique
+  password  String   @default("")
+  role      Role     @default(ADMIN)
   createdAt DateTime @default(now())
+
+  adminSplits         AdminSplit[]
+  submissionsMade     Submission[]  @relation("SubmittedBy")
+  submissionsReviewed Submission[]  @relation("ReviewedBy")
+  notes               Note[]
+  payments            Payment[]
+  outsourcings        Outsourcing[]
 }
 
-model Notification {
-  id        String   @id @default(uuid())
-  title     String
-  message   String
-  isRead    Boolean  @default(false)
-  createdAt DateTime @default(now())
+model AdminSplit {
+  id           String  @id @default(cuid())
+  mscProjectId String
+  adminId      String
+  percentage   Decimal @db.Decimal(5, 2)
+
+  mscProject MscProject @relation(fields: [mscProjectId], references: [id], onDelete: Cascade)
+  admin      Admin      @relation(fields: [adminId], references: [id])
+
+  @@unique([mscProjectId, adminId])
 }
+
+// ---------------------------------------------------------------------------
+// MSC PROJECT (the template / umbrella)
+// ---------------------------------------------------------------------------
+
+model MscProject {
+  id              String   @id @default(cuid())
+  name            String
+  description     String?
+  amountRangeLow  Decimal  @db.Decimal(10, 2) // min acceptable price
+  amountRangeHigh Decimal  @db.Decimal(10, 2) // max acceptable price
+  currency        String   @default("GBP")
+  createdAt       DateTime @default(now())
+
+  submissionTemplates SubmissionTemplate[]
+  students            Student[]
+  adminSplits         AdminSplit[]
+  outsourcings        Outsourcing[] // project-wide (not tied to one student)
+}
+
+// Definition of each stage required for every student under this MscProject.
+model SubmissionTemplate {
+  id                 String   @id @default(cuid())
+  mscProjectId       String
+  name               String // "Proposal", "Midpoint Review", "Final Submission"
+  order              Int // sequence: 1, 2, 3...
+  isFinal            Boolean  @default(false) // marks the terminal submission
+  templateFileUrl    String? // link to the blank template doc/ppt
+  deadlineOffsetDays Int? // days from enrollment/prev stage
+  paymentPercentage  Decimal  @db.Decimal(5, 2) // % of student's total amount due at this stage
+  instructions       String?
+
+  mscProject  MscProject   @relation(fields: [mscProjectId], references: [id], onDelete: Cascade)
+  submissions Submission[]
+
+  @@unique([mscProjectId, order])
+}
+
+// ---------------------------------------------------------------------------
+// STUDENT
+// ---------------------------------------------------------------------------
+
+model Student {
+  id           String        @id @default(cuid())
+  mscProjectId String
+  name         String
+  mobileNo     String
+  rollNo       String
+  projectTitle String // topic chosen by student
+  agreedAmount Decimal       @db.Decimal(10, 2) // final negotiated price
+  status       StudentStatus @default(ACTIVE)
+  createdAt    DateTime      @default(now())
+
+  mscProject   MscProject    @relation(fields: [mscProjectId], references: [id], onDelete: Cascade)
+  submissions  Submission[]
+  payments     Payment[]
+  outsourcings Outsourcing[]
+
+  @@index([mscProjectId])
+}
+
+// ---------------------------------------------------------------------------
+// SUBMISSION (actual instance per student per stage)
+// ---------------------------------------------------------------------------
+
+model Submission {
+  id                   String           @id @default(cuid())
+  studentId            String
+  submissionTemplateId String
+  deadline             DateTime
+  fileLink             String?
+  status               SubmissionStatus @default(PENDING)
+
+  submittedByAdminId String?
+  submittedAt        DateTime?
+
+  reviewedByAdminId String?
+  reviewedAt        DateTime?
+
+  sharedWithStudent Boolean   @default(false)
+  sharedAt          DateTime?
+
+  studentFeedback    String?
+  feedbackReceivedAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  student            Student            @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  submissionTemplate SubmissionTemplate @relation(fields: [submissionTemplateId], references: [id])
+  submittedByAdmin   Admin?             @relation("SubmittedBy", fields: [submittedByAdminId], references: [id])
+  reviewedByAdmin    Admin?             @relation("ReviewedBy", fields: [reviewedByAdminId], references: [id])
+  notes              Note[]
+  payments           Payment[]
+
+  @@unique([studentId, submissionTemplateId])
+  @@index([status])
+}
+
+// Free-form notes on a submission — multiple over time
+model Note {
+  id           String   @id @default(cuid())
+  submissionId String
+  adminId      String
+  content      String
+  createdAt    DateTime @default(now())
+
+  submission Submission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  admin      Admin      @relation(fields: [adminId], references: [id])
+}
+
+// ---------------------------------------------------------------------------
+// PAYMENT (money tracking)
+// ---------------------------------------------------------------------------
+
+model Payment {
+  id                String        @id @default(cuid())
+  studentId         String
+  submissionId      String? // optional stage reference
+  amount            Decimal       @db.Decimal(10, 2)
+  status            PaymentStatus @default(PENDING)
+  receivedAt        DateTime?
+  recordedByAdminId String?
+  notes             String?
+
+  student         Student     @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  submission      Submission? @relation(fields: [submissionId], references: [id])
+  recordedByAdmin Admin?      @relation(fields: [recordedByAdminId], references: [id])
+
+  @@index([studentId])
+}
+
+// ---------------------------------------------------------------------------
+// OUTSOURCING (expense tracking)
+// ---------------------------------------------------------------------------
+
+model Outsourcing {
+  id                String   @id @default(cuid())
+  mscProjectId      String
+  studentId         String? // null = project-wide outsourcing
+  paidTo            String
+  description       String
+  amount            Decimal  @db.Decimal(10, 2)
+  paidAt            DateTime @default(now())
+  recordedByAdminId String?
+  notes             String?
+
+  mscProject      MscProject @relation(fields: [mscProjectId], references: [id], onDelete: Cascade)
+  student         Student?   @relation(fields: [studentId], references: [id])
+  recordedByAdmin Admin?     @relation(fields: [recordedByAdminId], references: [id])
+
+  @@index([mscProjectId])
+  @@index([studentId])
+}
+

@@ -1,20 +1,20 @@
 "use client";
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
   BarChart3, 
   PieChart as PieChartIcon, 
   TrendingUp, 
   Download, 
-  Filter,
   Calendar,
-  ChevronRight,
-  ArrowRight
+  ArrowRight,
+  Loader2
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
+import { getReportAnalytics } from '@/lib/api';
 
-const reports = [
+const defaultReports = [
   { title: "Monthly Revenue Report", desc: "Detailed breakdown of income by region and subject.", type: "Financial", date: "May 2026" },
   { title: "Vendor Performance Audit", desc: "Rating and delivery speed analytics for all outsourcing partners.", type: "Performance", date: "Q2 2026" },
   { title: "Student Completion Metrics", desc: "Project success rates and deadline compliance tracking.", type: "Academic", date: "Monthly" },
@@ -22,6 +22,38 @@ const reports = [
 ];
 
 export default function ReportsPage() {
+  const [loading, setLoading] = useState(true);
+  const [analytics, setAnalytics] = useState({
+    reportsGenerated: 156,
+    activeMonitors: 12,
+    scheduled: 5,
+    dataQuality: "99.8%",
+  });
+
+  useEffect(() => {
+    async function loadReports() {
+      try {
+        setLoading(true);
+        const res = await getReportAnalytics();
+        if (res) setAnalytics(res);
+      } catch (err) {
+        console.error('Failed to load report analytics:', err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadReports();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-[60vh] flex flex-col items-center justify-center gap-3">
+        <Loader2 className="w-10 h-10 animate-spin text-primary" />
+        <p className="text-sm font-semibold text-slate-500">Generating analytics engine metrics...</p>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-8">
       <div className="flex items-center justify-between">
@@ -37,10 +69,10 @@ export default function ReportsPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {[
-          { label: "Reports Generated", value: "156", icon: BarChart3, color: "text-blue-600", bg: "bg-blue-100" },
-          { label: "Active Monitors", value: "12", icon: TrendingUp, color: "text-emerald-600", bg: "bg-emerald-100" },
-          { label: "Scheduled", value: "5", icon: Calendar, color: "text-orange-600", bg: "bg-orange-100" },
-          { label: "Data Quality", value: "99.8%", icon: PieChartIcon, color: "text-purple-600", bg: "bg-purple-100" },
+          { label: "Reports Generated", value: String(analytics.reportsGenerated), icon: BarChart3, color: "text-blue-600", bg: "bg-blue-100" },
+          { label: "Active Monitors", value: String(analytics.activeMonitors), icon: TrendingUp, color: "text-emerald-600", bg: "bg-emerald-100" },
+          { label: "Scheduled", value: String(analytics.scheduled), icon: Calendar, color: "text-orange-600", bg: "bg-orange-100" },
+          { label: "Data Quality", value: analytics.dataQuality, icon: PieChartIcon, color: "text-purple-600", bg: "bg-purple-100" },
         ].map((stat, i) => (
           <div key={i} className="glass-card p-6 rounded-2xl">
             <div className={cn("p-3 rounded-xl inline-flex mb-4", stat.bg, stat.color)}>
@@ -53,7 +85,7 @@ export default function ReportsPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {reports.map((report, i) => (
+        {defaultReports.map((report, i) => (
           <motion.div 
             key={i}
             initial={{ opacity: 0, x: -20 }}

@@ -11,16 +11,20 @@ import {
   ResponsiveContainer 
 } from 'recharts';
 
-const data = [
-  { name: 'JAN', revenue: 4000 },
-  { name: 'FEB', revenue: 3000 },
-  { name: 'MAR', revenue: 5000 },
-  { name: 'APR', revenue: 4500 },
-  { name: 'MAY', revenue: 6000 },
-  { name: 'JUN', revenue: 5500 },
+interface RevenueChartProps {
+  data?: { name: string; revenue: number; cost?: number }[];
+}
+
+const defaultData = [
+  { name: 'JAN', revenue: 45000 },
+  { name: 'FEB', revenue: 52000 },
+  { name: 'MAR', revenue: 48000 },
+  { name: 'APR', revenue: 61000 },
+  { name: 'MAY', revenue: 55000 },
+  { name: 'JUN', revenue: 67000 },
 ];
 
-export function RevenueChart() {
+export function RevenueChart({ data = defaultData }: RevenueChartProps) {
   return (
     <div className="h-[300px] w-full mt-6">
       <ResponsiveContainer width="100%" height="100%">

@@ -1,0 +1,350 @@
+# MSc Project Management System — Schema & Workflow
+
+Source data reviewed: `msc_project_details__-_Sheet2.csv` (one row per student, columns mixing
+topic, links, deadlines, revenue, feedback across proposal/midpoint/final stages — this doc
+normalizes that into a template + instance model).
+
+---
+
+## 1. Core Concept
+
+- **One `MscProject`** = the umbrella program (only one exists today, but modeled as a table so
+  it scales to more).
+- **`SubmissionTemplate`** = the *definition* of a submission stage (Proposal, Midpoint, Final...)
+  that lives on the `MscProject`. Defines what's required, template file, default deadline offset,
+  and what % of payment is due at that stage.
+- **`Student`** = a person enrolled under the `MscProject`, with their negotiated amount and title.
+- **`Submission`** = the *actual* instance of a `SubmissionTemplate` for one `Student` — this is
+  where real links, real deadlines, review status, feedback, and notes live.
+- **`Payment`** and **`Outsourcing`** are ledgers tied to `Student` (and roll up to `MscProject`).
+
+Template vs actual, exactly as you described: define once on `MscProject` / `SubmissionTemplate`,
+instantiate per `Student` as `Submission`.
+
+---
+
+## 2. Prisma Schema
+
+```prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ---------------------------------------------------------------------------
+// ADMIN
+// ---------------------------------------------------------------------------
+
+model Admin {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  createdAt DateTime @default(now())
+
+  adminSplits       AdminSplit[]
+  submissionsMade   Submission[] @relation("SubmittedBy")
+  submissionsReviewed Submission[] @relation("ReviewedBy")
+  notes             Note[]
+  payments          Payment[]
+  outsourcings      Outsourcing[]
+}
+
+// Revenue split between admins for a given MscProject. e.g. Admin A 60%, Admin B 40%.
+// Sum of percentages per mscProjectId should equal 100 (enforce in app layer).
+model AdminSplit {
+  id           String @id @default(cuid())
+  mscProjectId String
+  adminId      String
+  percentage   Decimal @db.Decimal(5, 2)
+
+  mscProject MscProject @relation(fields: [mscProjectId], references: [id], onDelete: Cascade)
+  admin      Admin      @relation(fields: [adminId], references: [id])
+
+  @@unique([mscProjectId, adminId])
+}
+
+// ---------------------------------------------------------------------------
+// MSC PROJECT (the template / umbrella)
+// ---------------------------------------------------------------------------
+
+model MscProject {
+  id                 String   @id @default(cuid())
+  name               String
+  description        String?
+  amountRangeLow     Decimal  @db.Decimal(10, 2)   // min acceptable price
+  amountRangeHigh    Decimal  @db.Decimal(10, 2)   // max acceptable price
+  currency           String   @default("GBP")
+  createdAt          DateTime @default(now())
+
+  submissionTemplates SubmissionTemplate[]
+  students            Student[]
+  adminSplits         AdminSplit[]
+  outsourcings        Outsourcing[]                 // project-wide (not tied to one student)
+}
+
+// Definition of each stage required for every student under this MscProject.
+// e.g. order=1 "Proposal", order=2 "Midpoint Review", order=3 "Final Submission".
+model SubmissionTemplate {
+  id                 String   @id @default(cuid())
+  mscProjectId       String
+  name               String                    // "Proposal", "Midpoint Review", "Final Submission"
+  order              Int                        // sequence, 1,2,3...
+  isFinal            Boolean  @default(false)   // marks the terminal submission
+  templateFileUrl    String?                    // link to the blank template doc/ppt
+  deadlineOffsetDays Int?                        // days from enrollment/prev stage (optional default)
+  paymentPercentage  Decimal  @db.Decimal(5, 2) // % of student's total amount due at this stage
+  instructions       String?
+
+  mscProject  MscProject   @relation(fields: [mscProjectId], references: [id], onDelete: Cascade)
+  submissions Submission[]
+
+  @@unique([mscProjectId, order])
+}
+
+// ---------------------------------------------------------------------------
+// STUDENT
+// ---------------------------------------------------------------------------
+
+enum StudentStatus {
+  ACTIVE
+  ON_HOLD
+  COMPLETED
+  DROPPED
+}
+
+model Student {
+  id             String        @id @default(cuid())
+  mscProjectId   String
+  name           String
+  mobileNo       String
+  rollNo         String
+  projectTitle   String                          // topic chosen, e.g. "Smart Waste Classification..."
+  agreedAmount   Decimal       @db.Decimal(10, 2) // final negotiated price
+  status         StudentStatus @default(ACTIVE)
+  createdAt      DateTime      @default(now())
+
+  mscProject   MscProject    @relation(fields: [mscProjectId], references: [id], onDelete: Cascade)
+  submissions  Submission[]
+  payments     Payment[]
+  outsourcings Outsourcing[]
+
+  @@index([mscProjectId])
+}
+
+// ---------------------------------------------------------------------------
+// SUBMISSION (actual instance per student per stage)
+// ---------------------------------------------------------------------------
+
+enum SubmissionStatus {
+  PENDING              // not started
+  SUBMITTED            // student/admin uploaded link, awaiting review
+  IN_REVIEW            // second admin reviewing
+  CHANGES_REQUESTED    // review sent it back
+  APPROVED             // review passed
+  SHARED_WITH_STUDENT  // file/feedback shared out
+  FEEDBACK_RECEIVED    // student responded
+  COMPLETED            // stage fully closed
+}
+
+model Submission {
+  id                   String            @id @default(cuid())
+  studentId            String
+  submissionTemplateId String
+
+  deadline             DateTime                     // actual deadline (can differ from template default)
+  fileLink             String?                       // gdrive / colab / github / docx link
+  status               SubmissionStatus  @default(PENDING)
+
+  submittedByAdminId   String?
+  submittedAt          DateTime?
+
+  reviewedByAdminId    String?
+  reviewedAt           DateTime?
+
+  sharedWithStudent    Boolean           @default(false)
+  sharedAt             DateTime?
+
+  studentFeedback      String?                       // feedback text from student after sharing
+  feedbackReceivedAt   DateTime?
+
+  createdAt            DateTime          @default(now())
+  updatedAt            DateTime          @updatedAt
+
+  student            Student            @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  submissionTemplate SubmissionTemplate @relation(fields: [submissionTemplateId], references: [id])
+  submittedByAdmin   Admin?             @relation("SubmittedBy", fields: [submittedByAdminId], references: [id])
+  reviewedByAdmin    Admin?             @relation("ReviewedBy", fields: [reviewedByAdminId], references: [id])
+  notes              Note[]
+  payments           Payment[]                        // payments linked to this stage (% due at this stage)
+
+  @@unique([studentId, submissionTemplateId])
+  @@index([status])
+}
+
+// Free-form notes on a submission — multiple over time, per your requirement #10.
+model Note {
+  id           String     @id @default(cuid())
+  submissionId String
+  adminId      String
+  content      String
+  createdAt    DateTime   @default(now())
+
+  submission Submission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  admin      Admin      @relation(fields: [adminId], references: [id])
+}
+
+// ---------------------------------------------------------------------------
+// PAYMENT (money tracking)
+// ---------------------------------------------------------------------------
+
+enum PaymentStatus {
+  PENDING
+  RECEIVED
+  PARTIAL
+}
+
+model Payment {
+  id           String        @id @default(cuid())
+  studentId    String
+  submissionId String?                     // optional: which stage this payment corresponds to
+  amount       Decimal       @db.Decimal(10, 2)
+  status       PaymentStatus @default(PENDING)
+  receivedAt   DateTime?
+  recordedByAdminId String?
+  notes        String?
+
+  student    Student     @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  submission Submission? @relation(fields: [submissionId], references: [id])
+  recordedByAdmin Admin? @relation(fields: [recordedByAdminId], references: [id])
+
+  @@index([studentId])
+}
+
+// ---------------------------------------------------------------------------
+// OUTSOURCING (cost tracking, per student and/or project-wide)
+// ---------------------------------------------------------------------------
+
+model Outsourcing {
+  id           String   @id @default(cuid())
+  mscProjectId String
+  studentId    String?                      // null = project-wide outsourcing (not tied to 1 student)
+  paidTo       String                        // vendor/freelancer name
+  description  String
+  amount       Decimal  @db.Decimal(10, 2)
+  paidAt       DateTime @default(now())
+  recordedByAdminId String?
+  notes        String?
+
+  mscProject MscProject @relation(fields: [mscProjectId], references: [id], onDelete: Cascade)
+  student    Student?   @relation(fields: [studentId], references: [id])
+  recordedByAdmin Admin? @relation(fields: [recordedByAdminId], references: [id])
+
+  @@index([mscProjectId])
+  @@index([studentId])
+}
+```
+
+**Derived values (compute in app/API layer, don't store):**
+- Student outstanding balance = `agreedAmount - SUM(payments.amount WHERE status = RECEIVED)`
+- Project total revenue = `SUM(students.agreedAmount)`
+- Project total outsourcing cost = `SUM(outsourcing.amount WHERE mscProjectId = X)` (student-scoped + project-wide)
+- Per-student margin = `agreedAmount - SUM(outsourcing.amount WHERE studentId = X)`
+- Admin's share of revenue = `totalReceivedPayments * adminSplit.percentage / 100`
+
+---
+
+## 3. Workflow (state machine, minimal)
+
+### 3.1 Setup flow (one-time per MscProject)
+
+```
+1. Create MscProject (name, amountRangeLow, amountRangeHigh)
+2. Create AdminSplit rows (2 admins, percentages summing to 100)
+3. Create SubmissionTemplate rows, in order:
+   e.g. order=1 Proposal (paymentPercentage=X%, templateFileUrl=...)
+        order=2 Midpoint Review (paymentPercentage=Y%)
+        order=3 Final Submission (paymentPercentage=Z%, isFinal=true)
+   -> X + Y + Z should equal 100
+```
+
+### 3.2 Enrollment flow (per Student)
+
+```
+1. Create Student (name, mobileNo, rollNo, projectTitle, agreedAmount) under MscProject
+2. System auto-creates one Submission row per SubmissionTemplate for this Student
+   -> status = PENDING, deadline = template.deadlineOffsetDays applied (or set manually)
+3. Optionally record initial advance Payment (status=RECEIVED)
+```
+
+### 3.3 Submission lifecycle (per Submission — repeats for every stage, every student)
+
+```
+PENDING
+  -> admin adds fileLink (gdrive/colab/github/docx) before deadline
+  -> status = SUBMITTED, submittedByAdminId + submittedAt set
+
+SUBMITTED
+  -> a DIFFERENT admin reviews (must not equal submittedByAdminId)
+  -> if issues found: status = CHANGES_REQUESTED (+ Note explaining what to fix)
+     -> loops back to SUBMITTED once re-uploaded
+  -> if OK: status = APPROVED, reviewedByAdminId + reviewedAt set
+
+APPROVED
+  -> admin shares file/feedback with student
+  -> status = SHARED_WITH_STUDENT, sharedWithStudent=true, sharedAt set
+
+SHARED_WITH_STUDENT
+  -> student responds
+  -> studentFeedback + feedbackReceivedAt recorded
+  -> status = FEEDBACK_RECEIVED
+
+FEEDBACK_RECEIVED
+  -> admin closes out the stage (further edits happen via CHANGES_REQUESTED loop if needed)
+  -> status = COMPLETED
+  -> triggers: check payment % due for this stage is RECEIVED (else flag as pending)
+
+Notes can be added at ANY point in this lifecycle (Note model, tied to Submission, timestamped, per-admin).
+```
+
+### 3.4 Project completion (per Student)
+
+```
+When every Submission for a Student is COMPLETED (esp. the one with isFinal=true):
+  -> Student.status = COMPLETED
+```
+
+### 3.5 Payment tracking (parallel, cross-cutting)
+
+```
+- Each Payment optionally links to a Submission (the stage it's paying for) or just to the Student (e.g. advance).
+- "Who hasn't paid": query Students where SUM(RECEIVED payments) < agreedAmount, or
+  where a Submission is COMPLETED but no matching Payment exists for that stage's % due.
+- Dashboard view: per MscProject -> list students with {agreedAmount, totalReceived, outstanding}.
+```
+
+### 3.6 Outsourcing tracking (parallel, cross-cutting)
+
+```
+- Any admin can log an Outsourcing row, either:
+   a) tied to a specific studentId (cost attributed to that student's project), or
+   b) mscProjectId only, studentId=null (shared/project-wide cost, e.g. shared tool subscription)
+- Reporting rolls up both scopes: per-student cost, and total project cost.
+```
+
+---
+
+## 4. Quick reference — status enums
+
+| Enum | Values |
+|---|---|
+| `StudentStatus` | ACTIVE, ON_HOLD, COMPLETED, DROPPED |
+| `SubmissionStatus` | PENDING → SUBMITTED → IN_REVIEW → CHANGES_REQUESTED (loop) / APPROVED → SHARED_WITH_STUDENT → FEEDBACK_RECEIVED → COMPLETED |
+| `PaymentStatus` | PENDING, RECEIVED, PARTIAL |
+
+This keeps template (MscProject + SubmissionTemplate) fully separate from actual per-student data
+(Student + Submission + Payment + Outsourcing + Note), so adding a new MscProject or a new
+submission stage never touches existing student records.

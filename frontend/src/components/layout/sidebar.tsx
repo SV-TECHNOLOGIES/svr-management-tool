@@ -21,12 +21,11 @@ import { cn } from '@/lib/utils';
 
 const navItems = [
   { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-  { name: 'Subjects', href: '/subjects', icon: BookOpen },
+  { name: 'MSc Projects', href: '/subjects', icon: BookOpen },
   { name: 'Students', href: '/students', icon: Users },
+  { name: 'Submissions Lifecycle', href: '/documents', icon: FileText },
+  { name: 'Revenue & Payments', href: '/finance', icon: CircleDollarSign },
   { name: 'Outsourcing', href: '/outsourcing', icon: ExternalLink },
-  { name: 'Revenue & Finance', href: '/finance', icon: CircleDollarSign },
-  { name: 'Deadlines', href: '/deadlines', icon: Clock },
-  { name: 'Documents', href: '/documents', icon: FileText },
   { name: 'Reports', href: '/reports', icon: BarChart3 },
   { name: 'Settings', href: '/settings', icon: Settings },
 ];

@@ -1,6 +1,6 @@
 "use client";
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
   Settings, 
   User, 
@@ -10,10 +10,11 @@ import {
   Database,
   ChevronRight,
   Save,
-  Moon
+  Moon,
+  Loader2
 } from 'lucide-react';
-import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
+import { getUserProfile, updateUserProfile } from '@/lib/api';
 
 const settingsSections = [
   { id: 'profile', name: 'Profile Settings', icon: User, desc: 'Manage your personal information and profile picture.' },
@@ -24,6 +25,64 @@ const settingsSections = [
 ];
 
 export default function SettingsPage() {
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [successMsg, setSuccessMsg] = useState('');
+  const [profile, setProfile] = useState({
+    name: 'James Wilson',
+    email: 'svrtechgroups@gmail.com',
+    role: 'ADMIN',
+  });
+
+  useEffect(() => {
+    async function loadUser() {
+      try {
+        setLoading(true);
+        const data = await getUserProfile();
+        if (data) {
+          setProfile({
+            name: data.name || 'James Wilson',
+            email: data.email || 'svrtechgroups@gmail.com',
+            role: data.role || 'ADMIN',
+          });
+        }
+      } catch (err) {
+        console.error('Failed to load user profile:', err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadUser();
+  }, []);
+
+  const handleSaveProfile = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      setSaving(true);
+      setSuccessMsg('');
+      const updated = await updateUserProfile({
+        name: profile.name,
+        email: profile.email,
+      });
+      setProfile((prev) => ({ ...prev, ...updated }));
+      setSuccessMsg('Profile settings updated successfully!');
+      setTimeout(() => setSuccessMsg(''), 3000);
+    } catch (err) {
+      console.error('Failed to save profile:', err);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-[60vh] flex flex-col items-center justify-center gap-3">
+        <Loader2 className="w-10 h-10 animate-spin text-primary" />
+        <p className="text-sm font-semibold text-slate-500">Loading settings...</p>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-8">
       <div>
@@ -60,18 +119,28 @@ export default function SettingsPage() {
         </div>
 
         <div className="lg:col-span-2 glass-card p-8 rounded-2xl">
-          <div className="flex justify-between items-center mb-8 pb-6 border-b border-slate-100">
-            <h3 className="text-xl font-bold text-slate-900">Profile Settings</h3>
-            <button className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-xl text-sm font-bold hover:bg-primary-dark transition-all">
-              <Save size={18} />
-              Save Changes
-            </button>
-          </div>
+          <form onSubmit={handleSaveProfile} className="space-y-8">
+            <div className="flex justify-between items-center pb-6 border-b border-slate-100">
+              <h3 className="text-xl font-bold text-slate-900">Profile Settings</h3>
+              <button 
+                type="submit" 
+                disabled={saving}
+                className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-xl text-sm font-bold hover:bg-primary-dark transition-all disabled:opacity-50"
+              >
+                <Save size={18} />
+                {saving ? 'Saving...' : 'Save Changes'}
+              </button>
+            </div>
 
-          <form className="space-y-8">
+            {successMsg && (
+              <div className="p-3 bg-emerald-50 text-emerald-700 text-xs font-semibold rounded-xl">
+                {successMsg}
+              </div>
+            )}
+
             <div className="flex items-center gap-6">
               <div className="w-24 h-24 rounded-full bg-slate-100 flex items-center justify-center text-3xl font-bold text-primary relative group cursor-pointer">
-                JW
+                {profile.name.split(' ').map(n => n[0]).join('')}
                 <div className="absolute inset-0 bg-black/40 rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white text-xs font-bold">
                   Change
                 </div>
@@ -87,7 +156,8 @@ export default function SettingsPage() {
                 <label className="text-xs font-bold text-slate-400 uppercase tracking-widest">Full Name</label>
                 <input 
                   type="text" 
-                  defaultValue="James Wilson"
+                  value={profile.name}
+                  onChange={(e) => setProfile({ ...profile, name: e.target.value })}
                   className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 outline-none"
                 />
               </div>
@@ -95,7 +165,8 @@ export default function SettingsPage() {
                 <label className="text-xs font-bold text-slate-400 uppercase tracking-widest">Email Address</label>
                 <input 
                   type="email" 
-                  defaultValue="james@outsourcepro.com"
+                  value={profile.email}
+                  onChange={(e) => setProfile({ ...profile, email: e.target.value })}
                   className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 outline-none"
                 />
               </div>
@@ -103,15 +174,16 @@ export default function SettingsPage() {
                 <label className="text-xs font-bold text-slate-400 uppercase tracking-widest">Job Role</label>
                 <input 
                   type="text" 
-                  defaultValue="Portfolio Manager"
-                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 outline-none"
+                  disabled
+                  value={profile.role}
+                  className="w-full px-4 py-3 bg-slate-100 border border-slate-200 rounded-xl text-sm text-slate-500 outline-none cursor-not-allowed"
                 />
               </div>
               <div className="space-y-2">
                 <label className="text-xs font-bold text-slate-400 uppercase tracking-widest">Default Currency</label>
                 <select className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 outline-none">
-                  <option>GBP (£)</option>
                   <option>INR (₹)</option>
+                  <option>GBP (£)</option>
                 </select>
               </div>
             </div>
