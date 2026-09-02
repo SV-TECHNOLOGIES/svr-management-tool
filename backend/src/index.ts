@@ -98,8 +98,11 @@ app.get('/api/dashboard/stats', getDashboardStats);
 app.get('/api/dashboard/deadlines', getUpcomingDeadlines);
 app.get('/api/dashboard/updates', getRecentUpdates);
 
-app.listen(PORT, () => {
-  console.log(`Backend server running on port ${PORT}`);
-});
+if (process.env.NODE_ENV !== 'test' && !process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`Backend server running on port ${PORT}`);
+  });
+}
 
 export { app, prisma };
+export default app;
