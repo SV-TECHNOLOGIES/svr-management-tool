@@ -21,14 +21,43 @@ enum StudentStatus {
 }
 
 enum SubmissionStatus {
-  PENDING              // not started
-  SUBMITTED            // student/admin uploaded link, awaiting review
-  IN_REVIEW            // second admin reviewing
-  CHANGES_REQUESTED    // review sent it back
-  APPROVED             // review passed
-  SHARED_WITH_STUDENT  // file/feedback shared out
-  FEEDBACK_RECEIVED    // student responded
-  COMPLETED            // stage fully closed
+  PENDING // not started
+  SUBMITTED // student/admin uploaded link, awaiting review
+  IN_REVIEW // second admin reviewing
+  CHANGES_REQUESTED // review sent it back
+  APPROVED // review passed
+  SHARED_WITH_STUDENT // file/feedback shared out
+  FEEDBACK_RECEIVED // student responded
+  COMPLETED // stage fully closed
+}
+
+enum LinkType {
+  GITHUB
+  GOOGLE_DOC
+  PPT
+  COLAB
+  DATASET
+  DRIVE
+  REPORT
+  OTHER
+}
+
+enum TaskStatus {
+  TODO
+  IN_PROGRESS
+  BLOCKED
+  DONE
+}
+
+enum DeliveryStatus {
+  PLANNED // scheduled to be sent
+  SENT // sent to student
+  ACKNOWLEDGED // student confirmed receipt
+}
+
+enum ExpenseStatus {
+  UNPAID
+  PAID
 }
 
 enum PaymentStatus {
@@ -50,11 +79,14 @@ model Admin {
   createdAt DateTime @default(now())
 
   adminSplits         AdminSplit[]
-  submissionsMade     Submission[]  @relation("SubmittedBy")
-  submissionsReviewed Submission[]  @relation("ReviewedBy")
+  submissionsMade     Submission[]         @relation("SubmittedBy")
+  submissionsReviewed Submission[]         @relation("ReviewedBy")
   notes               Note[]
   payments            Payment[]
   outsourcings        Outsourcing[]
+  deliveries          Delivery[]
+  tasks               Task[]
+  projectDeliverables ProjectDeliverable[]
 }
 
 model AdminSplit {
@@ -80,9 +112,14 @@ model MscProject {
   amountRangeLow  Decimal  @db.Decimal(10, 2) // min acceptable price
   amountRangeHigh Decimal  @db.Decimal(10, 2) // max acceptable price
   currency        String   @default("GBP")
+  briefing        String? // shared briefing / task description every student build follows
+  briefDocUrl     String? // link to the shared briefing / task document
   createdAt       DateTime @default(now())
 
   submissionTemplates SubmissionTemplate[]
+  taskTemplates       ProjectTaskTemplate[]
+  deliverables        ProjectDeliverable[]
+  tasks               Task[]
   students            Student[]
   adminSplits         AdminSplit[]
   outsourcings        Outsourcing[] // project-wide (not tied to one student)
@@ -90,43 +127,85 @@ model MscProject {
 
 // Definition of each stage required for every student under this MscProject.
 model SubmissionTemplate {
-  id                 String   @id @default(cuid())
+  id                 String     @id @default(cuid())
   mscProjectId       String
   name               String // "Proposal", "Midpoint Review", "Final Submission"
   order              Int // sequence: 1, 2, 3...
-  isFinal            Boolean  @default(false) // marks the terminal submission
+  isFinal            Boolean    @default(false) // marks the terminal submission
   templateFileUrl    String? // link to the blank template doc/ppt
   deadlineOffsetDays Int? // days from enrollment/prev stage
-  paymentPercentage  Decimal  @db.Decimal(5, 2) // % of student's total amount due at this stage
+  paymentPercentage  Decimal    @db.Decimal(5, 2) // % of student's total amount due at this stage
   instructions       String?
+  requiredLinkTypes  LinkType[] @default([]) // which links must be submitted at this stage
 
-  mscProject  MscProject   @relation(fields: [mscProjectId], references: [id], onDelete: Cascade)
-  submissions Submission[]
+  mscProject    MscProject            @relation(fields: [mscProjectId], references: [id], onDelete: Cascade)
+  submissions   Submission[]
+  taskTemplates ProjectTaskTemplate[]
 
   @@unique([mscProjectId, order])
+}
+
+// Default sprint checklist for every student build under this project.
+// Copied into Task rows when a student is enrolled.
+model ProjectTaskTemplate {
+  id                   String  @id @default(cuid())
+  mscProjectId         String
+  submissionTemplateId String? // optional: stage this task belongs to
+  title                String
+  description          String?
+  order                Int     @default(0)
+
+  mscProject         MscProject          @relation(fields: [mscProjectId], references: [id], onDelete: Cascade)
+  submissionTemplate SubmissionTemplate? @relation(fields: [submissionTemplateId], references: [id], onDelete: SetNull)
+
+  @@index([mscProjectId])
 }
 
 // ---------------------------------------------------------------------------
 // STUDENT
 // ---------------------------------------------------------------------------
 
+// A real person. One person can be enrolled in several projects (one Student row per enrollment).
+model Person {
+  id        String   @id @default(cuid())
+  name      String
+  mobileNo  String
+  rollNo    String?
+  email     String?
+  createdAt DateTime @default(now())
+
+  enrollments Student[]
+}
+
+// A Student row is one person's enrollment (build) in one project.
+// name / mobileNo / rollNo / email are kept in sync with the Person for convenience.
 model Student {
   id           String        @id @default(cuid())
   mscProjectId String
+  personId     String
   name         String
   mobileNo     String
   rollNo       String
-  projectTitle String // topic chosen by student
+  projectTitle String? // topic chosen by student (optional)
   agreedAmount Decimal       @db.Decimal(10, 2) // final negotiated price
   status       StudentStatus @default(ACTIVE)
+  email        String?
+  meetingDay   String? // weekly meeting day, e.g. "Thursday"
   createdAt    DateTime      @default(now())
 
   mscProject   MscProject    @relation(fields: [mscProjectId], references: [id], onDelete: Cascade)
+  person       Person        @relation(fields: [personId], references: [id])
   submissions  Submission[]
   payments     Payment[]
   outsourcings Outsourcing[]
+  links        Link[]
+  deliveries   Delivery[]
+  tasks        Task[]
+  notes        Note[]
 
+  @@unique([mscProjectId, personId])
   @@index([mscProjectId])
+  @@index([personId])
 }
 
 // ---------------------------------------------------------------------------
@@ -162,21 +241,129 @@ model Submission {
   reviewedByAdmin    Admin?             @relation("ReviewedBy", fields: [reviewedByAdminId], references: [id])
   notes              Note[]
   payments           Payment[]
+  links              Link[]
+  deliveries         Delivery[]
+  tasks              Task[]
 
   @@unique([studentId, submissionTemplateId])
   @@index([status])
 }
 
-// Free-form notes on a submission — multiple over time
+// Free-form notes on a submission or on a student (e.g. weekly meeting notes)
 model Note {
   id           String   @id @default(cuid())
-  submissionId String
+  submissionId String?
+  studentId    String?
   adminId      String
   content      String
   createdAt    DateTime @default(now())
 
-  submission Submission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
-  admin      Admin      @relation(fields: [adminId], references: [id])
+  submission Submission? @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  student    Student?    @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  admin      Admin       @relation(fields: [adminId], references: [id])
+
+  @@index([studentId])
+}
+
+// ---------------------------------------------------------------------------
+// LINKS (GitHub / Google Docs / PPT / Colab / datasets ...)
+// Attached to a student (project-wide links), a submission, or a delivery.
+// ---------------------------------------------------------------------------
+
+model Link {
+  id           String   @id @default(cuid())
+  type         LinkType @default(OTHER)
+  label        String?
+  url          String
+  studentId    String?
+  submissionId String?
+  deliveryId   String?
+  createdAt    DateTime @default(now())
+
+  student    Student?    @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  submission Submission? @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  delivery   Delivery?   @relation(fields: [deliveryId], references: [id], onDelete: Cascade)
+
+  @@index([studentId])
+  @@index([submissionId])
+  @@index([deliveryId])
+}
+
+// ---------------------------------------------------------------------------
+// DELIVERY (documents / results sent to a student over time)
+// ---------------------------------------------------------------------------
+
+// A deliverable defined once for a whole project (e.g. "Week 3 results pack").
+// It fans out into one Delivery per enrolled student so you can see who has received it.
+model ProjectDeliverable {
+  id               String    @id @default(cuid())
+  mscProjectId     String
+  title            String
+  description      String?
+  dueDate          DateTime?
+  createdByAdminId String?
+  createdAt        DateTime  @default(now())
+
+  mscProject     MscProject @relation(fields: [mscProjectId], references: [id], onDelete: Cascade)
+  createdByAdmin Admin?     @relation(fields: [createdByAdminId], references: [id])
+  deliveries     Delivery[]
+
+  @@index([mscProjectId])
+}
+
+model Delivery {
+  id                   String         @id @default(cuid())
+  studentId            String
+  projectDeliverableId String? // set when this delivery is one student's copy of a project deliverable
+  submissionId         String? // optional stage this delivery belongs to
+  title                String
+  description          String?
+  status               DeliveryStatus @default(SENT)
+  channel              String? // WhatsApp, Email, Drive ...
+  scheduledFor         DateTime? // when it should be sent
+  sentAt               DateTime?
+  acknowledgedAt       DateTime?
+  sentByAdminId        String?
+  createdAt            DateTime       @default(now())
+
+  student            Student             @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  projectDeliverable ProjectDeliverable? @relation(fields: [projectDeliverableId], references: [id], onDelete: Cascade)
+  submission         Submission?         @relation(fields: [submissionId], references: [id], onDelete: SetNull)
+  sentByAdmin        Admin?              @relation(fields: [sentByAdminId], references: [id])
+  links              Link[]
+
+  @@unique([projectDeliverableId, studentId])
+  @@index([studentId])
+  @@index([status])
+}
+
+// ---------------------------------------------------------------------------
+// TASK (sprint checklist for one student's build)
+// ---------------------------------------------------------------------------
+
+model Task {
+  id              String     @id @default(cuid())
+  studentId       String? // null = general work item (my work board)
+  mscProjectId    String? // project the task belongs to (set automatically from the student)
+  submissionId    String? // optional stage
+  title           String
+  description     String?
+  status          TaskStatus @default(TODO)
+  order           Int        @default(0)
+  dueDate         DateTime?
+  assigneeAdminId String?
+  completedAt     DateTime?
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+
+  student       Student?    @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  mscProject    MscProject? @relation(fields: [mscProjectId], references: [id], onDelete: Cascade)
+  submission    Submission? @relation(fields: [submissionId], references: [id], onDelete: SetNull)
+  assigneeAdmin Admin?      @relation(fields: [assigneeAdminId], references: [id])
+
+  @@index([studentId])
+  @@index([assigneeAdminId])
+  @@index([status])
 }
 
 // ---------------------------------------------------------------------------
@@ -205,13 +392,15 @@ model Payment {
 // ---------------------------------------------------------------------------
 
 model Outsourcing {
-  id                String   @id @default(cuid())
+  id                String        @id @default(cuid())
   mscProjectId      String
   studentId         String? // null = project-wide outsourcing
   paidTo            String
-  description       String
-  amount            Decimal  @db.Decimal(10, 2)
-  paidAt            DateTime @default(now())
+  description       String?
+  amount            Decimal       @db.Decimal(10, 2)
+  status            ExpenseStatus @default(UNPAID) // have we paid the vendor yet?
+  paidAt            DateTime      @default(now()) // date the expense was logged / incurred
+  settledAt         DateTime? // date we actually paid the vendor
   recordedByAdminId String?
   notes             String?
 
@@ -222,4 +411,3 @@ model Outsourcing {
   @@index([mscProjectId])
   @@index([studentId])
 }
-

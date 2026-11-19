@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "project-portal": {
+      "type": "stdio",
+      "command": "backend/node_modules/.bin/ts-node",
+      "args": ["--transpile-only", "backend/src/mcp/stdio.ts"],
+      "env": {}
+    }
+  }
+}

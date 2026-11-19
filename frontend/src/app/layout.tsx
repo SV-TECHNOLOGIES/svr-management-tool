@@ -5,8 +5,8 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
-  title: "Outsource Pro | Management Suite",
-  description: "Enterprise SaaS for project and assignment management",
+  title: "Project Portal",
+  description: "Track project briefs, student builds, submissions and deliveries",
 };
 
 export default function RootLayout({
@@ -15,7 +15,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={`${inter.variable} font-sans`}>
         {children}
       </body>

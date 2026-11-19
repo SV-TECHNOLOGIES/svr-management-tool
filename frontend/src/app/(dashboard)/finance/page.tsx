@@ -15,7 +15,8 @@ import {
   Users
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { getFinanceOverview, recordPayment } from '@/lib/api';
+import { getFinanceOverview, recordPayment, getProjectFinance } from '@/lib/api';
+import Link from 'next/link';
 
 export default function FinancePage() {
   const [data, setData] = useState<any>(null);
@@ -29,12 +30,14 @@ export default function FinancePage() {
   const [paymentNotes, setPaymentNotes] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+  const [projFin, setProjFin] = useState<any>(null);
 
   const fetchData = async () => {
     try {
       setLoading(true);
-      const res = await getFinanceOverview();
+      const [res, pf] = await Promise.all([getFinanceOverview(), getProjectFinance()]);
       setData(res);
+      setProjFin(pf);
       if (res.studentLedger?.length > 0 && !selectedStudentId) {
         setSelectedStudentId(res.studentLedger[0].studentId);
       }
@@ -90,8 +93,7 @@ export default function FinancePage() {
 
   const summary = data?.summary || {};
   const studentLedger = data?.studentLedger || [];
-  const adminSplitsSummary = data?.adminSplitsSummary || [];
-
+  
   const filteredLedger = studentLedger.filter((s: any) => {
     if (filter === 'UNPAID') return s.outstandingBalance > 0;
     if (filter === 'PAID') return s.outstandingBalance <= 0;
@@ -154,32 +156,89 @@ export default function FinancePage() {
         </div>
       </div>
 
-      {/* Admin Split Calculation Box */}
-      <div className="glass-card p-8 rounded-2xl space-y-4">
-        <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-          <div>
-            <h2 className="text-xl font-bold text-slate-900">Admin Revenue Split Breakdown</h2>
-            <p className="text-xs text-slate-500">Calculated share of received payments based on defined admin % split</p>
-          </div>
-          <span className="px-3 py-1 bg-slate-100 text-slate-700 font-bold text-xs rounded-lg">
-            Received Pool: £{summary.totalReceivedPayments}
-          </span>
+      {/* Per-project money & admin split */}
+      <div className="glass-card p-6 md:p-8 rounded-2xl space-y-6">
+        <div className="border-b border-slate-100 pb-4">
+          <h2 className="text-xl font-bold text-slate-900">Money & admin split by project</h2>
+          <p className="text-xs text-slate-500">Each project has its own split. Shares are calculated from money received on that project, and from profit after its expenses.</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {adminSplitsSummary.map((admin: any, idx: number) => (
-            <div key={idx} className="p-5 bg-slate-50 border border-slate-200 rounded-2xl flex items-center justify-between">
-              <div>
-                <p className="text-xs font-bold text-slate-500 uppercase">{admin.adminName}</p>
-                <p className="text-sm font-semibold text-slate-700">Split Percentage: {admin.percentage}%</p>
-              </div>
-              <div className="text-right">
-                <p className="text-[10px] font-bold text-slate-400 uppercase">Calculated Share</p>
-                <p className="text-2xl font-bold text-primary">£{admin.totalShareAmount}</p>
-              </div>
-            </div>
-          ))}
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm min-w-[860px]">
+            <thead>
+              <tr className="text-left text-xs font-bold text-slate-400 uppercase tracking-wide">
+                <th className="px-3 py-2">Project</th>
+                <th className="px-3 py-2">Received</th>
+                <th className="px-3 py-2">Students owe</th>
+                <th className="px-3 py-2">Expenses</th>
+                <th className="px-3 py-2">Net profit so far</th>
+                <th className="px-3 py-2">If fully paid</th>
+                <th className="px-3 py-2">Split (so far → if fully paid)</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-100">
+              {(projFin?.perProject || []).map((p: any) => (
+                <tr key={p.projectId} className="align-top">
+                  <td className="px-3 py-3">
+                    <Link href={`/subjects/${p.projectId}`} className="font-bold text-slate-900 hover:text-primary">{p.projectName}</Link>
+                    <p className="text-xs text-slate-400">{p.students} students</p>
+                  </td>
+                  <td className="px-3 py-3 font-semibold text-emerald-700">£{p.received.toFixed(2)}</td>
+                  <td className="px-3 py-3 text-amber-700">£{p.outstanding.toFixed(2)}</td>
+                  <td className="px-3 py-3">
+                    £{p.expenses.toFixed(2)}
+                    {p.expensesUnpaid > 0 && <p className="text-xs text-amber-700">£{p.expensesUnpaid.toFixed(2)} unpaid</p>}
+                  </td>
+                  <td className="px-3 py-3 font-semibold text-violet-700">£{p.netProfit.toFixed(2)}</td>
+                  <td className="px-3 py-3">
+                    <span className="font-bold text-violet-800">£{p.projectedProfit.toFixed(2)}</span>
+                    <p className="text-[11px] text-slate-400">£{p.agreedRevenue.toFixed(2)} agreed − expenses</p>
+                  </td>
+                  <td className="px-3 py-3">
+                    {p.splits.length ? (
+                      <ul className="space-y-0.5">
+                        {p.splits.map((sp: any) => (
+                          <li key={sp.adminId} className="text-xs">
+                            <span className="font-semibold text-slate-800">{sp.adminName}</span> {sp.percentage}%: £{sp.shareOfProfit.toFixed(2)} → <span className="font-bold text-violet-800">£{sp.shareOfProjectedProfit.toFixed(2)}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <span className="text-xs text-slate-400">No split set</span>
+                    )}
+                    {p.splits.length > 0 && p.splitTotal !== 100 && <p className="text-xs text-rose-600 font-semibold">Split adds to {p.splitTotal}%</p>}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
+
+        {projFin?.perAdmin?.length > 0 && (
+          <div>
+            <h3 className="text-sm font-bold text-slate-900 mb-3">Totals per admin (all projects)</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {projFin.perAdmin.map((a: any) => (
+                <div key={a.adminId} className="p-4 bg-slate-50 border border-slate-200 rounded-2xl">
+                  <p className="text-sm font-bold text-slate-900">{a.adminName}</p>
+                  <p className="text-xs text-slate-500 mb-2">{a.projects.map((x: any) => `${x.projectName}: ${x.percentage}%`).join(' · ')}</p>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-slate-500">Of received</span>
+                    <span className="font-semibold">£{a.shareOfReceived.toFixed(2)}</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-slate-500">Profit share so far</span>
+                    <span className="font-bold text-violet-700">£{a.shareOfProfit.toFixed(2)}</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-slate-500">If everyone pays in full</span>
+                    <span className="font-bold text-violet-800">£{a.shareOfProjectedProfit.toFixed(2)}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Student Payment Tracking Table */}
@@ -321,12 +380,26 @@ export default function FinancePage() {
                     onChange={(e) => setSelectedStudentId(e.target.value)}
                     className="w-full mt-1 px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none"
                   >
-                    {studentLedger.map((s: any) => (
-                      <option key={s.studentId} value={s.studentId}>
-                        {s.studentName} ({s.rollNo}) — Balance: £{s.outstandingBalance}
-                      </option>
+                    {Array.from(new Set<string>(studentLedger.map((s: any) => s.mscProjectName))).map((proj) => (
+                      <optgroup key={proj} label={`Project: ${proj}`}>
+                        {studentLedger
+                          .filter((s: any) => s.mscProjectName === proj)
+                          .map((s: any) => (
+                            <option key={s.studentId} value={s.studentId}>
+                              {s.studentName} — owes £{s.outstandingBalance}
+                            </option>
+                          ))}
+                      </optgroup>
                     ))}
                   </select>
+                  {(() => {
+                    const sel = studentLedger.find((s: any) => s.studentId === selectedStudentId);
+                    return sel ? (
+                      <p className="text-xs text-slate-500 mt-1">
+                        Goes to project <span className="font-bold text-slate-800">{sel.mscProjectName}</span> · agreed £{sel.agreedAmount}, paid £{sel.totalPaid}
+                      </p>
+                    ) : null;
+                  })()}
                 </div>
 
                 <div>

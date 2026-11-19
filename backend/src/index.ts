@@ -2,6 +2,10 @@ import express, { Request, Response } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { prisma } from './utils/prisma';
+import { authenticate } from './middleware/auth';
+import { login, me, changePassword } from './controllers/auth.controller';
+import workspaceRoutes from './controllers/workspace.controller';
+import { mcpHttpHandler } from './mcp/http';
 
 import {
   getMscProjects,
@@ -14,8 +18,6 @@ import {
   getStudents,
   createStudent,
   getStudentById,
-  updateStudent,
-  deleteStudent,
 } from './controllers/student.controller';
 
 import {
@@ -34,11 +36,7 @@ import {
   updatePayment,
 } from './controllers/finance.controller';
 
-import {
-  getOutsourcingExpenses,
-  createOutsourcingExpense,
-  deleteOutsourcingExpense,
-} from './controllers/outsourcing.controller';
+import { deleteOutsourcingExpense } from './controllers/outsourcing.controller';
 
 import {
   getDashboardStats,
@@ -48,16 +46,34 @@ import {
 
 dotenv.config();
 
+if (process.env.NODE_ENV === 'production' && (!process.env.JWT_SECRET || process.env.JWT_SECRET === 'secret')) {
+  console.warn('WARNING: JWT_SECRET is not set to a strong value. Set it in the environment.');
+}
+
 const app = express();
 const PORT = process.env.PORT || 5001;
 
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '2mb' }));
 
 // Health check
 app.get('/health', (req: Request, res: Response) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
+
+// Auth (public)
+app.post('/api/auth/login', login);
+
+// Remote MCP endpoint (own bearer-token auth)
+app.all('/api/mcp', mcpHttpHandler);
+
+// Everything else under /api requires a logged-in admin
+app.use('/api', authenticate);
+app.get('/api/auth/me', me);
+app.post('/api/auth/change-password', changePassword);
+
+// Project brief/templates, student workspace, links, deliveries, tasks, notes, agenda
+app.use('/api', workspaceRoutes);
 
 // Admin endpoints
 app.get('/api/admins', getAdmins);
@@ -71,8 +87,8 @@ app.get('/api/msc-projects/:id', getMscProjectById);
 app.get('/api/students', getStudents);
 app.post('/api/students', createStudent);
 app.get('/api/students/:id', getStudentById);
-app.put('/api/students/:id', updateStudent);
-app.delete('/api/students/:id', deleteStudent);
+// PUT /api/students/:id is served by workspaceRoutes (syncs person details)
+// DELETE /api/students/:id is served by workspaceRoutes (unenroll)
 
 // Submission endpoints (Lifecycle flow)
 app.put('/api/submissions/:id/file', updateSubmissionFile);
@@ -89,8 +105,7 @@ app.post('/api/finance/payments', recordPayment);
 app.put('/api/finance/payments/:id', updatePayment);
 
 // Outsourcing endpoints
-app.get('/api/outsourcing', getOutsourcingExpenses);
-app.post('/api/outsourcing', createOutsourcingExpense);
+// GET/POST/PUT /api/outsourcing are served by workspaceRoutes (business.service)
 app.delete('/api/outsourcing/:id', deleteOutsourcingExpense);
 
 // Dashboard endpoints

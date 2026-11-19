@@ -20,6 +20,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   getStudents, 
   getAdmins, 
+  getCurrentUser,
   updateSubmissionFile, 
   reviewSubmission, 
   updateShareStatus, 
@@ -45,6 +46,7 @@ export default function SubmissionsLifecyclePage() {
 
   // Active submission drawer/modal for detailed action
   const [selectedSub, setSelectedSub] = useState<any>(null);
+  const [view, setView] = useState<'students' | 'stages'>('students');
   const [activeAdminId, setActiveAdminId] = useState<string>('');
 
   // Form states inside submission modal
@@ -66,7 +68,8 @@ export default function SubmissionsLifecyclePage() {
       setStudents(studentData);
       setAdmins(adminData);
       if (adminData.length > 0) {
-        setActiveAdminId(adminData[0].id);
+        const me = getCurrentUser();
+        setActiveAdminId((prev) => prev || adminData.find((a: any) => a.id === me?.id)?.id || adminData[0].id);
       }
     } catch (err) {
       console.error('Failed to fetch submissions:', err);
@@ -355,8 +358,18 @@ export default function SubmissionsLifecyclePage() {
           </button>
         </div>
 
-        <div className="text-xs font-semibold text-slate-500">
-          Showing {filteredSubmissions.length} of {allSubmissionsList.length} Stage Records
+        <div className="flex items-center gap-3">
+          <div className="flex bg-slate-100 p-1 rounded-lg text-xs font-semibold" role="tablist" aria-label="View">
+            <button role="tab" aria-selected={view === 'students'} onClick={() => setView('students')} className={`px-3 py-1 rounded-md ${view === 'students' ? 'bg-white shadow-sm text-primary' : 'text-slate-500'}`}>
+              One row per student
+            </button>
+            <button role="tab" aria-selected={view === 'stages'} onClick={() => setView('stages')} className={`px-3 py-1 rounded-md ${view === 'stages' ? 'bg-white shadow-sm text-primary' : 'text-slate-500'}`}>
+              One row per stage
+            </button>
+          </div>
+          <span className="text-xs font-semibold text-slate-500">
+            {filteredSubmissions.length} of {allSubmissionsList.length} stages
+          </span>
         </div>
       </div>
 
@@ -370,6 +383,50 @@ export default function SubmissionsLifecyclePage() {
         ) : filteredSubmissions.length === 0 ? (
           <div className="p-12 text-center text-slate-500">
             No submissions found under the selected stage filter ({statusFilter}).
+          </div>
+        ) : view === 'students' ? (
+          <div className="divide-y divide-slate-100">
+            <p className="px-6 py-3 text-xs text-slate-500 bg-slate-50">
+              Each student has one entry per submission stage of their project. Click a stage to manage it; highlighted stages match the filter.
+            </p>
+            {students
+              .filter((st) => st.submissions?.some((sub: any) => filteredSubmissions.some((f) => f.id === sub.id)))
+              .map((st) => (
+                <div key={st.id} className="px-6 py-4 flex flex-col lg:flex-row lg:items-center gap-3">
+                  <div className="lg:w-64 shrink-0">
+                    <a href={`/students/${st.id}`} className="font-bold text-slate-900 text-sm hover:text-primary">{st.name}</a>
+                    <p className="text-xs text-slate-400">{st.mscProjectName}{st.rollNo ? ` • ${st.rollNo}` : ''}</p>
+                  </div>
+                  <div className="flex flex-wrap gap-2 flex-1">
+                    {st.submissions.map((sub: any) => {
+                      const match = filteredSubmissions.some((f) => f.id === sub.id);
+                      const overdue = sub.status !== 'COMPLETED' && new Date(sub.deadline) < new Date();
+                      return (
+                        <button
+                          key={sub.id}
+                          onClick={() => openSubmissionModal(sub, { name: st.name, rollNo: st.rollNo, projectTitle: st.projectTitle })}
+                          className={`text-left px-3 py-2 rounded-xl border text-xs transition-colors ${match ? 'border-primary/40 bg-white shadow-sm' : 'border-slate-200 bg-slate-50 opacity-60'} hover:border-primary`}
+                          title={`${sub.stageName}: ${sub.status}`}
+                        >
+                          <span className="block font-bold text-slate-800">{sub.order}. {sub.stageName}</span>
+                          <span className="flex items-center gap-1.5 mt-0.5">
+                            <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold uppercase ${
+                              sub.status === 'COMPLETED' ? 'bg-green-100 text-green-700' :
+                              sub.status === 'APPROVED' ? 'bg-emerald-100 text-emerald-700' :
+                              sub.status === 'SUBMITTED' || sub.status === 'IN_REVIEW' ? 'bg-blue-100 text-blue-700' :
+                              sub.status === 'CHANGES_REQUESTED' ? 'bg-rose-100 text-rose-700' :
+                              'bg-amber-100 text-amber-700'
+                            }`}>{sub.status.replace(/_/g, ' ')}</span>
+                            <span className={overdue ? 'text-rose-600 font-semibold' : 'text-slate-500'}>
+                              {new Date(sub.deadline).toLocaleDateString('en-GB')}
+                            </span>
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
           </div>
         ) : (
           <div className="overflow-x-auto">

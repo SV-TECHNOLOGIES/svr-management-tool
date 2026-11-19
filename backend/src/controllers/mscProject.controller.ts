@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { prisma } from '../utils/prisma';
+import { parseLinkType } from '../services/workspace.service';
 
 // List all MSc Projects with details
 export const getMscProjects = async (req: Request, res: Response) => {
@@ -9,6 +10,7 @@ export const getMscProjects = async (req: Request, res: Response) => {
         submissionTemplates: {
           orderBy: { order: 'asc' },
         },
+        taskTemplates: { orderBy: { order: 'asc' } },
         adminSplits: {
           include: { admin: true },
         },
@@ -67,6 +69,9 @@ export const getMscProjects = async (req: Request, res: Response) => {
         id: p.id,
         name: p.name,
         description: p.description,
+        briefing: p.briefing,
+        briefDocUrl: p.briefDocUrl,
+        taskTemplates: p.taskTemplates,
         amountRangeLow: Number(p.amountRangeLow),
         amountRangeHigh: Number(p.amountRangeHigh),
         currency: p.currency,
@@ -80,6 +85,9 @@ export const getMscProjects = async (req: Request, res: Response) => {
           percentage: Number(as.percentage),
         })),
         studentCount: p.students.length,
+        lastAgreedAmount: p.students.length
+          ? Number([...p.students].sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())[0].agreedAmount)
+          : null,
         completedStudentCount,
         status,
         totalAgreedRevenue,
@@ -106,6 +114,9 @@ export const createMscProject = async (req: Request, res: Response) => {
       amountRangeLow,
       amountRangeHigh,
       currency,
+      briefing,
+      briefDocUrl,
+      taskTemplates, // Array of { title, description?, stageOrder? }
       adminSplits, // Array of { adminId, percentage }
       submissionTemplates, // Array of { name, order, isFinal, templateFileUrl, deadlineOffsetDays, paymentPercentage, instructions }
     } = req.body;
@@ -123,6 +134,8 @@ export const createMscProject = async (req: Request, res: Response) => {
         amountRangeLow,
         amountRangeHigh,
         currency: currency || 'GBP',
+        briefing: briefing || null,
+        briefDocUrl: briefDocUrl || null,
         adminSplits: {
           create: (adminSplits || []).map((as: { adminId: string; percentage: number }) => ({
             adminId: as.adminId,
@@ -139,6 +152,7 @@ export const createMscProject = async (req: Request, res: Response) => {
               deadlineOffsetDays?: number;
               paymentPercentage: number;
               instructions?: string;
+              requiredLinkTypes?: string[];
             }) => ({
               name: st.name,
               order: st.order,
@@ -147,6 +161,7 @@ export const createMscProject = async (req: Request, res: Response) => {
               deadlineOffsetDays: st.deadlineOffsetDays || 14,
               paymentPercentage: st.paymentPercentage,
               instructions: st.instructions,
+              requiredLinkTypes: (st.requiredLinkTypes || []).map((t) => parseLinkType(t)),
             })
           ),
         },
@@ -156,6 +171,23 @@ export const createMscProject = async (req: Request, res: Response) => {
         adminSplits: { include: { admin: true } },
       },
     });
+
+    if (Array.isArray(taskTemplates) && taskTemplates.length) {
+      await prisma.projectTaskTemplate.createMany({
+        data: taskTemplates
+          .filter((t: { title?: string }) => t && t.title)
+          .map((t: { title: string; description?: string; stageOrder?: number }, i: number) => ({
+            mscProjectId: createdProject.id,
+            title: t.title,
+            description: t.description || null,
+            order: i + 1,
+            submissionTemplateId:
+              t.stageOrder !== undefined
+                ? createdProject.submissionTemplates.find((st) => st.order === Number(t.stageOrder))?.id || null
+                : null,
+          })),
+      });
+    }
 
     res.status(201).json(createdProject);
   } catch (error) {
@@ -172,6 +204,7 @@ export const getMscProjectById = async (req: Request, res: Response) => {
       where: { id },
       include: {
         submissionTemplates: { orderBy: { order: 'asc' } },
+        taskTemplates: { orderBy: { order: 'asc' } },
         adminSplits: { include: { admin: true } },
         students: {
           include: {
@@ -195,7 +228,8 @@ export const getMscProjectById = async (req: Request, res: Response) => {
       return res.status(404).json({ error: 'MSc Project not found' });
     }
 
-    res.json(project);
+    const latest = [...project.students].sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())[0];
+    res.json({ ...project, lastAgreedAmount: latest ? Number(latest.agreedAmount) : null });
   } catch (error) {
     console.error('Error fetching MSc Project details:', error);
     res.status(500).json({ error: 'Failed to fetch MSc Project details' });

@@ -11,8 +11,9 @@ import {
   Filter
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { getStudents, createStudent, getMscProjects } from '@/lib/api';
+import { getStudents, getMscProjects } from '@/lib/api';
 import Link from 'next/link';
+import { EnrollModal } from '@/components/workspace/enroll-modal';
 
 export default function StudentsPage() {
   const [students, setStudents] = useState<any[]>([]);
@@ -31,19 +32,6 @@ export default function StudentsPage() {
 
   // Modal State for Student Enrollment
   const [showEnrollModal, setShowEnrollModal] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
-  const [errorMsg, setErrorMsg] = useState('');
-
-  const [form, setForm] = useState({
-    mscProjectId: '',
-    name: '',
-    mobileNo: '',
-    rollNo: '',
-    projectTitle: '',
-    agreedAmount: 2000,
-    advancePaid: 400,
-  });
-
   const fetchData = async () => {
     try {
       setLoading(true);
@@ -53,9 +41,6 @@ export default function StudentsPage() {
       ]);
       setStudents(studentData);
       setMscProjects(projectData);
-      if (projectData.length > 0) {
-        setForm((prev) => ({ ...prev, mscProjectId: projectData[0].id }));
-      }
     } catch (err) {
       console.error('Failed to fetch students:', err);
     } finally {
@@ -67,53 +52,13 @@ export default function StudentsPage() {
     fetchData();
   }, []);
 
-  const handleEnrollStudent = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setErrorMsg('');
-
-    if (!form.mscProjectId || !form.name || !form.mobileNo || !form.rollNo || !form.projectTitle) {
-      setErrorMsg('All fields marked with * are required.');
-      return;
-    }
-
-    try {
-      setSubmitting(true);
-      await createStudent({
-        mscProjectId: form.mscProjectId,
-        name: form.name,
-        mobileNo: form.mobileNo,
-        rollNo: form.rollNo,
-        projectTitle: form.projectTitle,
-        agreedAmount: Number(form.agreedAmount),
-        advancePaid: Number(form.advancePaid),
-      });
-
-      setShowEnrollModal(false);
-      setForm({
-        mscProjectId: mscProjects[0]?.id || '',
-        name: '',
-        mobileNo: '',
-        rollNo: '',
-        projectTitle: '',
-        agreedAmount: 2000,
-        advancePaid: 400,
-      });
-      await fetchData();
-    } catch (err: any) {
-      console.error('Failed to enroll student:', err);
-      setErrorMsg(err.response?.data?.error || 'Failed to enroll student');
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
   // Multi-Filter Logic (Status, MSc Project, Paid/Outstanding, Stage Progress)
   const filteredStudents = students.filter((s) => {
     // 1. Search Query
     const matchesSearch =
       s.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       s.rollNo.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      s.projectTitle.toLowerCase().includes(searchQuery.toLowerCase());
+      (s.projectTitle || '').toLowerCase().includes(searchQuery.toLowerCase());
     if (!matchesSearch) return false;
 
     // 2. Status Filter
@@ -278,7 +223,7 @@ export default function StudentsPage() {
                         <div className="w-9 h-9 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-xs">
                           {s.name.split(' ').map((n: string) => n[0]).join('')}
                         </div>
-                        <div className="font-bold text-slate-900 text-sm">{s.name}</div>
+                        <Link href={`/students/${s.id}`} className="font-bold text-slate-900 text-sm hover:text-primary">{s.name}</Link>
                       </div>
                     </td>
                     <td className="px-6 py-4 text-xs font-semibold text-slate-700">
@@ -311,12 +256,20 @@ export default function StudentsPage() {
                       </span>
                     </td>
                     <td className="px-6 py-4">
-                      <button 
-                        onClick={() => setSelectedStudent(s)}
-                        className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold rounded-lg transition-colors flex items-center gap-1"
-                      >
-                        View Card <ChevronRight size={14} />
-                      </button>
+                      <div className="flex items-center gap-2">
+                        <Link
+                          href={`/students/${s.id}`}
+                          className="px-3 py-1.5 bg-primary hover:bg-primary-dark text-white text-xs font-bold rounded-lg transition-colors flex items-center gap-1 whitespace-nowrap"
+                        >
+                          Open <ChevronRight size={14} />
+                        </Link>
+                        <button 
+                          onClick={() => setSelectedStudent(s)}
+                          className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold rounded-lg transition-colors whitespace-nowrap"
+                        >
+                          Quick view
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}
@@ -432,144 +385,17 @@ export default function StudentsPage() {
         )}
       </AnimatePresence>
 
-      {/* Enroll Student Modal */}
-      <AnimatePresence>
-        {showEnrollModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 overflow-y-auto">
-            <motion.div 
-              initial={{ scale: 0.95, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.95, opacity: 0 }}
-              className="bg-white rounded-2xl max-w-lg w-full p-8 shadow-2xl space-y-6 my-8"
-            >
-              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-                <div>
-                  <h3 className="text-xl font-bold text-slate-900">Enroll Student into MSc Project</h3>
-                  <p className="text-xs text-slate-500">Auto-instantiates submission stages for student</p>
-                </div>
-                <button 
-                  onClick={() => setShowEnrollModal(false)}
-                  className="p-2 text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-100"
-                >
-                  <X size={20} />
-                </button>
-              </div>
-
-              {errorMsg && (
-                <div className="p-3 bg-rose-50 text-rose-600 text-xs font-semibold rounded-xl">
-                  {errorMsg}
-                </div>
-              )}
-
-              <form onSubmit={handleEnrollStudent} className="space-y-4">
-                <div>
-                  <label className="text-xs font-bold text-slate-500 uppercase">Select MSc Project *</label>
-                  <select 
-                    required
-                    value={form.mscProjectId}
-                    onChange={(e) => setForm({ ...form, mscProjectId: e.target.value })}
-                    className="w-full mt-1 px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-primary/20"
-                  >
-                    {mscProjects.map((p) => (
-                      <option key={p.id} value={p.id}>
-                        {p.name} (Range: £{p.amountRangeLow} - £{p.amountRangeHigh})
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div>
-                  <label className="text-xs font-bold text-slate-500 uppercase">Student Name *</label>
-                  <input 
-                    type="text" 
-                    required
-                    value={form.name}
-                    onChange={(e) => setForm({ ...form, name: e.target.value })}
-                    placeholder="e.g. Alex Turner"
-                    className="w-full mt-1 px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-primary/20"
-                  />
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="text-xs font-bold text-slate-500 uppercase">Mobile No *</label>
-                    <input 
-                      type="text" 
-                      required
-                      value={form.mobileNo}
-                      onChange={(e) => setForm({ ...form, mobileNo: e.target.value })}
-                      placeholder="+44 7911 123456"
-                      className="w-full mt-1 px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-primary/20"
-                    />
-                  </div>
-                  <div>
-                    <label className="text-xs font-bold text-slate-500 uppercase">Roll No *</label>
-                    <input 
-                      type="text" 
-                      required
-                      value={form.rollNo}
-                      onChange={(e) => setForm({ ...form, rollNo: e.target.value })}
-                      placeholder="MSC2026-004"
-                      className="w-full mt-1 px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-primary/20"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="text-xs font-bold text-slate-500 uppercase">Chosen Project Title *</label>
-                  <input 
-                    type="text" 
-                    required
-                    value={form.projectTitle}
-                    onChange={(e) => setForm({ ...form, projectTitle: e.target.value })}
-                    placeholder="e.g. Autonomous Drone Navigation using Reinforcement Learning"
-                    className="w-full mt-1 px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-primary/20"
-                  />
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="text-xs font-bold text-slate-500 uppercase">Agreed Negotiated Amount (£) *</label>
-                    <input 
-                      type="number" 
-                      required
-                      value={form.agreedAmount}
-                      onChange={(e) => setForm({ ...form, agreedAmount: Number(e.target.value) })}
-                      className="w-full mt-1 px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-primary/20"
-                    />
-                  </div>
-                  <div>
-                    <label className="text-xs font-bold text-slate-500 uppercase">Initial Advance Paid (£)</label>
-                    <input 
-                      type="number" 
-                      value={form.advancePaid}
-                      onChange={(e) => setForm({ ...form, advancePaid: Number(e.target.value) })}
-                      className="w-full mt-1 px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-primary/20"
-                    />
-                  </div>
-                </div>
-
-                <div className="flex gap-3 pt-4 border-t border-slate-100">
-                  <button 
-                    type="button" 
-                    onClick={() => setShowEnrollModal(false)}
-                    className="flex-1 py-3 border border-slate-200 rounded-xl text-sm font-semibold hover:bg-slate-50"
-                  >
-                    Cancel
-                  </button>
-                  <button 
-                    type="submit" 
-                    disabled={submitting}
-                    className="flex-1 py-3 bg-primary text-white rounded-xl text-sm font-bold hover:bg-primary-dark shadow-lg shadow-primary/20 disabled:opacity-50"
-                  >
-                    {submitting ? 'Enrolling...' : 'Enroll Student'}
-                  </button>
-                </div>
-              </form>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
+      {/* Enroll Student Modal (tag existing or add new) */}
+      {showEnrollModal && (
+        <EnrollModal
+          projects={mscProjects}
+          onClose={() => setShowEnrollModal(false)}
+          onDone={async () => {
+            setShowEnrollModal(false);
+            await fetchData();
+          }}
+        />
+      )}
     </div>
   );
 }

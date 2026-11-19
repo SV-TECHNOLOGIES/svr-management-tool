@@ -15,6 +15,7 @@ import {
   BookOpen
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Link from 'next/link';
 import { getMscProjects, createMscProject, getAdmins } from '@/lib/api';
 
 export default function MscProjectsPage() {
@@ -31,17 +32,34 @@ export default function MscProjectsPage() {
   const [submitting, setSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
+  // Default: a single submission. Add more stages if the project needs them.
   const defaultTemplates = [
-    { name: 'Proposal & Literature Review', order: 1, isFinal: false, deadlineOffsetDays: 14, paymentPercentage: 20, templateFileUrl: '' },
-    { name: 'Midpoint Progress & Model Implementation', order: 2, isFinal: false, deadlineOffsetDays: 35, paymentPercentage: 30, templateFileUrl: '' },
-    { name: 'Final Thesis & Code Repository', order: 3, isFinal: true, deadlineOffsetDays: 60, paymentPercentage: 50, templateFileUrl: '' },
+    { name: 'Final Submission', order: 1, isFinal: true, deadlineOffsetDays: 30, paymentPercentage: 100, templateFileUrl: '' },
   ];
+
+  const PRICE_MIN = 20;
+  const PRICE_MAX = 1000;
+
+  /** Split 100% evenly across stages (remainder on the last) and mark the last stage final. */
+  const distribute = (templates: typeof defaultTemplates) => {
+    const n = templates.length;
+    if (!n) return templates;
+    const base = Math.floor(100 / n);
+    return templates.map((t, i) => ({
+      ...t,
+      // the single-stage default is called "Final Submission"; rename it once it is no longer last
+      name: t.name === 'Final Submission' && i !== n - 1 ? `Submission ${i + 1}` : t.name,
+      order: i + 1,
+      isFinal: i === n - 1,
+      paymentPercentage: i === n - 1 ? 100 - base * (n - 1) : base,
+    }));
+  };
 
   const [form, setForm] = useState({
     name: '',
     description: '',
-    amountRangeLow: 1500,
-    amountRangeHigh: 2500,
+    amountRangeLow: 200,
+    amountRangeHigh: 500,
     currency: 'GBP',
     adminSplit1: 50,
     adminId1: '',
@@ -84,34 +102,37 @@ export default function MscProjectsPage() {
 
   // Add new submission stage template dynamically
   const handleAddTemplate = () => {
-    const nextOrder = form.templates.length + 1;
-    setForm((prev) => ({
-      ...prev,
-      templates: [
-        ...prev.templates,
-        {
-          name: `Submission Stage ${nextOrder}`,
-          order: nextOrder,
-          isFinal: false,
-          deadlineOffsetDays: 14,
-          paymentPercentage: 0,
-          templateFileUrl: '',
-        },
-      ],
-    }));
+    setErrorMsg('');
+    setForm((prev) => {
+      const nextOrder = prev.templates.length + 1;
+      const lastOffset = prev.templates[prev.templates.length - 1]?.deadlineOffsetDays || 0;
+      return {
+        ...prev,
+        templates: distribute([
+          ...prev.templates,
+          {
+            name: `Submission ${nextOrder}`,
+            order: nextOrder,
+            isFinal: false,
+            deadlineOffsetDays: lastOffset + 14,
+            paymentPercentage: 0,
+            templateFileUrl: '',
+          },
+        ]),
+      };
+    });
   };
 
   // Remove submission stage template
   const handleRemoveTemplate = (indexToRemove: number) => {
     if (form.templates.length <= 1) return;
-    const updated = form.templates
-      .filter((_, idx) => idx !== indexToRemove)
-      .map((t, idx) => ({ ...t, order: idx + 1 }));
-    setForm({ ...form, templates: updated });
+    setErrorMsg('');
+    setForm({ ...form, templates: distribute(form.templates.filter((_, idx) => idx !== indexToRemove)) });
   };
 
   // Update specific template property
   const updateTemplate = (index: number, key: string, value: any) => {
+    setErrorMsg('');
     const updated = [...form.templates];
     updated[index] = { ...updated[index], [key]: value };
     setForm({ ...form, templates: updated });
@@ -181,8 +202,8 @@ export default function MscProjectsPage() {
       setForm({
         name: '',
         description: '',
-        amountRangeLow: 1500,
-        amountRangeHigh: 2500,
+        amountRangeLow: 200,
+        amountRangeHigh: 500,
         currency: 'GBP',
         adminSplit1: 50,
         adminId1: admins[0]?.id || '',
@@ -267,7 +288,7 @@ export default function MscProjectsPage() {
                   <tr key={proj.id} className="hover:bg-slate-50/50 transition-colors">
                     <td className="px-6 py-4">
                       <div>
-                        <h4 className="font-bold text-slate-900 text-sm">{proj.name}</h4>
+                        <Link href={`/subjects/${proj.id}`} className="font-bold text-slate-900 text-sm hover:text-primary">{proj.name}</Link>
                         <p className="text-xs text-slate-400 line-clamp-1">{proj.description || 'No description'}</p>
                       </div>
                     </td>
@@ -311,12 +332,20 @@ export default function MscProjectsPage() {
                       £{proj.totalAgreedRevenue}
                     </td>
                     <td className="px-6 py-4">
-                      <button 
-                        onClick={() => setSelectedProj(proj)}
-                        className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold rounded-lg transition-colors flex items-center gap-1"
-                      >
-                        View Card <ChevronRight size={14} />
-                      </button>
+                      <div className="flex items-center gap-2">
+                        <Link
+                          href={`/subjects/${proj.id}`}
+                          className="px-3 py-1.5 bg-primary hover:bg-primary-dark text-white text-xs font-bold rounded-lg transition-colors flex items-center gap-1 whitespace-nowrap"
+                        >
+                          Open <ChevronRight size={14} />
+                        </Link>
+                        <button 
+                          onClick={() => setSelectedProj(proj)}
+                          className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold rounded-lg transition-colors whitespace-nowrap"
+                        >
+                          Quick view
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}
@@ -487,7 +516,7 @@ export default function MscProjectsPage() {
                   </div>
 
                   <div>
-                    <label className="text-xs font-bold text-slate-600 uppercase">Description</label>
+                    <label className="text-xs font-bold text-slate-600 uppercase">Description <span className="normal-case font-medium text-slate-400">(optional)</span></label>
                     <textarea 
                       value={form.description}
                       onChange={(e) => setForm({ ...form, description: e.target.value })}
@@ -516,17 +545,17 @@ export default function MscProjectsPage() {
                         <div 
                           className="absolute h-2 bg-primary rounded-lg"
                           style={{
-                            left: `${((form.amountRangeLow - 500) / (10000 - 500)) * 100}%`,
-                            width: `${((form.amountRangeHigh - form.amountRangeLow) / (10000 - 500)) * 100}%`,
+                            left: `${((form.amountRangeLow - PRICE_MIN) / (PRICE_MAX - PRICE_MIN)) * 100}%`,
+                            width: `${((form.amountRangeHigh - form.amountRangeLow) / (PRICE_MAX - PRICE_MIN)) * 100}%`,
                           }}
                         />
 
                         {/* Min Knob Slider */}
                         <input 
                           type="range" 
-                          min="500" 
-                          max="10000" 
-                          step="100"
+                          min={PRICE_MIN} 
+                          max={PRICE_MAX} 
+                          step="10"
                           value={form.amountRangeLow}
                           onChange={(e) => {
                             const val = Number(e.target.value);
@@ -540,9 +569,9 @@ export default function MscProjectsPage() {
                         {/* Max Knob Slider */}
                         <input 
                           type="range" 
-                          min="500" 
-                          max="10000" 
-                          step="100"
+                          min={PRICE_MIN} 
+                          max={PRICE_MAX} 
+                          step="10"
                           value={form.amountRangeHigh}
                           onChange={(e) => {
                             const val = Number(e.target.value);
@@ -555,8 +584,8 @@ export default function MscProjectsPage() {
                       </div>
 
                       <div className="flex justify-between text-[11px] text-slate-400 font-medium px-1">
-                        <span>£500 (Min)</span>
-                        <span>£10,000 (Max)</span>
+                        <span>£{PRICE_MIN} (Min)</span>
+                        <span>£{PRICE_MAX.toLocaleString('en-GB')} (Max)</span>
                       </div>
                     </div>
                   </div>
@@ -624,6 +653,15 @@ export default function MscProjectsPage() {
                     }`}>
                       Payment Total: {currentTotalPaymentPercentage}% / 100%
                     </span>
+                    {currentTotalPaymentPercentage !== 100 && (
+                      <button
+                        type="button"
+                        onClick={() => { setErrorMsg(''); setForm({ ...form, templates: distribute(form.templates) }); }}
+                        className="px-3 py-1 rounded-lg font-bold bg-primary text-white"
+                      >
+                        Split evenly
+                      </button>
+                    )}
                   </div>
 
                   {/* Scrollable Stage Templates List */}

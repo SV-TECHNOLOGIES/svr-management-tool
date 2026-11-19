@@ -15,7 +15,20 @@ async function main() {
   const rawData = fs.readFileSync(jsonPath, 'utf-8');
   const seedData = JSON.parse(rawData);
 
+  const existing = await prisma.student.count();
+  if (existing > 0 && process.env.SEED_RESET !== '1') {
+    throw new Error(
+      `Refusing to seed: the database already has ${existing} student(s) and seeding DELETES everything.\n` +
+        'Run with SEED_RESET=1 to wipe and re-seed, or use prisma/import-csv.ts to add data non-destructively.'
+    );
+  }
+
   console.log('Clearing existing database records...');
+  await prisma.link.deleteMany();
+  await prisma.task.deleteMany();
+  await prisma.delivery.deleteMany();
+  await prisma.projectDeliverable.deleteMany();
+  await prisma.projectTaskTemplate.deleteMany();
   await prisma.note.deleteMany();
   await prisma.payment.deleteMany();
   await prisma.outsourcing.deleteMany();
@@ -24,6 +37,7 @@ async function main() {
   await prisma.student.deleteMany();
   await prisma.adminSplit.deleteMany();
   await prisma.mscProject.deleteMany();
+  await prisma.person.deleteMany();
   await prisma.admin.deleteMany();
 
   const hashedPassword = await bcrypt.hash('Svr@2026#', 10);
@@ -90,7 +104,10 @@ async function main() {
     for (const studentData of projectData.students || []) {
       const createdStudent = await prisma.student.create({
         data: {
-          mscProjectId: createdProject.id,
+          mscProject: { connect: { id: createdProject.id } },
+          person: {
+            create: { name: studentData.name, mobileNo: studentData.mobileNo, rollNo: studentData.rollNo || null },
+          },
           name: studentData.name,
           rollNo: studentData.rollNo,
           mobileNo: studentData.mobileNo,

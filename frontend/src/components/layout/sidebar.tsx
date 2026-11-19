@@ -1,8 +1,10 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import { Send, KanbanSquare } from 'lucide-react';
+import { clearSession, getCurrentUser, AuthUser } from '@/lib/api';
 import { 
   LayoutDashboard, 
   BookOpen, 
@@ -21,9 +23,11 @@ import { cn } from '@/lib/utils';
 
 const navItems = [
   { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-  { name: 'MSc Projects', href: '/subjects', icon: BookOpen },
+  { name: 'My Work', href: '/my-work', icon: KanbanSquare },
+  { name: 'Projects', href: '/subjects', icon: BookOpen },
   { name: 'Students', href: '/students', icon: Users },
-  { name: 'Submissions Lifecycle', href: '/documents', icon: FileText },
+  { name: 'Submissions', href: '/documents', icon: FileText },
+  { name: 'Deliveries', href: '/deliveries', icon: Send },
   { name: 'Revenue & Payments', href: '/finance', icon: CircleDollarSign },
   { name: 'Outsourcing', href: '/outsourcing', icon: ExternalLink },
   { name: 'Reports', href: '/reports', icon: BarChart3 },
@@ -33,6 +37,9 @@ const navItems = [
 export function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
+  const [user, setUser] = useState<AuthUser | null>(null);
+  useEffect(() => setUser(getCurrentUser()), []);
 
   return (
     <aside 
@@ -44,8 +51,8 @@ export function Sidebar() {
       <div className="p-6 flex items-center justify-between">
         {!collapsed && (
           <div className="flex flex-col">
-            <span className="text-white font-bold text-xl tracking-tight">Outsource Pro</span>
-            <span className="text-xs text-slate-500">Management Suite</span>
+            <span className="text-white font-bold text-xl tracking-tight">Project Portal</span>
+            <span className="text-xs text-slate-500">Student builds &amp; sprints</span>
           </div>
         )}
         <button 
@@ -58,7 +65,7 @@ export function Sidebar() {
 
       <nav className="flex-1 px-4 space-y-2 mt-4">
         {navItems.map((item) => {
-          const isActive = pathname === item.href;
+          const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
           return (
             <Link
               key={item.name}
@@ -88,17 +95,21 @@ export function Sidebar() {
       )}>
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-white font-bold">
-            JW
+            {(user?.name || '?').slice(0, 1).toUpperCase()}
           </div>
           {!collapsed && (
             <div className="flex flex-col">
-              <span className="text-sm font-semibold text-white">James Wilson</span>
-              <span className="text-xs text-slate-500">Portfolio Manager</span>
+              <span className="text-sm font-semibold text-white">{user?.name || ''}</span>
+              <span className="text-xs text-slate-500 truncate max-w-[9rem]">{user?.email || ''}</span>
             </div>
           )}
         </div>
         {!collapsed && (
-          <button className="p-2 hover:bg-slate-800 rounded-lg text-slate-500 hover:text-white transition-colors">
+          <button
+            onClick={() => { clearSession(); router.replace('/'); }}
+            title="Log out"
+            className="p-2 hover:bg-slate-800 rounded-lg text-slate-500 hover:text-white transition-colors"
+          >
             <LogOut size={18} />
           </button>
         )}

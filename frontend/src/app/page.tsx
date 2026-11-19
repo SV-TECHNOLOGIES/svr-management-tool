@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState } from 'react';
-import Image from 'next/image';
+import React, { useEffect, useState } from 'react';
+import { login, getToken, errorMessage } from '@/lib/api';
 import { motion } from 'framer-motion';
 import { 
   Mail, 
@@ -18,15 +18,26 @@ import { useRouter } from 'next/navigation';
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const router = useRouter();
 
-  const handleLogin = (e: React.FormEvent) => {
+  useEffect(() => {
+    if (getToken()) router.replace('/dashboard');
+  }, [router]);
+
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError('');
     setIsLoading(true);
-    // Simulate login
-    setTimeout(() => {
+    try {
+      await login(email, password);
       router.push('/dashboard');
-    }, 1500);
+    } catch (err) {
+      setError(errorMessage(err, 'Login failed'));
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -37,7 +48,7 @@ export default function LoginPage() {
           <div className="p-2 bg-white/20 rounded-lg backdrop-blur-md">
             <Zap size={24} />
           </div>
-          <span className="text-2xl font-bold tracking-tight">Outsource Pro</span>
+          <span className="text-2xl font-bold tracking-tight">Project Portal</span>
         </div>
 
         <motion.div 
@@ -53,16 +64,16 @@ export default function LoginPage() {
               className="w-full h-auto"
             />
           </div>
-          <h2 className="text-4xl font-bold text-white mb-4">Log in to Your Enterprise Platform</h2>
+          <h2 className="text-4xl font-bold text-white mb-4">Every student build, one sprint board</h2>
           <p className="text-white/70 text-lg leading-relaxed">
-            Manage Projects, Outsourcing & Revenue Efficiently with our precision-engineered command center.
+            Briefs, submission stages, deliveries, notes and payments for each student project, manageable from the portal or from Claude via MCP.
           </p>
         </motion.div>
 
         {/* Decorative elements */}
         <div className="absolute bottom-12 left-12 flex gap-6 text-white/50 text-xs font-medium z-20">
-          <span className="flex items-center gap-1"><ShieldCheck size={14} /> ISO CERTIFIED</span>
-          <span className="flex items-center gap-1"><Globe size={14} /> AES-256 SECURE</span>
+          <span className="flex items-center gap-1"><ShieldCheck size={14} /> PROJECT SPRINTS</span>
+          <span className="flex items-center gap-1"><Globe size={14} /> MCP READY</span>
         </div>
         
         <div className="absolute -top-24 -right-24 w-96 h-96 bg-blue-400/20 rounded-full blur-3xl"></div>
@@ -83,11 +94,14 @@ export default function LoginPage() {
 
           <form onSubmit={handleLogin} className="space-y-6">
             <div className="space-y-2">
-              <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Corporate Email</label>
+              <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Email</label>
               <div className="relative group">
                 <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary transition-colors" size={18} />
                 <input 
                   type="email" 
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  autoComplete="email"
                   placeholder="name@company.com"
                   className="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
                   required
@@ -96,11 +110,14 @@ export default function LoginPage() {
             </div>
 
             <div className="space-y-2">
-              <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Access Token</label>
+              <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Password</label>
               <div className="relative group">
                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary transition-colors" size={18} />
                 <input 
                   type={showPassword ? "text" : "password"} 
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  autoComplete="current-password"
                   placeholder="••••••••"
                   className="w-full pl-12 pr-12 py-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
                   required
@@ -115,13 +132,11 @@ export default function LoginPage() {
               </div>
             </div>
 
-            <div className="flex items-center justify-between text-sm">
-              <label className="flex items-center gap-2 cursor-pointer group">
-                <input type="checkbox" className="w-4 h-4 rounded border-slate-300 text-primary focus:ring-primary" />
-                <span className="text-slate-600 group-hover:text-slate-900 transition-colors">Remember me</span>
-              </label>
-              <a href="#" className="text-primary font-semibold hover:underline">Forgot password?</a>
-            </div>
+            {error && (
+              <p role="alert" className="text-sm font-semibold text-rose-600 bg-rose-50 border border-rose-100 rounded-xl px-4 py-3">
+                {error}
+              </p>
+            )}
 
             <button 
               type="submit"
@@ -139,26 +154,11 @@ export default function LoginPage() {
             </button>
           </form>
 
-          <div className="mt-8 flex items-center gap-4">
-            <div className="flex-1 h-px bg-slate-200"></div>
-            <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Or continue with</span>
-            <div className="flex-1 h-px bg-slate-200"></div>
-          </div>
-
-          <button className="w-full mt-8 py-4 bg-white border border-slate-200 text-slate-700 rounded-xl font-semibold flex items-center justify-center gap-3 hover:bg-slate-50 transition-all">
-            <img src="https://www.gstatic.com/images/branding/product/1x/gsa_512dp.png" alt="Google" className="w-5 h-5" />
-            Single Sign-On (SSO)
-          </button>
-
           <div className="mt-12 text-center">
             <p className="text-xs text-slate-400 flex items-center justify-center gap-2 uppercase tracking-widest font-bold">
               <ShieldCheck size={14} className="text-slate-300" /> Secure Enterprise Dashboard
             </p>
-            <div className="mt-4 flex justify-center gap-4 text-xs text-slate-500 font-medium">
-              <a href="#" className="hover:text-primary transition-colors">Privacy Policy</a>
-              <span>•</span>
-              <a href="#" className="hover:text-primary transition-colors">Support contact</a>
-            </div>
+
           </div>
         </motion.div>
       </div>

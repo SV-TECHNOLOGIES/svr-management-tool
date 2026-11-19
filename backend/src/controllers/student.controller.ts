@@ -1,5 +1,8 @@
 import { Request, Response } from 'express';
 import { prisma } from '../utils/prisma';
+import { AuthRequest } from '../middleware/auth';
+import { sendError } from '../services/errors';
+import { enrollStudent, resolveAdminId } from '../services/workspace.service';
 
 // List students with full financial breakdown, current stage progress, and submissions
 export const getStudents = async (req: Request, res: Response) => {
@@ -34,6 +37,9 @@ export const getStudents = async (req: Request, res: Response) => {
         outsourcings: {
           orderBy: { paidAt: 'desc' },
         },
+        links: true,
+        tasks: { select: { status: true } },
+        deliveries: { select: { status: true } },
       },
       orderBy: { createdAt: 'desc' },
     });
@@ -68,6 +74,13 @@ export const getStudents = async (req: Request, res: Response) => {
         mobileNo: s.mobileNo,
         rollNo: s.rollNo,
         projectTitle: s.projectTitle,
+        email: s.email,
+        meetingDay: s.meetingDay,
+        links: s.links,
+        tasksDone: s.tasks.filter((t) => t.status === 'DONE').length,
+        tasksTotal: s.tasks.length,
+        deliveriesSent: s.deliveries.filter((d) => d.status !== 'PLANNED').length,
+        deliveriesPlanned: s.deliveries.filter((d) => d.status === 'PLANNED').length,
         agreedAmount,
         totalPaid,
         outstandingBalance,
@@ -115,95 +128,18 @@ export const getStudents = async (req: Request, res: Response) => {
   }
 };
 
-// Create a new student enrollment and auto-instantiate stage submissions
-export const createStudent = async (req: Request, res: Response) => {
+// Create a new student enrollment: auto-instantiates stage submissions and the sprint checklist
+export const createStudent = async (req: AuthRequest, res: Response) => {
   try {
-    const {
-      mscProjectId,
-      name,
-      mobileNo,
-      rollNo,
-      projectTitle,
-      agreedAmount,
-      advancePaid, // Optional initial advance payment
-      recordedByAdminId,
-    } = req.body;
-
-    if (!mscProjectId || !name || !mobileNo || !rollNo || !projectTitle || agreedAmount === undefined) {
-      return res.status(400).json({
-        error: 'mscProjectId, name, mobileNo, rollNo, projectTitle, and agreedAmount are required.',
-      });
-    }
-
-    // Verify project exists & get submission templates
-    const project = await prisma.mscProject.findUnique({
-      where: { id: mscProjectId },
-      include: { submissionTemplates: { orderBy: { order: 'asc' } } },
-    });
-
-    if (!project) {
-      return res.status(404).json({ error: 'MSc Project not found' });
-    }
-
-    // Create Student
-    const student = await prisma.student.create({
-      data: {
-        mscProjectId,
-        name,
-        mobileNo,
-        rollNo,
-        projectTitle,
-        agreedAmount,
-        status: 'ACTIVE',
-      },
-    });
-
-    // Auto-instantiate Submission records for each stage template
-    const now = new Date();
-    const submissionCreations = project.submissionTemplates.map((template) => {
-      const offsetDays = template.deadlineOffsetDays || 14;
-      const deadline = new Date(now.getTime() + offsetDays * 24 * 60 * 60 * 1000);
-
-      return prisma.submission.create({
-        data: {
-          studentId: student.id,
-          submissionTemplateId: template.id,
-          deadline,
-          status: 'PENDING',
-        },
-      });
-    });
-
-    await Promise.all(submissionCreations);
-
-    // If advance payment was provided, create initial Payment record
-    if (advancePaid && Number(advancePaid) > 0) {
-      await prisma.payment.create({
-        data: {
-          studentId: student.id,
-          amount: Number(advancePaid),
-          status: 'RECEIVED',
-          receivedAt: now,
-          recordedByAdminId,
-          notes: 'Initial advance payment upon enrollment.',
-        },
-      });
-    }
-
-    // Return created student with generated submissions
-    const createdStudent = await prisma.student.findUnique({
+    const adminId = await resolveAdminId(req.body?.recordedByAdminId, req.user?.userId || null);
+    const student = await enrollStudent(req.body, adminId);
+    const created = await prisma.student.findUnique({
       where: { id: student.id },
-      include: {
-        mscProject: true,
-        submissions: { include: { submissionTemplate: true } },
-        payments: true,
-      },
+      include: { mscProject: true, submissions: { include: { submissionTemplate: true } }, payments: true, tasks: true, links: true },
     });
-
-    res.status(201).json(createdStudent);
+    res.status(201).json(created);
   } catch (error) {
-    console.error('Error creating student:', error);
-    res.status(500).json({ error: 'Failed to enroll student' });
+    sendError(res, error, 'Failed to enroll student');
   }
 };
 
@@ -241,42 +177,5 @@ export const getStudentById = async (req: Request, res: Response) => {
   } catch (error) {
     console.error('Error fetching student:', error);
     res.status(500).json({ error: 'Failed to fetch student details' });
-  }
-};
-
-// Update student details or status
-export const updateStudent = async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-    const { name, mobileNo, rollNo, projectTitle, agreedAmount, status } = req.body;
-
-    const updated = await prisma.student.update({
-      where: { id },
-      data: {
-        ...(name && { name }),
-        ...(mobileNo && { mobileNo }),
-        ...(rollNo && { rollNo }),
-        ...(projectTitle && { projectTitle }),
-        ...(agreedAmount !== undefined && { agreedAmount }),
-        ...(status && { status }),
-      },
-    });
-
-    res.json(updated);
-  } catch (error) {
-    console.error('Error updating student:', error);
-    res.status(500).json({ error: 'Failed to update student' });
-  }
-};
-
-// Delete student
-export const deleteStudent = async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-    await prisma.student.delete({ where: { id } });
-    res.json({ message: 'Student deleted successfully' });
-  } catch (error) {
-    console.error('Error deleting student:', error);
-    res.status(500).json({ error: 'Failed to delete student' });
   }
 };
