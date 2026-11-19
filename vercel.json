@@ -16,6 +16,10 @@
   ],
   "routes": [
     {
+      "src": "/\\.well-known/(oauth-authorization-server|oauth-protected-resource|openid-configuration)(.*)",
+      "dest": "backend/src/index.ts"
+    },
+    {
       "src": "/api/(.*)",
       "dest": "backend/src/index.ts"
     },

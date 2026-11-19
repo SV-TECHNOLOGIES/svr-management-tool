@@ -6,6 +6,7 @@ import { authenticate } from './middleware/auth';
 import { login, me, changePassword } from './controllers/auth.controller';
 import workspaceRoutes from './controllers/workspace.controller';
 import { mcpHttpHandler } from './mcp/http';
+import { oauthRouter, wellKnownRouter } from './oauth/oauth';
 
 import {
   getMscProjects,
@@ -64,7 +65,11 @@ app.get('/health', (req: Request, res: Response) => {
 // Auth (public)
 app.post('/api/auth/login', login);
 
-// Remote MCP endpoint (own bearer-token auth)
+// OAuth 2.1 for MCP connectors (ChatGPT / Claude) — public
+app.use('/.well-known', wellKnownRouter);
+app.use('/api/oauth', oauthRouter);
+
+// Remote MCP endpoint (own bearer-token / OAuth auth)
 app.all('/api/mcp', mcpHttpHandler);
 
 // Everything else under /api requires a logged-in admin

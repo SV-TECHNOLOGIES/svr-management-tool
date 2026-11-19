@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
 import { createMcpServer } from './server';
 import { verifyToken } from '../utils/auth';
+import { resourceMetadataUrl } from '../oauth/oauth';
 
 /**
  * Remote MCP endpoint (Streamable HTTP, stateless — works on serverless hosts).
@@ -30,6 +31,8 @@ const authorize = (req: Request): { ok: boolean; adminId?: string } => {
 export const mcpHttpHandler = async (req: Request, res: Response) => {
   const auth = authorize(req);
   if (!auth.ok) {
+    // Points OAuth-capable clients (ChatGPT, Claude) at the authorization server.
+    res.set('WWW-Authenticate', `Bearer resource_metadata="${resourceMetadataUrl(req)}", scope="mcp"`);
     return res.status(401).json({ jsonrpc: '2.0', error: { code: -32001, message: 'Unauthorized' }, id: null });
   }
   if (req.method !== 'POST') {
