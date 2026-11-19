@@ -24,6 +24,15 @@
       "dest": "backend/src/index.ts"
     },
     {
+      "src": "/(students|subjects)/([^/]+?)/?",
+      "has": [{ "type": "header", "key": "rsc", "value": "1" }],
+      "dest": "/frontend/$1/[id].rsc?nxtPid=$2"
+    },
+    {
+      "src": "/(students|subjects)/([^/]+?)/?",
+      "dest": "/frontend/$1/[id]?nxtPid=$2"
+    },
+    {
       "src": "/(.*)",
       "dest": "frontend/$1"
     }

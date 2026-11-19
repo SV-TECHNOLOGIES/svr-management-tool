@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import { ChevronRight, LogOut } from 'lucide-react';
+import { ChevronRight, LogOut, RefreshCw } from 'lucide-react';
 import { useCurrencyStore } from '@/store/useCurrencyStore';
 import { usePathname, useRouter } from 'next/navigation';
 import { clearSession, getCurrentUser, AuthUser } from '@/lib/api';
@@ -12,6 +12,28 @@ export function Navbar() {
   const router = useRouter();
   const [user, setUser] = React.useState<AuthUser | null>(null);
   React.useEffect(() => setUser(getCurrentUser()), []);
+
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  /** Clears every browser-side cache for this site, then reloads with fresh data and the latest deploy. */
+  const refreshCache = async () => {
+    setRefreshing(true);
+    try {
+      if ('serviceWorker' in navigator) {
+        const regs = await navigator.serviceWorker.getRegistrations();
+        await Promise.all(regs.map((r) => r.unregister()));
+      }
+      if ('caches' in window) {
+        const keys = await caches.keys();
+        await Promise.all(keys.map((k) => caches.delete(k)));
+      }
+    } catch {
+      /* best effort */
+    }
+    const url = new URL(window.location.href);
+    url.searchParams.set('_r', Date.now().toString());
+    window.location.replace(url.toString());
+  };
 
   const logout = () => {
     clearSession();
@@ -63,6 +85,15 @@ export function Navbar() {
             <span className="text-sm font-semibold text-slate-700">{user.name}</span>
           </div>
         )}
+        <button
+          onClick={refreshCache}
+          disabled={refreshing}
+          title="Clear cache and reload the latest data"
+          className="p-2.5 hover:bg-slate-100 rounded-xl text-slate-500 transition-colors flex items-center gap-2 text-sm font-semibold disabled:opacity-60"
+        >
+          <RefreshCw size={18} className={refreshing ? 'animate-spin' : ''} />
+          <span className="hidden md:inline">{refreshing ? 'Refreshing…' : 'Refresh'}</span>
+        </button>
         <button
           onClick={logout}
           title="Log out"
