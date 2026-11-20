@@ -491,8 +491,11 @@ export const getMyWork = async (adminId: string, opts: { scope?: 'mine' | 'all' 
   const [tasks, toReview, waitingOnOthers, deliveries, deadlines, unpaidExpenses] = await Promise.all([
     prisma.task.findMany({
       where: {
-        ...(mine && { OR: [{ assigneeAdminId: adminId }, { assigneeAdminId: null }] }),
-        OR: [{ studentId: null }, { student: activeStudent }],
+        // Both conditions must hold; two OR keys in one object would overwrite each other.
+        AND: [
+          ...(mine ? [{ OR: [{ assigneeAdminId: adminId }, { assigneeAdminId: null }] }] : []),
+          { OR: [{ studentId: null }, { student: activeStudent }] },
+        ],
       },
       include: {
         student: { select: { id: true, name: true } },
