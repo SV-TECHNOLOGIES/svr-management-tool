@@ -134,17 +134,35 @@ export function FinancePanel({ projectId, refreshKey, onError }: { projectId: st
         </form>
       ) : fin.splits.length ? (
         <div className="overflow-x-auto -mx-2">
-          <table className="w-full text-sm min-w-[560px]">
+          <table className="w-full text-sm min-w-[640px]">
             <thead>
               <tr className="text-left text-xs font-bold text-slate-400 uppercase tracking-wide">
                 <th className="px-2 py-2">Admin</th>
                 <th className="px-2 py-2">Share</th>
-                <th className="px-2 py-2">Of received so far</th>
+                <th className="px-2 py-2" title="Share % × money received from students so far. A calculated figure, not cash this admin is holding.">
+                  Share of received
+                </th>
                 <th className="px-2 py-2">Profit share so far</th>
                 <th className="px-2 py-2">Profit share if fully paid</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
+              <tr className="bg-slate-50 border-b-2 border-slate-200">
+                <td className="px-2 py-2.5 font-bold text-slate-900">Total</td>
+                <td className="px-2 py-2.5 font-semibold">{fin.splitTotal}%</td>
+                <td className="px-2 py-2.5 whitespace-nowrap">
+                  <span className="font-semibold">{formatPrice(fin.received)}</span>
+                  <span className="ml-1.5 text-xs font-medium text-slate-400">Received</span>
+                </td>
+                <td className="px-2 py-2.5 whitespace-nowrap">
+                  <span className="font-semibold text-violet-700">{formatPrice(fin.netProfit)}</span>
+                  <span className="ml-1.5 text-xs font-medium text-slate-400">Net profit</span>
+                </td>
+                <td className="px-2 py-2.5 whitespace-nowrap">
+                  <span className="font-bold text-violet-800">{formatPrice(fin.projectedProfit)}</span>
+                  <span className="ml-1.5 text-xs font-medium text-slate-400">Agreed profit</span>
+                </td>
+              </tr>
               {fin.splits.map((s: any) => (
                 <tr key={s.adminId}>
                   <td className="px-2 py-2.5 font-semibold text-slate-900">{s.adminName}</td>
@@ -154,13 +172,6 @@ export function FinancePanel({ projectId, refreshKey, onError }: { projectId: st
                   <td className="px-2 py-2.5 font-bold text-violet-800">{formatPrice(s.shareOfProjectedProfit)}</td>
                 </tr>
               ))}
-              <tr className="border-t-2 border-slate-200">
-                <td className="px-2 py-2.5 font-bold text-slate-900">Total</td>
-                <td className="px-2 py-2.5">{fin.splitTotal}%</td>
-                <td className="px-2 py-2.5">{formatPrice(fin.received)}</td>
-                <td className="px-2 py-2.5 font-semibold text-violet-700">{formatPrice(fin.netProfit)}</td>
-                <td className="px-2 py-2.5 font-bold text-violet-800">{formatPrice(fin.projectedProfit)}</td>
-              </tr>
             </tbody>
           </table>
         </div>

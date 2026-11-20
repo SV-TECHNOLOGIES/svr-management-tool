@@ -280,6 +280,57 @@ export const createExpense = async (input: ExpenseInput, adminId?: string | null
   });
 };
 
+/**
+ * Log the same expense for several students at once: one row per student, all in one transaction.
+ * amountMode 'PER_STUDENT' (default): `amount` is charged to each student.
+ * amountMode 'SPLIT': `amount` is the total, divided equally (to the penny; any rounding remainder goes to the first student).
+ */
+export const createExpensesForStudents = async (
+  input: Omit<ExpenseInput, 'studentId'> & { studentIds: string[]; amountMode?: 'PER_STUDENT' | 'SPLIT' },
+  adminId?: string | null
+) => {
+  const ids = [...new Set((input.studentIds || []).filter(Boolean))];
+  if (!ids.length) throw badRequest('Select at least one student');
+  if (!input.mscProjectId) throw badRequest('Project is required');
+  if (!input.paidTo) throw badRequest('Paid to (vendor / freelancer) is required');
+  const amount = Number(input.amount);
+  if (isNaN(amount) || amount <= 0) throw badRequest('A positive amount is required');
+  const status = parseExpenseStatus(input.status) || ExpenseStatus.UNPAID;
+
+  const found = await prisma.student.findMany({ where: { id: { in: ids }, mscProjectId: input.mscProjectId }, select: { id: true } });
+  if (found.length !== ids.length) throw badRequest('Some selected students are not in this project');
+
+  let amounts: number[];
+  if (input.amountMode === 'SPLIT') {
+    const cents = Math.round(amount * 100);
+    const each = Math.floor(cents / ids.length);
+    amounts = ids.map((_, i) => (each + (i === 0 ? cents - each * ids.length : 0)) / 100);
+  } else {
+    amounts = ids.map(() => amount);
+  }
+
+  const settledAt = status === ExpenseStatus.PAID ? (input.settledAt ? new Date(input.settledAt) : new Date()) : null;
+  return prisma.$transaction(
+    ids.map((studentId, i) =>
+      prisma.outsourcing.create({
+        data: {
+          mscProjectId: input.mscProjectId,
+          studentId,
+          paidTo: input.paidTo.trim(),
+          description: input.description || null,
+          amount: amounts[i],
+          status,
+          ...(input.paidAt && { paidAt: new Date(input.paidAt) }),
+          settledAt,
+          notes: input.notes || null,
+          recordedByAdminId: adminId || null,
+        },
+        include: expenseInclude,
+      })
+    )
+  );
+};
+
 export const updateExpense = async (id: string, input: Partial<ExpenseInput>) => {
   const status = parseExpenseStatus(input.status);
   return prisma.outsourcing.update({

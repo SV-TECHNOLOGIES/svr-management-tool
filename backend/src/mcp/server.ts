@@ -662,19 +662,25 @@ export const createMcpServer = (ctx: McpContext = {}) => {
   // ---------------------------------------------------------------- expenses / outsourcing
   tool(
     'log_expense',
-    'Log an outsourcing expense for a project (optionally for one student): who it is paid to, amount, and whether it is PAID or still UNPAID.',
+    'Log an outsourcing expense for a project: whole project, one student, or several students (one row per student). With students, amount is per student unless amountMode is SPLIT (amount is the total, divided equally).',
     {
       project: z.string(),
       paidTo: z.string().describe('Vendor / freelancer'),
       amount: z.number().positive(),
       description: z.string().optional(),
       student: z.string().optional(),
+      students: z.array(z.string()).optional().describe('Several student names; creates one expense per student'),
+      amountMode: ciEnum(['PER_STUDENT', 'SPLIT']).optional(),
       status: ciEnum(['UNPAID', 'PAID']).optional(),
       notes: z.string().optional(),
       asAdmin,
     },
-    async ({ project, student, asAdmin: who, ...rest }) => {
+    async ({ project, student, students, amountMode, asAdmin: who, ...rest }) => {
       const mscProjectId = (await ws.findProject(project)).id;
+      if (students?.length) {
+        const studentIds = await Promise.all(students.map(async (s) => (await ws.findStudent(`${s} @ ${mscProjectId}`)).id));
+        return biz.createExpensesForStudents({ ...rest, mscProjectId, studentIds, amountMode: amountMode as any }, await admin(who));
+      }
       const studentId = student ? (await ws.findStudent(`${student} @ ${mscProjectId}`)).id : null;
       return biz.createExpense({ ...rest, mscProjectId, studentId }, await admin(who));
     }

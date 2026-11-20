@@ -101,7 +101,10 @@ r.get(
 );
 r.post('/outsourcing', handle('Failed to log expense', async (req, res) => {
   res.status(201);
-  return biz.createExpense(req.body, await actor(req, req.body?.recordedByAdminId));
+  const by = await actor(req, req.body?.recordedByAdminId);
+  // Several students → one expense per student (amount per student, or a total split equally).
+  if (Array.isArray(req.body?.studentIds) && req.body.studentIds.length) return biz.createExpensesForStudents(req.body, by);
+  return biz.createExpense(req.body, by);
 }));
 r.put('/outsourcing/:id', handle('Failed to update expense', (req) => biz.updateExpense(req.params.id, req.body)));
 

@@ -292,6 +292,10 @@ export const getOutsourcingExpenses = async (params?: { mscProjectId?: string; s
 export const createOutsourcingExpense = async (data: {
   mscProjectId: string;
   studentId?: string;
+  /** Several students: one expense row per student. */
+  studentIds?: string[];
+  /** With studentIds: PER_STUDENT = amount charged to each; SPLIT = amount is the total, divided equally. */
+  amountMode?: 'PER_STUDENT' | 'SPLIT';
   paidTo: string;
   description?: string;
   amount: number;

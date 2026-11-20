@@ -34,7 +34,18 @@ export function ExpensesPanel({
   const [adding, setAdding] = useState(false);
   const [filter, setFilter] = useState<"" | "UNPAID" | "PAID">("");
   const [busy, setBusy] = useState(false);
-  const [f, setF] = useState({ mscProjectId: projectId || projects?.[0]?.id || "", studentId: "", paidTo: "", description: "", amount: "", status: "UNPAID" as "UNPAID" | "PAID", notes: "" });
+  const emptyForm = {
+    mscProjectId: projectId || projects?.[0]?.id || "",
+    target: "PROJECT" as "PROJECT" | "STUDENTS",
+    studentIds: [] as string[],
+    amountMode: "PER_STUDENT" as "PER_STUDENT" | "SPLIT",
+    paidTo: "",
+    description: "",
+    amount: "",
+    status: "UNPAID" as "UNPAID" | "PAID",
+    notes: "",
+  };
+  const [f, setF] = useState(emptyForm);
 
   const load = useCallback(async () => {
     try {
@@ -63,6 +74,13 @@ export function ExpensesPanel({
   };
 
   const vendorStudents = (students || []).filter((s) => !s.mscProjectId || s.mscProjectId === f.mscProjectId);
+  const forStudents = f.target === "STUDENTS";
+  const picked = f.studentIds.length;
+  const amountNum = Number(f.amount) || 0;
+  const allPicked = vendorStudents.length > 0 && vendorStudents.every((s) => f.studentIds.includes(s.id));
+  const toggleStudent = (id: string) =>
+    setF((p) => ({ ...p, studentIds: p.studentIds.includes(id) ? p.studentIds.filter((x) => x !== id) : [...p.studentIds, id] }));
+  const canSave = !busy && !!f.paidTo.trim() && amountNum > 0 && !!f.mscProjectId && (!forStudents || picked > 0);
   const rows = (data?.expenses || []).filter((e: any) => !filter || e.status === filter);
 
   return (
@@ -96,28 +114,29 @@ export function ExpensesPanel({
           className="space-y-3 p-4 bg-slate-50 rounded-xl border border-slate-200 mb-4"
           onSubmit={async (e) => {
             e.preventDefault();
+            if (!canSave) return;
             setBusy(true);
             await act(() =>
               createOutsourcingExpense({
                 mscProjectId: f.mscProjectId,
-                studentId: f.studentId || undefined,
+                ...(forStudents && { studentIds: f.studentIds, amountMode: f.amountMode }),
                 paidTo: f.paidTo,
                 description: f.description || undefined,
-                amount: Number(f.amount),
+                amount: amountNum,
                 status: f.status,
                 notes: f.notes || undefined,
               })
             );
             setBusy(false);
             setAdding(false);
-            setF({ ...f, studentId: "", paidTo: "", description: "", amount: "", notes: "", status: "UNPAID" });
+            setF({ ...emptyForm, mscProjectId: f.mscProjectId });
           }}
         >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {!projectId && (
               <label className="text-xs font-bold text-slate-500">
                 Project *
-                <select className={inputCls} value={f.mscProjectId} onChange={(e) => setF({ ...f, mscProjectId: e.target.value, studentId: "" })}>
+                <select className={inputCls} value={f.mscProjectId} onChange={(e) => setF({ ...f, mscProjectId: e.target.value, studentIds: [] })}>
                   {(projects || []).map((p) => (
                     <option key={p.id} value={p.id}>
                       {p.name}
@@ -126,17 +145,69 @@ export function ExpensesPanel({
                 </select>
               </label>
             )}
-            <label className="text-xs font-bold text-slate-500">
-              For student
-              <select className={inputCls} value={f.studentId} onChange={(e) => setF({ ...f, studentId: e.target.value })}>
-                <option value="">Whole project (shared cost)</option>
-                {vendorStudents.map((s) => (
-                  <option key={s.id} value={s.id}>
-                    {s.name}
-                  </option>
+            <div className="md:col-span-2 text-xs font-bold text-slate-500">
+              For
+              <div className="mt-1 inline-flex w-full sm:w-auto bg-white border border-slate-200 p-1 rounded-xl" role="radiogroup" aria-label="Expense is for">
+                {([
+                  ["PROJECT", "Whole project (shared cost)"],
+                  ["STUDENTS", "Specific students"],
+                ] as const).map(([k, label]) => (
+                  <button
+                    key={k}
+                    type="button"
+                    role="radio"
+                    aria-checked={f.target === k}
+                    onClick={() => setF({ ...f, target: k })}
+                    className={cn(
+                      "flex-1 sm:flex-none px-3 py-1.5 rounded-lg text-sm font-semibold transition-colors",
+                      f.target === k ? "bg-primary text-white" : "text-slate-600 hover:bg-slate-50"
+                    )}
+                  >
+                    {label}
+                  </button>
                 ))}
-              </select>
-            </label>
+              </div>
+
+              {forStudents && (
+                <div className="mt-2 bg-white border border-slate-200 rounded-xl p-3">
+                  {vendorStudents.length === 0 ? (
+                    <p className="text-sm font-medium text-slate-400">No students in this project yet.</p>
+                  ) : (
+                    <>
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-slate-500">
+                          {picked} of {vendorStudents.length} selected
+                        </span>
+                        <button
+                          type="button"
+                          className="text-primary font-semibold hover:underline"
+                          onClick={() => setF({ ...f, studentIds: allPicked ? [] : vendorStudents.map((s) => s.id) })}
+                        >
+                          {allPicked ? "Clear all" : "Select all"}
+                        </button>
+                      </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1.5 max-h-56 overflow-y-auto">
+                        {vendorStudents.map((s) => {
+                          const on = f.studentIds.includes(s.id);
+                          return (
+                            <label
+                              key={s.id}
+                              className={cn(
+                                "flex items-center gap-2 px-2.5 py-2 rounded-lg border cursor-pointer text-sm font-medium",
+                                on ? "border-primary bg-primary/5 text-slate-900" : "border-slate-200 text-slate-600 hover:bg-slate-50"
+                              )}
+                            >
+                              <input type="checkbox" className="h-4 w-4 accent-primary" checked={on} onChange={() => toggleStudent(s.id)} />
+                              <span className="truncate">{s.name}</span>
+                            </label>
+                          );
+                        })}
+                      </div>
+                    </>
+                  )}
+                </div>
+              )}
+            </div>
             <label className="text-xs font-bold text-slate-500">
               Paid to (freelancer / vendor) *
               <input required className={inputCls} value={f.paidTo} onChange={(e) => setF({ ...f, paidTo: e.target.value })} list="vendor-names" />
@@ -146,10 +217,49 @@ export function ExpensesPanel({
                 ))}
               </datalist>
             </label>
-            <label className="text-xs font-bold text-slate-500">
-              Amount (£) *
-              <input required type="number" min={0} step="0.01" className={inputCls} value={f.amount} onChange={(e) => setF({ ...f, amount: e.target.value })} />
-            </label>
+            <div className="text-xs font-bold text-slate-500">
+              <div className="flex items-center justify-between gap-2">
+                <label htmlFor="expense-amount">
+                  {forStudents ? (f.amountMode === "PER_STUDENT" ? "Amount per student (£) *" : "Total amount to split (£) *") : "Amount (£) *"}
+                </label>
+                {forStudents && (
+                  <div className="inline-flex bg-white border border-slate-200 p-0.5 rounded-lg" role="radiogroup" aria-label="How to apply the amount">
+                    {([
+                      ["PER_STUDENT", "Per student"],
+                      ["SPLIT", "Split total"],
+                    ] as const).map(([k, label]) => (
+                      <button
+                        key={k}
+                        type="button"
+                        role="radio"
+                        aria-checked={f.amountMode === k}
+                        onClick={() => setF({ ...f, amountMode: k })}
+                        className={cn("px-2 py-0.5 rounded-md text-[11px] font-semibold", f.amountMode === k ? "bg-primary text-white" : "text-slate-500")}
+                      >
+                        {label}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+              <input
+                id="expense-amount"
+                required
+                type="number"
+                min={0}
+                step="0.01"
+                className={inputCls}
+                value={f.amount}
+                onChange={(e) => setF({ ...f, amount: e.target.value })}
+              />
+              {forStudents && picked > 0 && amountNum > 0 && (
+                <p className="mt-1 font-medium text-slate-500">
+                  {f.amountMode === "PER_STUDENT"
+                    ? `${formatPrice(amountNum)} × ${picked} student${picked > 1 ? "s" : ""} = ${formatPrice(amountNum * picked)} total`
+                    : `${formatPrice(amountNum)} ÷ ${picked} = ${formatPrice(Math.floor((amountNum * 100) / picked) / 100)} per student`}
+                </p>
+              )}
+            </div>
             <label className="text-xs font-bold text-slate-500">
               Paid yet?
               <select className={inputCls} value={f.status} onChange={(e) => setF({ ...f, status: e.target.value as any })}>
@@ -166,8 +276,9 @@ export function ExpensesPanel({
             <button type="button" className={btnSecondary} onClick={() => setAdding(false)}>
               Cancel
             </button>
-            <button className={btnPrimary} disabled={busy || !f.paidTo.trim() || !f.amount || !f.mscProjectId}>
-              {busy && <Loader2 size={14} className="animate-spin" />} Save expense
+            <button className={btnPrimary} disabled={!canSave}>
+              {busy && <Loader2 size={14} className="animate-spin" />}{" "}
+              {forStudents && picked > 1 ? `Save ${picked} expenses` : "Save expense"}
             </button>
           </div>
         </form>
